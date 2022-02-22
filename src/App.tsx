@@ -14,7 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/notifications" element={<Notifications />} />
-        <Route path="/movieInfo" element={<MovieInfo />} />
+        <Route path="/movie/:id" element={<MovieInfo />} />
       </Routes>
     </BrowserRouter>
   );
