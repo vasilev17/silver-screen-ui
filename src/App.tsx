@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
+import MainPage from './components/MainPage/MainPage';
+import MyList from './components/MyList/MyList';
 import Login from './components/Login/Login';
 import Notifications from './components/Notifications/Notifications';
 import MovieInfo from './components/MovieInfo/MovieInfo';
@@ -10,7 +12,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="/mylist" element={<MyList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/notifications" element={<Notifications />} />
