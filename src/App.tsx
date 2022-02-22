@@ -8,6 +8,7 @@ import MovieInfo from './components/MovieInfo/MovieInfo';
 import Register from './components/Register/Register';
 import FriendsList from './components/FriendsList/FriendsList';
 import AddFriend from './components/AddFriend/AddFriend';
+import AdministrationPage from './components/AdministrationPage/AdministrationPage';
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ function App() {
         <Route path="/movieInfo" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/addfriend" element={<AddFriend />} />
+        <Route path="/administrationPage" element={<AdministrationPage />} />
       </Routes>
     </BrowserRouter>
   );
