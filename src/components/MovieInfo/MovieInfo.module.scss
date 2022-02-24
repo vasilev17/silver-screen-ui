@@ -1,1 +1,103 @@
-.MovieInfo {}
+@import "/src/App.scss";
+
+.banner {
+    height: 50vh;
+    position: relative;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @include overlay();
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background-image: linear-gradient(to top, $main-bg, rgba(black, 0));
+    }
+}
+
+.movieContent {
+    @include flex(flex-start, flex-start);
+    max-width: 1260px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -400px;
+    position: relative;
+    padding: 0 2rem;
+
+    &__poster {
+        flex: 1;
+    }
+
+    &__image {
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 30px;
+        padding-top: 165%;
+        @include shadow();
+    }
+
+    &__info {
+        width: 70%;
+        padding-left: 2rem;
+        position: relative;
+    }
+}
+
+.title {
+    font-size: 4rem;
+    line-height: 1;
+}
+
+.description {
+    font-weight: 400;
+    font-size: 17px;
+    margin-top: 2rem;
+    line-height: 1.5;
+}
+
+.genres {
+    max-width: 1260px;
+    margin-left: 40%;
+    position: relative;
+    padding: 0 2rem;
+    
+
+    &__item {
+        padding: 0.5rem 1.5rem;
+        border: 2px solid white;
+        border-radius: 30px;
+        font-size: 0.8rem;
+        margin-right: 0.5rem;
+        font-weight: 600;
+        background-color: $main-bg;
+    }
+
+    &__sectionTitle {
+        position: relative;
+        font-weight: 600;
+        font-size: 19px;
+        left: 0.8em;
+    }
+
+
+    &__sectionSeparator {
+        width: 20rem;
+        margin-left: 0rem;
+        margin-bottom: 2rem;
+    }
+
+}
