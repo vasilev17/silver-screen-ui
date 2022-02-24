@@ -3,7 +3,8 @@ import './App.scss';
 import MainPage from './components/MainPage/MainPage';
 import MyList from './components/MyList/MyList';
 import Login from './components/Login/Login';
-import Notifications from './components/Notifications/Notifications';
+import NotificationBox from './components/Notifications/Notifications/NotificationBox/NotificationBox';
+import NotificationAPITest from './components/Notifications/NotificationAPITest/NotificationAPITest';
 import MovieInfo from './components/MovieInfo/MovieInfo';
 import Register from './components/Register/Register';
 import FriendsList from './components/FriendsList/FriendsList';
@@ -17,7 +18,8 @@ function App() {
         <Route path="/mylist" element={<MyList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/notifications" element={<NotificationBox />} />
+        <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
         <Route path="/movie/:id" element={<MovieInfo />} />
         <Route path="/movieInfo" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />
