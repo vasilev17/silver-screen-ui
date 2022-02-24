@@ -1,6 +1,5 @@
 import { Skeleton } from '@mui/material';
 import React, { FC } from 'react';
-import styles from './NotificationSkeleton.module.scss';
 
 interface NotificationSkeletonProps {}
 

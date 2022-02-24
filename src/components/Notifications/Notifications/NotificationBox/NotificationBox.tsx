@@ -3,7 +3,6 @@ import styles from './NotificationBox.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import NotificationSkeleton from '../NotificationSkeleton/NotificationSkeleton';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import NotificationElement from '../NotificationElement/NotificationElement';
 
 interface NotificationBoxProps {}
