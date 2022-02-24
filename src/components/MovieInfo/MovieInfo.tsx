@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieInfo.module.scss';
 import '../MovieInfo/MovieInfo.module.scss';
 import { useParams } from 'react-router-dom';
+import { Title } from '@mui/icons-material';
 
 interface MovieInfoProps { }
 
@@ -30,12 +31,14 @@ const MovieInfo: FC<MovieInfoProps> = () => {
             alert("Error while processing the request!");
           }
         })
-        .then(data => { setMovie(data); });
+        .then(data => { 
+          setMovie(data);
+           data.releaseDate.includes('(') ? document.title = data.title +" "+data.releaseDate : document.title = data.title + " ("+data.releaseDate + ")";
+          });
 
       window.scrollTo(0, 0);
     }
      getDetail();
-
   }, [id]);
 
 
@@ -46,7 +49,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         movie && (
           <>
             <div className={styles.banner} style={{ backgroundImage: `url(${movie.thumbnail})` }}></div>
-
+            
 
             <div className={styles.movieContent}>
               <div className={styles.movieContent__poster}>
