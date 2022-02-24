@@ -12,7 +12,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
   
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [notificationsData, setNotificationsData] = useState(null);
-  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Jvc3QyIiwidXNlcklEIjoiMTA2IiwiZXhwIjoxNjQ1NjQwODY5LCJpc3MiOiJzaWx2ZXJzY3JlZW5iZyIsImF1ZCI6InNpbHZlcnNjcmVlbmJnIn0.8ulIwNVcCB6CqegGlDGEh3S-1dv0Lb-4Zkfeacgi1eE";
+  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Jvc3QzIiwidXNlcklEIjoiMTAzIiwiZXhwIjoxNjQ1NjY3NTExLCJpc3MiOiJzaWx2ZXJzY3JlZW5iZyIsImF1ZCI6InNpbHZlcnNjcmVlbmJnIn0.qzmI8IevXFJnkcf6bjuw-mX5Ac1uX6EENkFY4mNAtis";
 
   function GetNotifications(){
     const requestOptions = {
@@ -80,15 +80,16 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
         return (
           <>
             {notificationsData.map(data => (
-              <NotificationElement 
-                ID={data.id} 
-                Author={data.author} 
-                Type={data.type} 
-                Content={data.content} 
-                Active={data.active.toString()}
-
-                key={data.id}
-              />
+              <div key={data.id} id={`NotificationN${data.id}`}>
+                <NotificationElement 
+                  id={data.id} 
+                  movie={data.movie || null}
+                  author={data.author} 
+                  type={data.type} 
+                  content={data.content} 
+                  active={data.active.toString()}
+                />
+              </div>
             ))}
           </>
         )
@@ -113,7 +114,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
               </IconButton>
             </div>
           </div>
-          <div style={{maxHeight: "200px", overflowY: "scroll"}}>
+          <div style={{maxHeight: "200px", overflowY: "scroll", overflowX: "hidden"}}>
             {DisplayNotifications(infoLoaded)}    
           </div>
         </div>
