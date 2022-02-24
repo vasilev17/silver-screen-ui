@@ -53,9 +53,18 @@ const Register: FC<RegisterProps> = () => (
             variant="contained"
             size="large">
               
-              <span><h1>SIGN IN</h1></span>
+              <span><h1>SIGN UP</h1></span>
           </Button>
           </CardActions>
+
+          <div >
+          <div className={styles.createaccounttext}>
+          <span><h6>Already have an account?</h6></span>
+          </div>
+          <div className={styles.createaccount}>
+          <Button variant="outlined">Log in</Button>
+          </div>
+          </div>
 
   </div>
 );
