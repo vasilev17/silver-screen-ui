@@ -10,8 +10,28 @@ interface AdministrationPageProps { }
 const AdministrationPage: FC<AdministrationPageProps> = () => {
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(1);
+  var token: any = ""; //insert token here
+  //change when login is ready
   const handleClick = (e: React.ChangeEvent<any>) => {
-    alert(title + count);
+    function addMoviesToDB(){
+      const requestOptions = {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      };
+      fetch(`http://localhost:5000/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
+        .then(response => {
+          if(response.ok) {
+            console.log(response.json());
+          } else {
+            console.warn("Error while processing the request!");
+          }
+        });
+    }
+    addMoviesToDB();
 
   };
   const handleTitleChange  = (e: React.ChangeEvent<any>) =>{
