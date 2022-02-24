@@ -99,6 +99,9 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
 
   useEffect(() => {
     GetNotifications();
+    //gets rid of the navbar
+    var navbar = document.getElementById('mainNavbar');
+    navbar.remove();
   },[])
 
   return(
