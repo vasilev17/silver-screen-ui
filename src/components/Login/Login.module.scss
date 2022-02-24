@@ -1,1 +1,61 @@
-.Login {}
+@import "/src/App.scss";
+
+
+.sign_in {
+    @include flex(flex-start, flex-start);
+    max-width: 900px;
+    font-size: 25px;
+    top: 70px;
+    left: 42%;
+    position: absolute;
+    color: rgb(255, 255, 255);
+ 
+}
+.email {
+    @include flex(flex-start, flex-start);
+    max-width: 290px;
+    top: 200px;
+    left: 38%;
+    position: absolute;
+    color: black;
+    
+}
+.password {
+    
+    max-width: 290px;
+    top: 220px;
+    left: 38%;
+    position: absolute;
+    color: black;
+ 
+}
+
+.login {
+    
+    max-width: 290px;
+    height: 60px;
+    top: 250px;
+    font-size: 55px;
+    left: 38%;
+    position: absolute;
+    color: black;
+ 
+}
+.rememberme{
+    top: 450px;
+    font-size: 55px;
+    left: 38%;
+    position: absolute;
+}
+.createaccounttext{
+    top: 550px;
+    left: 42%;
+    position: absolute;
+}
+.createaccount{
+    top: 600px;
+    left: 41%;
+    position: absolute;
+}
+
+

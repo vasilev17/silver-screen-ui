@@ -1,5 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Switch} from "react-router-dom";
 import './App.scss';
+import Navbar from './components/Navbar/Navbar';
 import MainPage from './components/MainPage/MainPage';
 import MyList from './components/MyList/MyList';
 import Login from './components/Login/Login';
@@ -12,6 +14,8 @@ import AddFriend from './components/AddFriend/AddFriend';
 import AdministrationPage from './components/AdministrationPage/AdministrationPage';
 function App() {
   return (
+    <>
+    <Navbar />
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainPage />} />
@@ -27,6 +31,7 @@ function App() {
         <Route path="/administrationPage" element={<AdministrationPage />} />
       </Routes>
     </BrowserRouter>
+    </>
   );
 }
 
