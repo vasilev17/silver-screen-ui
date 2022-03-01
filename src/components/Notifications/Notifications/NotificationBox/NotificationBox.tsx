@@ -3,7 +3,6 @@ import styles from './NotificationBox.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import NotificationSkeleton from '../NotificationSkeleton/NotificationSkeleton';
-import { ReactJSXElement } from '@emotion/react/types/jsx-namespace';
 import NotificationElement from '../NotificationElement/NotificationElement';
 
 interface NotificationBoxProps {}
@@ -12,7 +11,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
   
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [notificationsData, setNotificationsData] = useState(null);
-  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Jvc3QzIiwidXNlcklEIjoiMTAzIiwiZXhwIjoxNjQ1NjY3NTExLCJpc3MiOiJzaWx2ZXJzY3JlZW5iZyIsImF1ZCI6InNpbHZlcnNjcmVlbmJnIn0.qzmI8IevXFJnkcf6bjuw-mX5Ac1uX6EENkFY4mNAtis";
+  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Jvc3QzIiwidXNlcklEIjoiOSIsImV4cCI6MTY0NTcyMTU0OCwiaXNzIjoic2lsdmVyc2NyZWVuYmciLCJhdWQiOiJzaWx2ZXJzY3JlZW5iZyJ9.NE6r-Sx3st99GS9bvq0crKkCASwiWRs-HA0DxHQGPu0";
 
   function GetNotifications(){
     const requestOptions = {
@@ -100,6 +99,9 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
 
   useEffect(() => {
     GetNotifications();
+    //gets rid of the navbar
+    var navbar = document.getElementById('mainNavbar');
+    navbar.remove();
   },[])
 
   return(

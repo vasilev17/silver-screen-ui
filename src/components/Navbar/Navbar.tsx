@@ -10,7 +10,7 @@ const Navbar = () => {
   const closeMenu = () => setClick(false)
 
   return (
-      <div className='header'>
+      <div id="mainNavbar" className='header'>
           <nav className='navbar'>
               <a href='/' className='logo'>
                   <img src="logo.png" alt='logo' />
