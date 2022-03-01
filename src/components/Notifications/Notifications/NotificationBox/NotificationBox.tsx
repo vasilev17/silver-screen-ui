@@ -11,7 +11,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
   
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [notificationsData, setNotificationsData] = useState(null);
-  var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJib2Jvc3QzIiwidXNlcklEIjoiOSIsImV4cCI6MTY0NTcyMTU0OCwiaXNzIjoic2lsdmVyc2NyZWVuYmciLCJhdWQiOiJzaWx2ZXJzY3JlZW5iZyJ9.NE6r-Sx3st99GS9bvq0crKkCASwiWRs-HA0DxHQGPu0";
+  var token = localStorage.getItem('token');
 
   function GetNotifications(){
     const requestOptions = {
@@ -32,7 +32,6 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
         }
       })
       .then(data => {
-        console.log(data);
         setNotificationsData(data);
         setInfoLoaded(true);
       })
@@ -42,7 +41,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
       });
   }
 
-  function DisplayNotifications(shouldDisplaySkeleton:boolean){
+  function DisplayNotifications(shouldDisplaySkeleton:boolean) {
     if(!shouldDisplaySkeleton){
       return(
         <>
@@ -87,6 +86,8 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
                   type={data.type} 
                   content={data.content} 
                   active={data.active.toString()}
+                  setNotificationsData={setNotificationsData}
+                  NotificationsData={notificationsData}
                 />
               </div>
             ))}
