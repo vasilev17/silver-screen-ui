@@ -10,8 +10,8 @@ interface AdministrationPageProps { }
 const AdministrationPage: FC<AdministrationPageProps> = () => {
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(1);
-  var token: any = ""; //insert token here
-  //change when login is ready
+  var token: string = localStorage.getItem("Token"); 
+  
   const handleClick = (e: React.ChangeEvent<any>) => {
     function addMoviesToDB(){
       const requestOptions = {
@@ -27,7 +27,7 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
           if(response.ok) {
             console.log(response.json());
           } else {
-            console.warn("Error while processing the request!");
+            alert("Error while processing the request!");
           }
         });
     }

@@ -1,5 +1,5 @@
 import { Button, styled, TextField } from '@mui/material';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styles from './NotificationAPITest.module.scss';
 
 interface NotificationAPITestProps {}
@@ -50,19 +50,24 @@ function getNotificationsRequest(){
     });
 }
 
-const NotificationAPITest: FC<NotificationAPITestProps> = () => (
-  <div className={styles.CenterComponent1}>
-    <div className={styles.CenterComponent2}>
-      <div className={styles.BoxComponent}>
-        <div className={styles.BoxComponent_title_box}>
-          <h2 className={styles.BoxComponent_title_text}>Get notifications</h2>
+const NotificationAPITest: FC<NotificationAPITestProps> = () => {
+  useEffect(() => {
+    var navbar = document.getElementById('mainNavbar');
+    navbar.remove();
+  },[])
+  return(
+    <div className={styles.CenterComponent1}>
+      <div className={styles.CenterComponent2}>
+        <div className={styles.BoxComponent}>
+          <div className={styles.BoxComponent_title_box}>
+            <h2 className={styles.BoxComponent_title_text}>Get notifications</h2>
+          </div>
+          <BlackTextField onChange={handleChange} fullWidth label="Authenication token" variant="outlined" style={{marginBottom: '4%', width: '80%'}} />
+          <br></br>
+          <Button variant="contained" onClick={getNotificationsRequest} style={{background: '#4e4e4e', color: 'white'}}>Get request for notifications</Button>
         </div>
-        <BlackTextField onChange={handleChange} fullWidth label="Authenication token" variant="outlined" style={{marginBottom: '4%', width: '80%'}} />
-        <br></br>
-        <Button variant="contained" onClick={getNotificationsRequest} style={{background: '#4e4e4e', color: 'white'}}>Get request for notifications</Button>
       </div>
     </div>
-  </div>
-);
-
+  );
+}
 export default NotificationAPITest;

@@ -1,12 +1,11 @@
 import { Skeleton } from '@mui/material';
 import React, { FC } from 'react';
-import styles from './NotificationSkeleton.module.scss';
 
 interface NotificationSkeletonProps {}
 
 const NotificationSkeleton: FC<NotificationSkeletonProps> = () => (
   <div>
-    <div style={{padding: '4%', display: 'flex'}}>
+    <div style={{padding: '4%', display: 'flex', backgroundColor: "#2c2c2c52"}}>
       <Skeleton variant="circular" animation="wave" width={40} height={40} style={{marginRight: '4%'}} />
       <Skeleton variant="text" animation="wave" width={210} height={15} />
       <Skeleton variant="text" animation="wave" width={244} height={15} style={{
