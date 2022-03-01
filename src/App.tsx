@@ -25,7 +25,6 @@ function App() {
         <Route path="/notifications" element={<NotificationBox />} />
         <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
         <Route path="/movie/:id" element={<MovieInfo />} />
-        <Route path="/movieInfo" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/administrationPage" element={<AdministrationPage />} />

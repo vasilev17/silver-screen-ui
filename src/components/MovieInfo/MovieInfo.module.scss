@@ -1,11 +1,19 @@
 @import "/src/App.scss";
 
+.content {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 2.8em;
+    margin: -25em 17em;
+}
+
 .banner {
     height: 50vh;
     position: relative;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    z-index: -1;
 
     &::before {
         content: "";
@@ -28,53 +36,47 @@
     }
 }
 
-.movieContent {
-    @include flex(flex-start, flex-start);
-    max-width: 1260px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: -400px;
-    position: relative;
-    padding: 0 2rem;
-
-    &__poster {
-        flex: 1;
-    }
-
-    &__image {
-        background-position: center;
-        background-size: cover;
-        background-repeat: no-repeat;
-        border-radius: 30px;
-        padding-top: 165%;
-        @include shadow();
-    }
-
-    &__info {
-        width: 70%;
-        padding-left: 2rem;
-        position: relative;
-    }
+.movieImage {
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 30px;
+    padding-top: 165%;
+    @include shadow();
+    grid-column: 1/3;
 }
 
-.title {
-    font-size: 4rem;
+.movieTitle {
+    font-size: 64px;
     line-height: 1;
+    font-weight: 600;
+    margin-bottom: 0;
+    margin-top: 0.25em;
 }
 
-.description {
+.subtitleInfo {
+    font-size: 25px;
+    color: #9e9e9e;
     font-weight: 400;
-    font-size: 17px;
-    margin-top: 2rem;
+    margin-top: 0.75rem;
+    margin-left: 0.5em;
+}
+
+.movieInfo {
+    grid-column: 3/-1;
+}
+
+.movieDescription {
+    font-weight: 400;
+    font-size: 19px;
+    margin-top: 1rem;
     line-height: 1.5;
 }
 
 .genres {
-    max-width: 1260px;
-    margin-left: 40%;
-    position: relative;
     padding: 0 2rem;
-    
+    grid-column: 4/6;
+    margin-left: -5.2em;
 
     &__item {
         padding: 0.5rem 1.5rem;
@@ -93,11 +95,9 @@
         left: 0.8em;
     }
 
-
     &__sectionSeparator {
         width: 20rem;
         margin-left: 0rem;
         margin-bottom: 2rem;
     }
-
 }

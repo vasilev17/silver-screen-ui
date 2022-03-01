@@ -12,7 +12,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const { id } = useParams();
 
-  const [movie, setMovie] = useState(null);
+  const [data, setData] = useState(null);
+
+  const [duration, setDuration] = useState(null);
+
 
   useEffect(() => {
     const getDetail = async () => {
@@ -23,7 +26,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           'Accept': 'application/json',
         },
       };
-      fetch(`http://localhost:5000/MovieInfo/MovieGetRequest?movieID=${id}`, requestOptions)
+      fetch(`http://localhost:5000/MovieInfo/MovieInfoGetRequest?movieID=${id}`, requestOptions)
         .then(response => {
           if (response.ok) {
             return response.json();
@@ -31,14 +34,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
             alert("Error while processing the request!");
           }
         })
-        .then(data => { 
-          setMovie(data);
-           data.releaseDate.includes('(') ? document.title = data.title +" "+data.releaseDate : document.title = data.title + " ("+data.releaseDate + ")";
-          });
+        .then(info => {
+          setData(info);
+          info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
+          setDuration(Math.floor(info.movie.duration/60) + 'h ' +info.movie.duration%60 + 'm')
+        });
 
       window.scrollTo(0, 0);
     }
-     getDetail();
+    getDetail();
   }, [id]);
 
 
@@ -46,34 +50,36 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   return (
     <>
       {
-        movie && (
+        data && (
           <>
-            <div className={styles.banner} style={{ backgroundImage: `url(${movie.thumbnail})` }}></div>
-            
+            <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
 
-            <div className={styles.movieContent}>
-              <div className={styles.movieContent__poster}>
-                <div className={`${styles.movieContent__poster} ${styles.movieContent__image}`} style={{ backgroundImage: `url(${movie.thumbnail})` }}></div>
+            <div className={styles.content}>
+
+              <div className={styles.movieImage} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
+
+              <div className={styles.movieInfo}>
+                <h1 className={styles.movieTitle}>{data.movie.title}</h1>
+                <h2 className={styles.subtitleInfo}>{data.movie.releaseDate + ' | '+ data.movie.maturityRating + ' | ' + duration}</h2>
+                <p className={styles.movieDescription}>{data.movie.description}</p>
               </div>
-              <div className={styles.movieContent__info}>
-                <h1 className={styles.title}>
-                {movie.title}
-                </h1>
-                <p className={styles.description}>{movie.description}</p>
+
+              <div className={styles.genres}>
+                <span className={styles.genres__sectionTitle}>Genres:</span>
+                <hr className={styles.genres__sectionSeparator} />
+                {
+                  data.genres.$values.map((genre, i) => (
+                    <span key={i} className={styles.genres__item}>{genre}</span>
+                  ))
+                }
               </div>
-            </div>
-            <div className={styles.genres}>
-              <span className={styles.genres__sectionTitle}>Genres:</span>
-              <hr className={styles.genres__sectionSeparator} />
-              <span className={styles.genres__item}>Action</span>
-              <span className={styles.genres__item}>Adventure</span>
-              <span className={styles.genres__item}>Drama</span>
+
             </div>
           </>
 
         )
       }
-      </>
+    </>
   );
 }
 
