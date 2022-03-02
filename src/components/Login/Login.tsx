@@ -15,12 +15,16 @@ const Login: FC<LoginProps> = () => {
 
   const [email, setEmail] = useState(' ');
   const [password, setPassword] = useState(' ');
+  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const [emailError, setEmailError] = useState(' ');
   const [passwordError, setPasswordError] = useState(' ');
   function SendToRegister() {
     navigate("/register");
   }
+  const handleCheckBoxChange = (event) => {
+    setRememberMe(event.target.checked)
+  };
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
     
@@ -29,7 +33,8 @@ const Login: FC<LoginProps> = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email,
-        password
+        password,
+        rememberMe
       })
     })
       .then(response => {
@@ -45,18 +50,16 @@ const Login: FC<LoginProps> = () => {
           localStorage.setItem("token", data.token);
           navigate("/");
         } else {
-          console.error(data.errorMessage);
-          if (data.errorMessage === "This Email doesn't exist") {
-            setEmailError(data.errorMessage);
-            setPasswordError(" ");
-          } else {
-            setPasswordError(data.errorMessage);
-            setEmailError(" ");
-          }
+          
+            setEmailError("email or password is wrong");
+            setPasswordError("email or password is wrong");
+         
 
 
         }
       });
+
+      
 
   }
   return (
@@ -103,7 +106,13 @@ const Login: FC<LoginProps> = () => {
         </CardActions>
 
         <FormGroup className={styles.rememberme}>
-          <FormControlLabel control={<Checkbox />} label="Remember me" />
+          
+          <FormControlLabel  
+          id ="rememberme" 
+          control={<Checkbox />} 
+          label="Remember me" 
+          onChange={handleCheckBoxChange}
+          />
         </FormGroup>
         <div >
           <div className={styles.createaccounttext}>
