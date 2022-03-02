@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 interface RegisterProps { }
 
 const Register: FC<RegisterProps> = () => {
-  const [email, setEmail] = useState(' ');
   const [username, setUsername] = useState(' ');
+  const [email, setEmail] = useState(' ');
   const [password, setPassword] = useState(' ');
   const [confirmpassword, setConfirmPassword] = useState(' ');
   const navigate = useNavigate();
-  const [emailError, setEmailError] = useState(' ');
   const [usernameError, setUsernameError] = useState(' ');
+  const [emailError, setEmailError] = useState(' ');
   const [passwordError, setPasswordError] = useState(' ');
   const [confirmpasswordError, setConfirmPasswordError] = useState(' ');
   const submit = async (e: SyntheticEvent) => {
@@ -43,14 +43,15 @@ const Register: FC<RegisterProps> = () => {
         } else {
           console.error(data.errorMessage);
 
-          if (data.errorMessage === "This email is already in use") {
+          if (data.errorMessage === "This username is already in use") {
+          setUsernameError(data.errorMessage);
+          setEmailError(" ");
+          setPasswordError(" ");
+          }else if (data.errorMessage === "This email is already in use") {
             setEmailError(data.errorMessage);
             setUsernameError(" ");
             setPasswordError(" ");
-          } else if (data.errorMessage === "This username is already in use") {
-            setUsernameError(data.errorMessage);
-            setEmailError(" ");
-            setPasswordError(" ");
+          
           }else if(data.errorMessage === "wrong password"){
             setPasswordError(data.errorMessage);
             setConfirmPasswordError(data.errorMessage);
@@ -77,30 +78,34 @@ const Register: FC<RegisterProps> = () => {
 
           <span className={styles.sign_in}><h1>Create an account</h1></span>
 
+          
+            
+        
           <TextField className={styles.email}
             fullWidth
-            label="Email"
+            label="Username"
             id="filled-size-normal"
             defaultValue=""
             variant="filled"
-            required onChange={e => setEmail(e.target.value)}
-            error={emailError != " "}
-            helperText={emailError}
+            required onChange={e => setUsername(e.target.value)}
+            error={usernameError != " "}
+            helperText={usernameError}
           />
           </div>
           <div >
-            <TextField className={styles.username}
+          <TextField className={styles.username}
               fullWidth
-              label="Username"
+              label="Email"
               id="filled-size-normal"
               defaultValue=""
               variant="filled"
-              required onChange={e => setUsername(e.target.value)}
-            error={usernameError != " "}
-            helperText={usernameError}
+              required onChange={e => setEmail(e.target.value)}
+            error={emailError != " "}
+            helperText={emailError} 
             />
           
         </div>
+          
         <div >
           <TextField className={styles.password}
             fullWidth
