@@ -5,43 +5,17 @@ import { IconButton } from '@mui/material';
 import NotificationSkeleton from '../NotificationSkeleton/NotificationSkeleton';
 import NotificationElement from '../NotificationElement/NotificationElement';
 
-interface NotificationBoxProps {}
+interface NotificationBoxProps {
+  notificationInfo,
+  setNotificationInfo,
+  infoLoaded: boolean,
+  setButtonState
+}
 
-const NotificationBox: FC<NotificationBoxProps> = () => {
-  
-  const [infoLoaded, setInfoLoaded] = useState(false);
-  const [notificationsData, setNotificationsData] = useState(null);
-  var token = localStorage.getItem('token');
-
-  function GetNotifications(){
-    const requestOptions = {
-      method: 'GET',
-      headers: { 
-        'Content-Type': 'application/json', 
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    };
-    fetch(`http://localhost:5000/NotificationManagement/GetNotifications`, requestOptions)
-      .then(response => {
-        if(response.ok) {
-          return response.json();
-        } else {
-          console.warn("Error while processing the request!");
-          setInfoLoaded(true);
-        }
-      })
-      .then(data => {
-        setNotificationsData(data);
-        setInfoLoaded(true);
-      })
-      .catch(error => {
-        console.warn("Error while processing the request!"); 
-        setInfoLoaded(true);
-      });
-  }
+const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
 
   function DisplayNotifications(shouldDisplaySkeleton:boolean) {
+    console.warn(shouldDisplaySkeleton);
     if(!shouldDisplaySkeleton){
       return(
         <>
@@ -55,7 +29,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
     }
     else
     {
-      if(notificationsData == null)
+      if(notifications.notificationInfo == null)
       {
         return (
           <>
@@ -65,7 +39,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
           </>
         )
       }
-      else if(notificationsData.length == 0){
+      else if(notifications.notificationInfo.length == 0){
         return (
           <>
             <div style={{padding: "5%"}}>
@@ -77,7 +51,7 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
       else {
         return (
           <>
-            {notificationsData.map(data => (
+            {notifications.notificationInfo.map(data => (
               <div key={data.id} id={`NotificationN${data.id}`}>
                 <NotificationElement 
                   id={data.id} 
@@ -86,8 +60,9 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
                   type={data.type} 
                   content={data.content} 
                   active={data.active.toString()}
-                  setNotificationsData={setNotificationsData}
-                  NotificationsData={notificationsData}
+                  setNotificationsData={notifications.setNotificationInfo}
+                  NotificationsData={notifications.notificationInfo}
+                  setButtonState={notifications.setButtonState}
                 />
               </div>
             ))}
@@ -98,12 +73,12 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
     }
   }
 
-  useEffect(() => {
-    GetNotifications();
-    //gets rid of the navbar
-    var navbar = document.getElementById('mainNavbar');
-    navbar.remove();
-  },[])
+  // useEffect(() => {
+  //   //GetNotifications();
+  //   //gets rid of the navbar
+  //   // var navbar = document.getElementById('mainNavbar');
+  //   // navbar.hidden = true;  
+  // },[])
 
   return(
     <div className={styles.CenterComponent1}>
@@ -112,13 +87,13 @@ const NotificationBox: FC<NotificationBoxProps> = () => {
           <div className={styles.BoxComponent_title_box}>
             <h3 className={styles.BoxComponent_title_text}>Notifications</h3>
             <div className={styles.BoxComponent_title_closeButton}>
-              <IconButton aria-label="close" size="small" sx={{color:"#c9c9c98c"}}>
+              <IconButton onClick={() => notifications.setButtonState((prev) => !prev)} aria-label="close" size="small" sx={{color:"#c9c9c98c"}}>
                 <CloseIcon />
               </IconButton>
             </div>
           </div>
           <div style={{maxHeight: "200px", overflowY: "scroll", overflowX: "hidden"}}>
-            {DisplayNotifications(infoLoaded)}    
+            {DisplayNotifications(notifications.infoLoaded)}    
           </div>
         </div>
       </div>
