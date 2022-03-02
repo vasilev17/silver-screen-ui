@@ -1,1 +1,29 @@
-.MovieRow {}
+//.row{
+//    margin-top: 7%;
+//}
+.title{
+    margin-left: 20px;
+}
+
+.rowThumbnails {
+    display: flex;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    padding: 20px;
+}
+
+.rowThumbnails::-webkit-scrollbar{
+    display: none;
+}
+
+.rowThumbnail {
+    object-fit: contain;
+    width: 100%;
+    max-height: 225px;
+    margin-right: 10px;
+    transition: transform 450ms;
+}
+
+.rowThumbnail:hover{
+    transform: scale(1.08);
+}

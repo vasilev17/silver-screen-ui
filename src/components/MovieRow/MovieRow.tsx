@@ -4,7 +4,7 @@ interface MovieRowProps{
   title:string,
 }
 const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => { 
-  const [movie, setMovie] = useState(null);
+  const [movies, setMovies] = useState(null);
 
   useEffect(() => {
     const getDetail = async () => {
@@ -23,7 +23,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             alert("Error while processing the request!");
           }
         })
-        .then(data => { setMovie(data); });
+        .then(data => { setMovies(data); });
 
       window.scrollTo(0, 0);
     }
@@ -31,9 +31,30 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   }, [MovieRowInfo.title]);
   return (
-<div>
-  <h2>{MovieRowInfo.title}</h2>
+    <>
+    {
+      movies && (
+        <>
+
+<div className={styles.row}>
+  <h2 className={styles.title}>{MovieRowInfo.title}</h2>
+
+  <div className={styles.rowThumbnails}>
+
+    {movies.$values.map((movie, i) => (
+        <img key={i}
+        className={styles.rowThumbnail}
+        src={movie.thumbnail}
+        alt={movie.title} 
+        />
+    ))}
+  </div>
 </div>
+</>
+
+)
+}
+</>
   );
 }
 export default MovieRow;
