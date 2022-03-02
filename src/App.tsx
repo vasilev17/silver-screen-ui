@@ -15,14 +15,13 @@ import AdministrationPage from './components/AdministrationPage/AdministrationPa
 function App() {
   return (
     <>
-    <Navbar />
     <BrowserRouter>
+    <Navbar />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/mylist" element={<MyList />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/notifications" element={<NotificationBox />} />
         <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
         <Route path="/movie/:id" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />

@@ -1,5 +1,5 @@
-import { logDOM } from '@testing-library/react';
 import React, {useState} from 'react';
+import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
 
 const Navbar = () => {
@@ -19,6 +19,9 @@ const Navbar = () => {
 
               </div>
               <ul className={click ? "nav-menu active" : "nav-menu"}>
+                  <div style={{marginTop: '7px'}}>
+                  <NotificationButton/>
+                  </div>
                   <li className='nav-item'>
                       <a href='/' onClick={closeMenu}>Home</a>
                   </li>

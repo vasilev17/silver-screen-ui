@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { padding, style } from '@mui/system';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useNavigate } from 'react-router';
 
 
 interface NotificationElementProps {
@@ -23,12 +24,15 @@ interface NotificationElementProps {
   setNotificationsData,
   NotificationsData,
   active:boolean,  
+  setButtonState
 }
 
 const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => {  
   const [openModal, setOpenModal] = React.useState(false);
+  const navigate = useNavigate();
   const handleModalOpen = () => setOpenModal(true);
   const handleModalClose = () => setOpenModal(false);
+  //const navigate = useNavigate();
   
   function DestroyNotificaton()  {
     var notfArr = notificationInfo.NotificationsData;
@@ -105,7 +109,9 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
   }
 
   function HandleModalMoviePage(){
-    console.error(`Going to movie with id[${notificationInfo.movie.id}] failed!\nThe method has not been implemented...`);
+    handleModalClose();
+    notificationInfo.setButtonState((prev) => !prev);
+    navigate(`/movie/${notificationInfo.movie.id}`);
   }
 
   function DisplayButtonsForModal(){
