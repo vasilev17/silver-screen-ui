@@ -4,10 +4,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
 import NotificationSkeleton from '../NotificationSkeleton/NotificationSkeleton';
 import NotificationElement from '../NotificationElement/NotificationElement';
+import NotificationMovieElement from '../NotificationMovieElement/NotificationMovieElement';
 
 interface NotificationBoxProps {
   notificationInfo,
   setNotificationInfo,
+  movieNotificationInfo,
+  setMovieNotificationInfo,
   infoLoaded: boolean,
   setButtonState
 }
@@ -15,7 +18,7 @@ interface NotificationBoxProps {
 const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
 
   function DisplayNotifications(shouldDisplaySkeleton:boolean) {
-    console.warn(shouldDisplaySkeleton);
+
     if(!shouldDisplaySkeleton){
       return(
         <>
@@ -39,7 +42,7 @@ const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
           </>
         )
       }
-      else if(notifications.notificationInfo.length == 0){
+      else if((notifications.notificationInfo.length + notifications.movieNotificationInfo.length) == 0){
         return (
           <>
             <div style={{padding: "5%"}}>
@@ -51,6 +54,18 @@ const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
       else {
         return (
           <>
+            {notifications.movieNotificationInfo.map(data => (
+              <div key={data.id} id={`NotificationM${data.id}`}>
+                <NotificationMovieElement
+                  id={data.id}
+                  movie={data.movie}
+                  date={data.date}
+                  notificationsData={notifications.movieNotificationInfo}
+                  setNotificationsData={notifications.setMovieNotificationInfo}
+                  setButtonState={notifications.setButtonState}
+                />
+              </div>
+            ))}
             {notifications.notificationInfo.map(data => (
               <div key={data.id} id={`NotificationN${data.id}`}>
                 <NotificationElement 
@@ -61,7 +76,7 @@ const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
                   content={data.content} 
                   active={data.active.toString()}
                   setNotificationsData={notifications.setNotificationInfo}
-                  NotificationsData={notifications.notificationInfo}
+                  notificationsData={notifications.notificationInfo}
                   setButtonState={notifications.setButtonState}
                 />
               </div>

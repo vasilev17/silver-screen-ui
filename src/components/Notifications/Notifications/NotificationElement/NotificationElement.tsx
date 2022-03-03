@@ -22,7 +22,7 @@ interface NotificationElementProps {
     title:string,
   },
   setNotificationsData,
-  NotificationsData,
+  notificationsData,
   active:boolean,  
   setButtonState
 }
@@ -35,7 +35,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
   //const navigate = useNavigate();
   
   function DestroyNotificaton()  {
-    var notfArr = notificationInfo.NotificationsData;
+    var notfArr = notificationInfo.notificationsData;
     notfArr = notfArr.filter(x => x.id != notificationInfo.id);
     notificationInfo.setNotificationsData(notfArr);
 
@@ -66,7 +66,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
   }
 
   function AcceptFriendRequest() {
-    var notfArr = notificationInfo.NotificationsData;
+    var notfArr = notificationInfo.notificationsData;
     notfArr = notfArr.filter(x => x.id != notificationInfo.id);
     notificationInfo.setNotificationsData(notfArr);
 
