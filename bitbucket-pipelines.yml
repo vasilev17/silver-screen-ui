@@ -27,4 +27,4 @@ pipelines:
             variables:
               SSH_USER: $SERVER_USERNAME
               SERVER: $SERVER_LOCATION
-              COMMAND: 'cd /home/silverscreen/silverscreen-ui && tar -xvzf package-latest.tar.gz'
+              COMMAND: 'cd /home/silverscreen/silverscreen-ui && mkdir test'
