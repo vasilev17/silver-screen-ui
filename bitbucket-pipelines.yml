@@ -10,6 +10,8 @@ pipelines:
           - CI=false npm run-script build
           - mkdir packaged
           - tar -czvf packaged/package-latest.tar.gz -C build .
+        caches:
+          - reactBuild
         artifacts:
           - packaged/**
     - step:
