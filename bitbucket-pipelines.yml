@@ -11,7 +11,7 @@ pipelines:
           - mkdir packaged
           - tar -czvf packaged/package-latest.tar.gz -C build .
         caches:
-          - reactBuild
+          - node
         artifacts:
           - packaged/**
     - step:
