@@ -7,10 +7,10 @@ import NotificationBox from '../NotificationBox/NotificationBox';
 interface NotificationButtonProps {}
 
 const NotificationButton: FC<NotificationButtonProps> = () => {
-  const [notificationsData, setNotificationsData] = useState(null);
+  const [notificationsData, setNotificationsData] = useState([]);
+  const [movieNotificationsData, setMovieNotificationsData] = useState([]);
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [buttonState, setButtonState] = useState(false);
-  const [notificationsDataLength, setNotificationsDataLength] = useState(0);
 
   var token = localStorage.getItem('token');
 
@@ -35,7 +35,34 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       .then(data => {
         setNotificationsData(data);
         setInfoLoaded(true);
-        setNotificationsDataLength(data.length);
+      })
+      .catch(error => {
+        console.warn("Error while processing the request!"); 
+        setInfoLoaded(true);
+      });
+  }
+
+  function GetMovieNotifications(){
+    const requestOptions = {
+      method: 'GET',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`http://localhost:5000/NotificationManagement/GetMovieNotifications`, requestOptions)
+      .then(response => {
+        if(response.ok) {
+          return response.json();
+        } else {
+          console.warn("Error while processing the request!");
+          setInfoLoaded(true);
+        }
+      })
+      .then(data => {
+        setMovieNotificationsData(data);
+        setInfoLoaded(true);
       })
       .catch(error => {
         console.warn("Error while processing the request!"); 
@@ -45,12 +72,13 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
 
   useEffect(() => {
     GetNotifications();
+    GetMovieNotifications();
   },[])
 
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           <Badge  badgeContent={notificationsDataLength} max={99} color="primary">
+           <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
              <NotificationsIcon />
            </Badge >
       </IconButton>
@@ -61,7 +89,14 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
           {...(buttonState ? { timeout: 500 } : {})}
         >
           <div>
-            <NotificationBox setButtonState={setButtonState} notificationInfo={notificationsData} setNotificationInfo={setNotificationsData} infoLoaded={infoLoaded}/>
+            <NotificationBox 
+              setButtonState={setButtonState} 
+              notificationInfo={notificationsData} 
+              movieNotificationInfo={movieNotificationsData}
+              setNotificationInfo={setNotificationsData}
+              setMovieNotificationInfo={setMovieNotificationsData}
+              infoLoaded={infoLoaded}
+            />
           </div>
         </Grow>
       </div>

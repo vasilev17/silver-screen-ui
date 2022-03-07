@@ -1,0 +1,32 @@
+image: node
+
+pipelines:
+  default:
+    - step:
+        name: Build React Project
+        runs-on: self.hosted
+        script:
+          - npm install
+          - CI=false npm run-script build
+          - mkdir packaged
+          - tar -czvf packaged/package-latest.tar.gz -C build .
+        caches:
+          - node
+        artifacts:
+          - packaged/**
+    - step:
+        name: Deploy on the web
+        runs-on: self.hosted
+        deployment: staging
+        script:
+          - pipe: atlassian/scp-deploy:1.2.1
+            variables:
+              USER: $SERVER_USERNAME
+              SERVER: $SERVER_LOCATION
+              REMOTE_PATH: '/home/silverscreen/silverscreen-ui'
+              LOCAL_PATH: 'packaged/*'
+          - pipe: atlassian/ssh-run:0.4.0
+            variables:
+              SSH_USER: $SERVER_USERNAME
+              SERVER: $SERVER_LOCATION
+              COMMAND: 'cd /home/silverscreen/silverscreen-ui && tar -xvzf package-latest.tar.gz'
