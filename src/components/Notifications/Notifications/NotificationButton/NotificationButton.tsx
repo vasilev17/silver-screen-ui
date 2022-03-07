@@ -23,7 +23,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
         'Authorization': `Bearer ${token}`,
       },
     };
-    fetch(`http://localhost:5000/NotificationManagement/GetNotifications`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/GetNotifications`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
