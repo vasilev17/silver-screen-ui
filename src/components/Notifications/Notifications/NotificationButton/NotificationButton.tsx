@@ -51,7 +51,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
         'Authorization': `Bearer ${token}`,
       },
     };
-    fetch(`http://localhost:5000/NotificationManagement/GetMovieNotifications`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/GetMovieNotifications`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
