@@ -23,7 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
-        <Route path="/movie/:id" element={<MovieInfo />} />
+        <Route path="/title/:id" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/administrationPage" element={<AdministrationPage />} />
