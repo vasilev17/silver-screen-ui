@@ -11,8 +11,6 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   const [movieNotificationsData, setMovieNotificationsData] = useState([]);
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [buttonState, setButtonState] = useState(false);
-  const [notificationsDataFailed, setNotificationsDataFailed] = useState(true)
-  const [movieNotificationsDataFailed, setMovieNotificationsDataFailed] = useState(true);;
 
   var token = localStorage.getItem('token');
 
@@ -28,18 +26,14 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
     fetch(`${process.env.REACT_APP_API}/NotificationManagement/GetNotifications`, requestOptions)
       .then(response => {
         if(response.ok) {
-          setNotificationsDataFailed(false);
           return response.json();
         } else {
           console.warn("Error while processing the request!");
-          setNotificationsDataFailed(true);
           setInfoLoaded(true);
         }
       })
       .then(data => {
-        if(!notificationsDataFailed){
-          setNotificationsData(data);
-        }
+        setNotificationsData(data);
         setInfoLoaded(true);
       })
       .catch(error => {
@@ -60,24 +54,75 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
     fetch(`${process.env.REACT_APP_API}/NotificationManagement/GetMovieNotifications`, requestOptions)
       .then(response => {
         if(response.ok) {
-          setMovieNotificationsDataFailed(false);
           return response.json();
         } else {
           console.warn("Error while processing the request!");
-          setMovieNotificationsDataFailed(true);
           setInfoLoaded(true);
         }
       })
       .then(data => {
-        if(!movieNotificationsDataFailed){
-          setMovieNotificationsData(data);
-        }
+        setMovieNotificationsData(data);
         setInfoLoaded(true);
       })
       .catch(error => {
         console.warn("Error while processing the request!"); 
         setInfoLoaded(true);
       });
+  }
+
+  function hasInfoLoaded(){
+    if(infoLoaded){
+      if(notificationsData === undefined && movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={0} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(notificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+    }
+    else
+    {
+      return(
+        <>
+          <Badge badgeContent={0} max={99} color="primary">
+             <NotificationsIcon />
+           </Badge >
+        </>
+      );
+    }
   }
 
   useEffect(() => {
@@ -88,9 +133,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
-             <NotificationsIcon />
-           </Badge >
+           {hasInfoLoaded()}
       </IconButton>
       <div style={{position: "fixed"}}>
         <Grow
