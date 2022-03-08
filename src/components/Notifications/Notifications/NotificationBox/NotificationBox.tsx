@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import styles from './NotificationBox.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
 import { IconButton } from '@mui/material';
@@ -42,7 +42,7 @@ const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
           </>
         )
       }
-      else if((notifications.notificationInfo.length + notifications.movieNotificationInfo.length) == 0){
+      else if((notifications.notificationInfo.length + notifications.movieNotificationInfo.length) === 0){
         return (
           <>
             <div style={{padding: "5%"}}>
