@@ -37,8 +37,8 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
         }
       })
       .then(data => {
-        if(notificationsDataFailed){
-          //setNotificationsData(data);
+        if(!notificationsDataFailed){
+          setNotificationsData(data);
         }
         setInfoLoaded(true);
       })
@@ -60,17 +60,17 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
     fetch(`${process.env.REACT_APP_API}/NotificationManagement/GetMovieNotifications`, requestOptions)
       .then(response => {
         if(response.ok) {
-          setNotificationsDataFailed(false);
+          setMovieNotificationsDataFailed(false);
           return response.json();
         } else {
           console.warn("Error while processing the request!");
-          setNotificationsDataFailed(true);
+          setMovieNotificationsDataFailed(true);
           setInfoLoaded(true);
         }
       })
       .then(data => {
-        if(notificationsDataFailed){
-          //setMovieNotificationsData(data);
+        if(!movieNotificationsDataFailed){
+          setMovieNotificationsData(data);
         }
         setInfoLoaded(true);
       })
