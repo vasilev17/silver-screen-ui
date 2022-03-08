@@ -70,7 +70,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       });
   }
 
-  function hasInfoLoaded(){
+  function LoadNotificationIcon(){
     if(infoLoaded){
       if(notificationsData === undefined && movieNotificationsData === undefined)
       {
@@ -133,7 +133,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           {hasInfoLoaded()}
+           {LoadNotificationIcon()}
       </IconButton>
       <div style={{position: "fixed"}}>
         <Grow
