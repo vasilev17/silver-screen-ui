@@ -25,7 +25,7 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      fetch(`http://localhost:5000/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
+      fetch(`http://localhost:5000/api/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
         .then(response => {
           if(response.ok) {
             setOpenAlert(true);
