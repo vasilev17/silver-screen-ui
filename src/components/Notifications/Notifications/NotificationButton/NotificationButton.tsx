@@ -11,6 +11,8 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   const [movieNotificationsData, setMovieNotificationsData] = useState([]);
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [buttonState, setButtonState] = useState(false);
+  const [notificationsLength, setNotificationsLength] = useState(0);
+  const [movieNotificationsLength, setMovieNotificationsLength] = useState(0);
 
   var token = localStorage.getItem('token');
 
@@ -35,6 +37,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       .then(data => {
         setNotificationsData(data);
         setInfoLoaded(true);
+        setNotificationsLength(data.length);
       })
       .catch(error => {
         console.warn("Error while processing the request!"); 
@@ -63,6 +66,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       .then(data => {
         setMovieNotificationsData(data);
         setInfoLoaded(true);
+        setMovieNotificationsLength(data.length);
       })
       .catch(error => {
         console.warn("Error while processing the request!"); 
@@ -78,7 +82,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
+           <Badge badgeContent={notificationsLength + movieNotificationsLength} max={99} color="primary">
              <NotificationsIcon />
            </Badge >
       </IconButton>
