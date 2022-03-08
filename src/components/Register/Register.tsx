@@ -18,7 +18,7 @@ const Register: FC<RegisterProps> = () => {
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
 
-    await fetch('http://localhost:5000/User/Register', {
+    await fetch(`${process.env.REACT_APP_API}/User/Register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

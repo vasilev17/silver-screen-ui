@@ -1,6 +1,4 @@
-//.row{
-//    margin-top: 7%;
-//}
+
 .title{
     margin-left: 20px;
 }
@@ -22,6 +20,8 @@
     max-height: 225px;
     margin-right: 10px;
     transition: transform 450ms;
+    cursor: pointer;
+    border-radius: 25px;
 }
 
 .rowThumbnail:hover{

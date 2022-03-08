@@ -26,10 +26,10 @@ const Navbar = () => {
                       <a href='/' onClick={closeMenu}>Home</a>
                   </li>
                   <li className='nav-item'>
-                      <a href='#series' onClick={closeMenu}>Series</a>
+                      <a href='/series' onClick={closeMenu}>Series</a>
                   </li>
                   <li className='nav-item'>
-                      <a href='#movies' onClick={closeMenu}>Movies</a>
+                      <a href='/movies' onClick={closeMenu}>Movies</a>
                   </li>
                   <li className='nav-item'>
                       <a href='/mylist' onClick={closeMenu}>My List</a>

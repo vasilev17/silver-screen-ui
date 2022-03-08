@@ -1,0 +1,61 @@
+.SideNavAdmin {
+    background-color: #1A1A1A;
+    width: 21rem;
+    height: 100%;
+    position: absolute;
+    left: 0%;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow-x: hidden;
+}
+
+.ButtonElement{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 0.5rem;
+
+    &_Text{
+        color: #808080;
+        font-size: 1.2rem;
+        align-self: center;
+        text-align: center;
+        justify-content: space-around !important;
+    }
+}
+
+.ButtonElement:hover{
+    background-color: #272727;
+    cursor: pointer;
+}
+
+.DownUI{
+    border-top: 1px solid black;
+    padding: 0.7rem;
+
+    &_LoggedInText{
+        color: #808080;
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-bottom: 0.7rem;
+    }
+
+    &_Username{
+        color: #808080;
+        margin-top: -0.1rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    &_AccountType{
+        color: #808080;
+    }
+
+    &_ButtonGroup{
+        margin-top: 1rem;
+        display: flex;    
+        justify-content: space-between;
+    }
+}

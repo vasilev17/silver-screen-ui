@@ -1,12 +1,10 @@
-import { Avatar, Backdrop, Button, Fade, IconButton, Modal, Tooltip, Typography } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import React, { FC } from 'react';
 import styles from '../NotificationElement/NotificationElement.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
-import { padding, style } from '@mui/system';
-import DoDisturbIcon from '@mui/icons-material/DoDisturb';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useNavigate } from 'react-router';
 
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface NotificationMovieElementProps {
   id:number,
@@ -26,7 +24,7 @@ const NotificationMovieElement: FC<NotificationMovieElementProps> = (notificatio
   function DestroyNotificaton()  {
 
     var notfArr = notificationInfo.notificationsData;
-    notfArr = notfArr.filter(x => x.id != notificationInfo.id);
+    notfArr = notfArr.filter(x => x.id !== notificationInfo.id);
     notificationInfo.setNotificationsData(notfArr);
 
     var token = localStorage.getItem('token');
@@ -43,7 +41,7 @@ const NotificationMovieElement: FC<NotificationMovieElementProps> = (notificatio
         status: true        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/SetFilmReleaseNotification`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/SetFilmReleaseNotification`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
@@ -72,7 +70,7 @@ const NotificationMovieElement: FC<NotificationMovieElementProps> = (notificatio
       <>
         <div className={styles.NotificationBox}>
           <Tooltip title="Go to movie page">
-            <a href="#" onClick={() => GoToMoviePage()}  className={styles.NotificationBox_textExpand}><i><b style={{color: "#ff9562"}}>{title}</b></i> just got released. Go watch it in the theaters!</a>
+            <a onClick={() => GoToMoviePage()}  className={styles.NotificationBox_textExpand}><i><b style={{color: "#ff9562"}}>{title}</b></i> just got released. Go watch it in the theaters!</a>
           </Tooltip>
           <Tooltip title="Delete notification">
             <IconButton onClick={() => DestroyNotificaton()} aria-label="close" size="small" sx={{color:"#c9c9c98c", marginTop: "2%"}} className={styles.NotificationBox_closeButton}>
