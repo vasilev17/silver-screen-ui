@@ -38,7 +38,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       })
       .then(data => {
         if(notificationsDataFailed){
-          setNotificationsData(data);
+          //setNotificationsData(data);
         }
         setInfoLoaded(true);
       })
@@ -70,7 +70,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       })
       .then(data => {
         if(notificationsDataFailed){
-          setMovieNotificationsData(data);
+          //setMovieNotificationsData(data);
         }
         setInfoLoaded(true);
       })
