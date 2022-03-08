@@ -31,7 +31,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           if (response.ok) {
             return response.json();
           } else {
-            alert("Error while processing the request!");
+            console.warn("Error while processing the request!");
           }
         })
         .then(info => {
