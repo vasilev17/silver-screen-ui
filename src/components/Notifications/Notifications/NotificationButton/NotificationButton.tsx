@@ -70,6 +70,61 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       });
   }
 
+  function LoadNotificationIcon(){
+    if(infoLoaded){
+      if(notificationsData === undefined && movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={0} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(notificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+    }
+    else
+    {
+      return(
+        <>
+          <Badge badgeContent={0} max={99} color="primary">
+             <NotificationsIcon />
+           </Badge >
+        </>
+      );
+    }
+  }
+
   useEffect(() => {
     GetNotifications();
     GetMovieNotifications();
@@ -78,9 +133,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
-             <NotificationsIcon />
-           </Badge >
+           {LoadNotificationIcon()}
       </IconButton>
       <div style={{position: "fixed"}}>
         <Grow

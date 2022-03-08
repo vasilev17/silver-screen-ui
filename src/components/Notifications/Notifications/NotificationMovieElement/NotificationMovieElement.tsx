@@ -43,7 +43,7 @@ const NotificationMovieElement: FC<NotificationMovieElementProps> = (notificatio
         status: true        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/SetFilmReleaseNotification`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/SetFilmReleaseNotification`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();

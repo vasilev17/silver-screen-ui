@@ -52,7 +52,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
         notificationId: notificationInfo.id        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/DeleteNotification`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/DeleteNotification`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
@@ -83,7 +83,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
         notificationId: notificationInfo.id        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/RespondToFriendRequest`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/RespondToFriendRequest`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
