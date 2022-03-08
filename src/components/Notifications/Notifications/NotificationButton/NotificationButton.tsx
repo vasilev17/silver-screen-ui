@@ -1,4 +1,4 @@
-import { Badge, Fade, Grow, IconButton } from '@mui/material';
+import { Badge, Grow, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './NotificationButton.module.scss';
@@ -128,6 +128,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   useEffect(() => {
     GetNotifications();
     GetMovieNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
