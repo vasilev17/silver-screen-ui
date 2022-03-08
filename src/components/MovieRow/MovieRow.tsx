@@ -15,7 +15,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
           'Accept': 'application/json',
         },
       };
-      fetch(`http://localhost:5000/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.title}`, requestOptions)
+      fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.title}`, requestOptions)
         .then(response => {
           if (response.ok) {
             return response.json();
