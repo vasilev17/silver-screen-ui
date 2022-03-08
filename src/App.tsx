@@ -12,6 +12,8 @@ import Register from './components/Register/Register';
 import FriendsList from './components/FriendsList/FriendsList';
 import AddFriend from './components/AddFriend/AddFriend';
 import AdministrationPage from './components/AdministrationPage/AdministrationPage';
+import Unauthorized from './components/Unauthorized/Unauthorized';
+import Administration from './components/Administration/Administration';
 function App() {
   return (
     <>
@@ -27,6 +29,8 @@ function App() {
         <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/administrationPage" element={<AdministrationPage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/administration" element={<Administration />} />
       </Routes>
     </BrowserRouter>
     </>
