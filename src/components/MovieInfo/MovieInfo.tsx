@@ -18,34 +18,99 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const [duration, setDuration] = useState(null);
 
+  const [friendRating, setFriendRating] = useState('?');
+
+
+  var token = localStorage.getItem('token');
+
+
+
+
+
+  const getMovieDetails = async () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/MovieInfoGetRequest?movieID=${id}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.warn("Error while processing the Movie Info request!");
+        }
+      })
+      .then(info => {
+        setData(info);
+        info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
+        info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm')
+
+        window.scrollTo(0, 0);
+
+
+      });
+  }
+
+
+
+
+
+  const getFriendRating = async () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/FriendRatingGetRequest?movieID=${id}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.warn("Error while processing the Friend Rating request!");
+        }
+      })
+      .then(info => {
+        info == 0 ? setFriendRating('?') : setFriendRating(info.toFixed(1));
+      });
+
+    window.scrollTo(0, 0);
+  }
+
+
+
+
+
+  function formatSubittleInfo() {
+
+    let subtitleString: string = "";
+
+    if (data.movie.releaseDate != null) subtitleString += data.movie.releaseDate;
+    if (data.movie.maturityRating != null) subtitleString += ' | ' + data.movie.maturityRating;
+    if (data.movie.duration != null) subtitleString += ' | ' + duration;
+
+    return subtitleString;
+
+  }
+
+
+
+
 
   useEffect(() => {
-    const getDetail = async () => {
-      const requestOptions = {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      };
-      fetch(`http://localhost:5000/api/MovieInfo/MovieInfoGetRequest?movieID=${id}`, requestOptions)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            console.warn("Error while processing the request!");
-          }
-        })
-        .then(info => {
-          setData(info);
-          info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
-          info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm')
-        });
 
-      window.scrollTo(0, 0);
-    }
-    getDetail();
+    getMovieDetails();
+    getFriendRating();
+
   }, [id]);
+
+
+
 
 
 
@@ -62,7 +127,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
               <div className={styles.movieInfo}>
                 <h1 className={styles.movieTitle}>{data.movie.title}</h1>
-                <h2 className={styles.subtitleInfo}>{data.movie.releaseDate + ' | ' + data.movie.maturityRating + ' | ' + duration}</h2>
+                <h2 className={styles.subtitleInfo}>{formatSubittleInfo()}</h2>
                 <p className={styles.movieDescription}>{data.movie.description}</p>
               </div>
 
@@ -81,7 +146,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   <div className={styles.ratings__ratingSource}>
                     <img src="/FriendRating_icon.svg" alt="Friend Rating:" />
                     <StarRoundedIcon className={styles.ratings__ratingStar} />
-                    <span className={styles.ratings__ratingNumber}>???</span>
+                    <span className={styles.ratings__ratingNumber}>{friendRating}</span>
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>
                 </div>
@@ -97,6 +162,44 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   ))
                 }
               </div>
+
+              <div className={styles.crew}>
+                <span className={styles.sectionTitle}>Crew:</span>
+                <hr className={styles.sectionSeparator} />
+                <div className={styles.crew__crewMembers}>
+                  {data.staff.$values.some(member => member.position === 'Director') &&
+                    <>
+                      <span className={styles.crew__crewPosition}>Director:</span>
+                      <span className={styles.crew__crewName}> {data.staff.$values.find(member => member.position === 'Director').name}</span>
+                    </>}
+
+                  {data.staff.$values.some(member => member.position === 'Writer') &&
+                    <>
+                      <br />
+                      <span className={styles.crew__crewPosition}>Writer:</span>
+                      <span className={styles.crew__crewName}> {data.staff.$values.find(member => member.position === 'Writer').name}</span>
+                    </>}
+
+
+                  {data.staff.$values.some(member => member.position === 'Actor') &&
+                    <>
+                      <br />
+                      <span className={styles.crew__crewPosition}>Actors:</span>
+                    </>}
+                  <div className={styles.crew__actorNames}>
+                    {data.staff.$values.some(member => member.position === 'Actor') && data.staff.$values.filter(member => member.position === 'Actor').map((member, i) => (
+                      <>
+
+                        <span className={styles.crew__crewName} key={i}> {member.name}</span>
+                        <br />
+
+                      </>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
             </div>
           </>
 
