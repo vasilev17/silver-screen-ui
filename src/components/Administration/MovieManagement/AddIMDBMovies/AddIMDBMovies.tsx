@@ -9,6 +9,8 @@ interface AddIMDBMovies { }
 
 const AddIMDBMovies: FC<AddIMDBMovies> = () => {
   const [title, setTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("You successfully added movie/s!");
+  const [alertStatus, setAlertStatus] = useState(false);
   const [count, setCount] = useState(1);
   const [titleError, setTitleError] = useState(' ');
   const [countError, setCountError] = useState(' ');
@@ -28,14 +30,27 @@ const AddIMDBMovies: FC<AddIMDBMovies> = () => {
       fetch(`http://localhost:5000/api/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
         .then(response => {
           if(response.ok) {
+            setAlertStatus(true);
+            setAlertMessage("You successfully added movie/s!");
             setOpenAlert(true);
             setTimeout(() => {
               setOpenAlert(false);
             }, 2000)
           } else {
-            alert("Error while processing the request!");
-
+            setAlertStatus(false);
+            return response.json();
           }
+          
+        })
+        .then(data => {
+          if(!alertStatus){
+            setAlertMessage(data.errorMessage)          
+            setOpenAlert(true);
+            setTimeout(() => {
+              setOpenAlert(false);
+            }, 2000)
+          }
+            
         });
     }
     addMoviesToDB();
@@ -73,8 +88,8 @@ const AddIMDBMovies: FC<AddIMDBMovies> = () => {
       </div>
       <div>
         <Collapse sx={{ top:"200px" , left:"20px"}} in={openAlert}>
-        <Alert sx={{ width: "250px"}} severity="success">You successfully added movie/s!</Alert>
-      </Collapse>
+        <Alert sx={{ width: "250px"}} severity={alertStatus?"success":"error"}>{alertMessage}</Alert>
+        </Collapse>
       </div>
       
     
