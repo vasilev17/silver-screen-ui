@@ -49,6 +49,7 @@ const Login: FC<LoginProps> = () => {
           console.log(data.token);
           localStorage.setItem("token", data.token);
           navigate("/");
+          window.location.reload();
         } else {
           
             setEmailError("email or password is wrong");
