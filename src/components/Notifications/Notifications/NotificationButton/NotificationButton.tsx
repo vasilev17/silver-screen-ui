@@ -1,4 +1,4 @@
-import { Badge, Fade, Grow, IconButton } from '@mui/material';
+import { Badge, Grow, IconButton } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './NotificationButton.module.scss';
@@ -70,17 +70,71 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
       });
   }
 
+  function LoadNotificationIcon(){
+    if(infoLoaded){
+      if(notificationsData === undefined && movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={0} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(movieNotificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else if(notificationsData === undefined)
+      {
+        return(
+          <>
+            <Badge badgeContent={movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+      else
+      {
+        return(
+          <>
+            <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
+               <NotificationsIcon />
+             </Badge >
+          </>
+        );
+      }
+    }
+    else
+    {
+      return(
+        <>
+          <Badge badgeContent={0} max={99} color="primary">
+             <NotificationsIcon />
+           </Badge >
+        </>
+      );
+    }
+  }
+
   useEffect(() => {
     GetNotifications();
     GetMovieNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[])
 
   return (
     <div className={styles.NotificationButton}>
       <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
-           <Badge badgeContent={notificationsData.length + movieNotificationsData.length} max={99} color="primary">
-             <NotificationsIcon />
-           </Badge >
+           {LoadNotificationIcon()}
       </IconButton>
       <div style={{position: "fixed"}}>
         <Grow

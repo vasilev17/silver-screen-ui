@@ -2,11 +2,11 @@ import { Avatar, Backdrop, Button, Fade, IconButton, Modal, Tooltip, Typography 
 import React, { FC } from 'react';
 import styles from './NotificationElement.module.scss';
 import CloseIcon from '@mui/icons-material/Close';
-import { padding, style } from '@mui/system';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { useNavigate } from 'react-router';
 
+/* eslint-disable jsx-a11y/anchor-is-valid */
 
 interface NotificationElementProps {
   id:number,
@@ -36,7 +36,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
   
   function DestroyNotificaton()  {
     var notfArr = notificationInfo.notificationsData;
-    notfArr = notfArr.filter(x => x.id != notificationInfo.id);
+    notfArr = notfArr.filter(x => x.id !== notificationInfo.id);
     notificationInfo.setNotificationsData(notfArr);
 
     var token = localStorage.getItem('token');
@@ -52,7 +52,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
         notificationId: notificationInfo.id        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/DeleteNotification`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/DeleteNotification`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
@@ -67,7 +67,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
 
   function AcceptFriendRequest() {
     var notfArr = notificationInfo.notificationsData;
-    notfArr = notfArr.filter(x => x.id != notificationInfo.id);
+    notfArr = notfArr.filter(x => x.id !== notificationInfo.id);
     notificationInfo.setNotificationsData(notfArr);
 
     var token = localStorage.getItem('token');
@@ -83,7 +83,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
         notificationId: notificationInfo.id        
       })
     };
-    fetch(`http://localhost:5000/NotificationManagement/RespondToFriendRequest`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/RespondToFriendRequest`, requestOptions)
       .then(response => {
         if(response.ok) {
           return response.json();
@@ -168,7 +168,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
           <div className={styles.NotificationBox}>
             <Avatar alt={notificationInfo.author.username} src={notificationInfo.author.avatar}/>
             <Tooltip title="Expand notification">
-              <a href="#" onClick={() => handleModalOpen()} className={styles.NotificationBox_textExpand}>{notificationInfo.content}</a>
+              <a onClick={() => handleModalOpen()} className={styles.NotificationBox_textExpand}>{notificationInfo.content}</a>
             </Tooltip>
             <Tooltip title="Delete notification">
               <IconButton onClick={() => DestroyNotificaton()} aria-label="close" size="small" sx={{color:"#c9c9c98c", marginTop: "2%"}} className={styles.NotificationBox_closeButton}>
@@ -196,7 +196,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
           <div className={styles.NotificationBox}>
             <Avatar alt={notificationInfo.author.username} src={notificationInfo.author.avatar}/>
             <Tooltip title="Expand notification">
-              <a href="#" onClick={() => handleModalOpen()}  className={styles.NotificationBox_textExpand}><b style={{color: "#d37dff"}}>{username1}</b> recommended you <i><b style={{color: "#ff9562"}}>{title}</b></i>.</a>
+              <a onClick={() => handleModalOpen()}  className={styles.NotificationBox_textExpand}><b style={{color: "#d37dff"}}>{username1}</b> recommended you <i><b style={{color: "#ff9562"}}>{title}</b></i>.</a>
             </Tooltip>
             <Tooltip title="Delete notification">
               <IconButton onClick={() => DestroyNotificaton()} aria-label="close" size="small" sx={{color:"#c9c9c98c", marginTop: "2%"}} className={styles.NotificationBox_closeButton}>
@@ -218,7 +218,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
           <div className={styles.NotificationBox}>
             <Avatar alt={notificationInfo.author.username} src={notificationInfo.author.avatar}/>
             <Tooltip title="Expand notification">
-              <a href="#" onClick={() => handleModalOpen()} className={styles.NotificationBox_textExpand}><b style={{color: "#d37dff"}}>{username2}</b> wants to become your friend!</a>
+              <a onClick={() => handleModalOpen()} className={styles.NotificationBox_textExpand}><b style={{color: "#d37dff"}}>{username2}</b> wants to become your friend!</a>
             </Tooltip>
             <Tooltip title="Accept">
               <IconButton onClick={() => AcceptFriendRequest()} aria-label="close" size="small" color="success" sx={{ marginTop: "2%"}} className={styles.NotificationBox_closeButton}>
@@ -281,5 +281,4 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
     </div>
   );
 };
-
 export default NotificationElement;

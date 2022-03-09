@@ -1,13 +1,13 @@
 import { Alert, Collapse, IconButton, TextField, Tooltip } from '@mui/material';
 import React, { FC, useState } from 'react';
-import styles from './AdministrationPage.module.scss';
+import styles from './AddIMDBMovies.module.scss';
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
-interface AdministrationPageProps { }
+interface AddIMDBMovies { }
 
-const AdministrationPage: FC<AdministrationPageProps> = () => {
+const AddIMDBMovies: FC<AddIMDBMovies> = () => {
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(1);
   const [titleError, setTitleError] = useState(' ');
@@ -25,7 +25,7 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      fetch(`http://localhost:5000/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
+      fetch(`http://localhost:5000/api/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
         .then(response => {
           if(response.ok) {
             setOpenAlert(true);
@@ -61,7 +61,7 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
     setCount(e.target.value);
   }
   return(
-  <div className={styles.AdministrationPage}>
+  <div className={styles.AddIMDBMovies}>
       <div>
       <TextField id="standard-basic" label="Add movie/s by title" error = {titleError != " "} helperText={titleError} required variant="standard" onChange={handleTitleChange}/>
       <Tooltip title="How much movies do you want to add?">
@@ -82,4 +82,4 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
   );
 }
 
-export default AdministrationPage;
+export default AddIMDBMovies;

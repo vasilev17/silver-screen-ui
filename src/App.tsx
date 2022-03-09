@@ -11,7 +11,10 @@ import MovieInfo from './components/MovieInfo/MovieInfo';
 import Register from './components/Register/Register';
 import FriendsList from './components/FriendsList/FriendsList';
 import AddFriend from './components/AddFriend/AddFriend';
-import AdministrationPage from './components/AdministrationPage/AdministrationPage';
+import Unauthorized from './components/Unauthorized/Unauthorized';
+import Administration from './components/Administration/Administration';
+import Series from './components/Series/Series';
+import Movies from './components/Movies/Movies';
 function App() {
   return (
     <>
@@ -20,13 +23,16 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/mylist" element={<MyList />} />
+        <Route path="/series" element={<Series />} />
+        <Route path="/movies" element={<Movies />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
-        <Route path="/movie/:id" element={<MovieInfo />} />
+        <Route path="/title/:id" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendsList />} />
         <Route path="/addfriend" element={<AddFriend />} />
-        <Route path="/administrationPage" element={<AdministrationPage />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/administration" element={<Administration />} />
       </Routes>
     </BrowserRouter>
     </>

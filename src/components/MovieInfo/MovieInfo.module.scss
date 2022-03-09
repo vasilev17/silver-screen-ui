@@ -4,7 +4,7 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     grid-gap: 2.8em;
-    margin: -25em 17em;
+    margin: -41vh 17vw;
 }
 
 .banner {
@@ -44,6 +44,7 @@
     padding-top: 165%;
     @include shadow();
     grid-column: 1/3;
+    min-width: 200px;
 }
 
 .movieTitle {
@@ -64,6 +65,7 @@
 
 .movieInfo {
     grid-column: 3/-1;
+    min-width: 630px;
 }
 
 .movieDescription {
@@ -83,21 +85,82 @@
         border: 2px solid white;
         border-radius: 30px;
         font-size: 0.8rem;
-        margin-left: 0.4rem;
+        margin-left: 0.7rem;
         font-weight: 600;
         background-color: $main-bg;
+        white-space: nowrap;
+        color: white;
+        text-decoration: none;
+        transition: background 250ms;
+    }
+    &__item:hover {
+        background-color: gray;
+    }
+}
+
+.sectionTitle {
+    position: relative;
+    font-weight: 600;
+    font-size: 19px;
+    left: 0.8em;
+}
+
+.sectionSeparator {
+    margin-left: 0rem;
+    margin-bottom: 2em;
+}
+
+.ratings {
+    grid-column: 1/3;
+    padding: 0 2rem;
+
+    &__ratingStar {
+        color: #f6c601;
+        font-size: 40px !important;
+        margin-left: 0.4em;
     }
 
-    &__sectionTitle {
-        position: relative;
-        font-weight: 600;
-        font-size: 19px;
-        left: 0.8em;
+    &__ratingSection {
+        margin-left: 0.7rem;
     }
 
-    &__sectionSeparator {
-        width: 20rem;
-        margin-left: 0rem;
-        margin-bottom: 2rem;
+    &__ratingNumber {
+        font-weight: bold;
+        font-size: 22px;
+        margin-left: 0.2em;
+    }
+
+    &__ratingOutOf {
+        color: #6d6a6a;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    &__ratingSource {
+        margin-top: 1.5em;
+        align-items: center;
+        display: flex;
+    }
+    
+}
+
+
+
+@media only screen and (max-width: 1055px) {
+    .movieImage {
+        display: none;
+    }
+
+    .movieInfo {
+        grid-column: 1/-1;
+        min-width: auto;
+    }
+
+    .genres {
+        grid-column: 2/-1;
+    }
+
+    .ratings {
+        grid-column: 1/-1;
     }
 }
