@@ -2,7 +2,7 @@
     background-color: #1A1A1A;
     width: 21rem;
     height: 100%;
-    position: absolute;
+    position: fixed;
     left: 0%;
     border-right: 1px solid black;
     display: flex;
@@ -26,7 +26,28 @@
     }
 }
 
+.ButtonElementSelected{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid black;
+    padding: 0.5rem;
+    background-color: #232323;
+
+    &_Text{
+        color: #808080;
+        font-size: 1.2rem;
+        align-self: center;
+        text-align: center;
+        justify-content: space-around !important;
+    }
+}
+
 .ButtonElement:hover{
+    background-color: #272727;
+    cursor: pointer;
+}
+
+.ButtonElementSelected:hover{
     background-color: #272727;
     cursor: pointer;
 }

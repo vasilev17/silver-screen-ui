@@ -95,12 +95,11 @@ const Login: FC<LoginProps> = () => {
           />
         </div>
         <CardActions>
-          <Button className={styles.login}
+          <Button className={styles.login} 
             fullWidth
             variant="contained"
             size="large"
             type="submit">
-
             <span><h1>SIGN IN</h1></span>
           </Button>
         </CardActions>
