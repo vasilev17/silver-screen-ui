@@ -43,6 +43,9 @@ const Register: FC<RegisterProps> = () => {
         } else {
           console.error(data.errorMessage);
 
+          let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+          
           if (data.errorMessage === "This username is already in use") {
           setUsernameError(data.errorMessage);
           setEmailError(" ");
@@ -51,7 +54,11 @@ const Register: FC<RegisterProps> = () => {
             setEmailError(data.errorMessage);
             setUsernameError(" ");
             setPasswordError(" ");
-          
+            if ( re.test(email) ) {
+              
+          }else{
+            setEmailError("invalid email");
+          }
           }else if(data.errorMessage === "wrong password"){
             setPasswordError(data.errorMessage);
             setConfirmPasswordError(data.errorMessage);
@@ -86,7 +93,7 @@ const Register: FC<RegisterProps> = () => {
             label="Username"
             id="filled-size-normal"
             defaultValue=""
-            variant="filled"
+            variant="standard"
             required onChange={e => setUsername(e.target.value)}
             error={usernameError != " "}
             helperText={usernameError}
@@ -98,7 +105,7 @@ const Register: FC<RegisterProps> = () => {
               label="Email"
               id="filled-size-normal"
               defaultValue=""
-              variant="filled"
+              variant="standard"
               required onChange={e => setEmail(e.target.value)}
             error={emailError != " "}
             helperText={emailError} 
@@ -112,7 +119,7 @@ const Register: FC<RegisterProps> = () => {
             label="Password"
             id="filled-size-normal"
             defaultValue=""
-            variant="filled"
+            variant="standard"
             type="password"
             required onChange={e => setPassword(e.target.value)}
             error={passwordError != " "}
@@ -126,7 +133,7 @@ const Register: FC<RegisterProps> = () => {
             id="filled-size-normal"
             defaultValue=""
             required onChange={e => setConfirmPassword(e.target.value)}
-            variant="filled"
+            variant="standard"
             type="password"
             error={confirmpasswordError != " "}
             helperText={confirmpasswordError}

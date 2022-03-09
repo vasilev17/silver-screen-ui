@@ -2,13 +2,17 @@ import { CircularProgress } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import styles from './Administration.module.scss';
+import CommentManagement from './CommentManagement/CommentManagement';
+import MovieManagement from './MovieManagement/MovieManagement';
 import SideNavAdmin from './SideNavAdmin/SideNavAdmin';
+import UserManagement from './UserManagement/UserManagement';
 
 interface AdministrationProps {}
 
 const Administration: FC<AdministrationProps> = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [returnData, setReturnData] = useState([]);
+  const [currentNav, setCurrentNav] = React.useState(1);
   const navigate = useNavigate();
   var token = localStorage.getItem('token');
 
@@ -44,14 +48,38 @@ const Administration: FC<AdministrationProps> = () => {
       });
   }
 
+  function DisplaySettings(){
+    switch(currentNav){
+      case 1:
+        return(
+          <>
+            <MovieManagement />
+          </>
+        ); 
+      case 2:
+        return(
+          <>
+            <CommentManagement />
+          </>
+        ); 
+      case 3:
+        return(
+          <>
+            <UserManagement />
+          </>
+        );
+    }
+  }
+
   function ReturnPage(){
     if(isAdmin)
     {
       document.body.style.backgroundColor = "#303030";
       return(
         <>
-          <div>
-            <SideNavAdmin userAccount={returnData} />
+          <div style={{display: "table", width: "100%"}}>
+            <SideNavAdmin userAccount={returnData} currentNav={currentNav} setCurrentNav={setCurrentNav} />
+            <div style={{marginLeft: "23em", marginTop: "1rem", marginRight: "2rem"}}>{DisplaySettings()}</div>
           </div>
         </>
       );

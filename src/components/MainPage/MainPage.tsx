@@ -4,7 +4,7 @@ import styles from './MainPage.module.scss';
 
 function MainPage() {
   return (
-  <div style = {{marginTop:"100px"}}className="MovieRow">
+  <div className={styles.MovieRow}>
     <MovieRow genre="Action"/>
     <MovieRow genre="Drama"/>
     <MovieRow genre="Comedy"/>
@@ -12,7 +12,7 @@ function MainPage() {
     <MovieRow genre="Adventure"/>
 
 
-
+ 
 
     </div>
 

@@ -1,1 +1,33 @@
-.FriendsList {}
+.login {
+    max-width: 900px;
+    font-size: 25px;
+    top: 50px;
+    left: 25%;
+    position: absolute;
+    color: rgb(255, 255, 255);
+ 
+}
+.register {
+    max-width: 900px;
+    top: 150px;
+    left: 25%;
+    position: absolute;
+    color: black;
+    
+}
+.logout {
+    max-width: 900px;
+    left: 25%;
+    position: absolute;
+    color: black;
+    
+}
+.frame {
+    width: 150px;
+    height: 200px;
+    border: 1px solid #ccc;
+    background-color: black;
+    margin: auto;
+    padding: 30px 10px;
+
+  }

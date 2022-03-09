@@ -1,14 +1,16 @@
 import { Alert, Collapse, IconButton, TextField, Tooltip } from '@mui/material';
 import React, { FC, useState } from 'react';
-import styles from './AdministrationPage.module.scss';
+import styles from './AddIMDBMovies.module.scss';
 import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
-interface AdministrationPageProps { }
+interface AddIMDBMovies { }
 
-const AdministrationPage: FC<AdministrationPageProps> = () => {
+const AddIMDBMovies: FC<AddIMDBMovies> = () => {
   const [title, setTitle] = useState("");
+  const [alertMessage, setAlertMessage] = useState("You successfully added movie/s!");
+  const [alertStatus, setAlertStatus] = useState(false);
   const [count, setCount] = useState(1);
   const [titleError, setTitleError] = useState(' ');
   const [countError, setCountError] = useState(' ');
@@ -28,14 +30,27 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
       fetch(`http://localhost:5000/api/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
         .then(response => {
           if(response.ok) {
+            setAlertStatus(true);
+            setAlertMessage("You successfully added movie/s!");
             setOpenAlert(true);
             setTimeout(() => {
               setOpenAlert(false);
             }, 2000)
           } else {
-            alert("Error while processing the request!");
-
+            setAlertStatus(false);
+            return response.json();
           }
+          
+        })
+        .then(data => {
+          if(!alertStatus){
+            setAlertMessage(data.errorMessage)          
+            setOpenAlert(true);
+            setTimeout(() => {
+              setOpenAlert(false);
+            }, 2000)
+          }
+            
         });
     }
     addMoviesToDB();
@@ -61,7 +76,7 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
     setCount(e.target.value);
   }
   return(
-  <div className={styles.AdministrationPage}>
+  <div className={styles.AddIMDBMovies}>
       <div>
       <TextField id="standard-basic" label="Add movie/s by title" error = {titleError != " "} helperText={titleError} required variant="standard" onChange={handleTitleChange}/>
       <Tooltip title="How much movies do you want to add?">
@@ -73,8 +88,8 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
       </div>
       <div>
         <Collapse sx={{ top:"200px" , left:"20px"}} in={openAlert}>
-        <Alert sx={{ width: "250px"}} severity="success">You successfully added movie/s!</Alert>
-      </Collapse>
+        <Alert sx={{ width: "250px"}} severity={alertStatus?"success":"error"}>{alertMessage}</Alert>
+        </Collapse>
       </div>
       
     
@@ -82,4 +97,4 @@ const AdministrationPage: FC<AdministrationPageProps> = () => {
   );
 }
 
-export default AdministrationPage;
+export default AddIMDBMovies;
