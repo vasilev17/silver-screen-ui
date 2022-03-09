@@ -76,9 +76,8 @@
 }
 
 .genres {
-    padding: 0 2rem;
-    grid-column: 4/6;
-    margin-left: -5.2em;
+    padding: 0 5.5rem;
+    grid-column: 3/6;
 
     &__item {
         padding: 0.5rem 1.5rem;
@@ -91,8 +90,9 @@
         white-space: nowrap;
         color: white;
         text-decoration: none;
-        transition: background 250ms;
+        transition: 250ms;
     }
+
     &__item:hover {
         background-color: gray;
     }
@@ -106,7 +106,6 @@
 }
 
 .sectionSeparator {
-    margin-left: 0rem;
     margin-bottom: 2em;
 }
 
@@ -141,12 +140,36 @@
         align-items: center;
         display: flex;
     }
-    
 }
 
+.crew {
+    grid-column: 6/8;
+    padding: 0 2rem;
 
+    &__crewMembers {
+        margin-top: -1em;
+        margin-left: 1.5em;
+        line-height: 1.5;
+        min-width: max-content;
+    }
 
-@media only screen and (max-width: 1055px) {
+    &__crewPosition {
+        color: #b7b7b7;
+        font-weight: 600;
+    }
+
+    &__crewName {
+        color: #959595;
+    }
+
+    &__actorNames {
+        margin: -1.3em 3.5em;
+        position: absolute;
+        min-width: max-content;
+    }
+}
+
+@media only screen and (max-width: 1120px) {
     .movieImage {
         display: none;
     }
@@ -157,10 +180,16 @@
     }
 
     .genres {
-        grid-column: 2/-1;
+        grid-column: 1/-1;
+        padding: 0 2rem;
+        
     }
 
     .ratings {
+        grid-column: 1/-1;
+    }
+
+    .crew {
         grid-column: 1/-1;
     }
 }
