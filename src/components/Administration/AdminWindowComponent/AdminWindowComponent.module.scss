@@ -1,0 +1,26 @@
+.AdminWindowComponent {
+    background-color: #1A1A1A;
+    width: 100%;
+    border: 1px solid black;
+
+    &_banner{
+        background-color: #262626;
+        padding: 0.5rem;
+        border-bottom: 1px solid black;
+        display: flex;
+        justify-content: space-between;
+
+        &_title{
+            color: #999999;
+            font-weight: 500;
+            font-size: 1.3rem;
+            margin-left: 0.5rem;
+        }
+
+        &_icon{
+            color: #666666;
+            margin-top: -0.2rem;
+            margin-bottom: -0.5rem;
+        }
+    }
+}
