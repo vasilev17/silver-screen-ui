@@ -11,8 +11,22 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
   const [movieNotificationsData, setMovieNotificationsData] = useState([]);
   const [infoLoaded, setInfoLoaded] = useState(false);
   const [buttonState, setButtonState] = useState(false);
+  const [buttonState1, setButtonState1] = useState(false);
 
   var token = localStorage.getItem('token');
+
+  function ToggleButton(){
+    setButtonState((prev) => !prev);
+    if(!buttonState){
+      setButtonState1(true);
+    }
+    else
+    {
+      setTimeout(() => {
+        setButtonState1(false);
+      }, 500);
+    }
+  }
 
   function GetNotifications(){
     const requestOptions = {
@@ -133,10 +147,10 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
 
   return (
     <div className={styles.NotificationButton}>
-      <IconButton onClick={() => setButtonState((prev) => !prev)} aria-label="notifications">
+      <IconButton onClick={() => ToggleButton()} aria-label="notifications">
            {LoadNotificationIcon()}
       </IconButton>
-      <div style={{position: "fixed"}}>
+      {buttonState1?<div style={{position: "fixed"}}>
         <Grow
           in={buttonState}
           style={{ transformOrigin: '0 0 0' }}
@@ -153,7 +167,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
             />
           </div>
         </Grow>
-      </div>
+      </div>:null}
     </div>
   );
 }

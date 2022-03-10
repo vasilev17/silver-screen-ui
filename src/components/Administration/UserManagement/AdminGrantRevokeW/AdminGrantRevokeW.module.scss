@@ -1,0 +1,43 @@
+.AdminGrantRevokeW {
+    display: flex;
+    justify-content: space-between;
+}
+
+.AddPriv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 4rem;
+
+    &_title{
+        color: #666666;
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    &_textBoxLabel{
+        margin-top: 1rem;
+        color: #666666;
+        margin-bottom: 0.2rem;
+    }
+
+    &_textBox{
+        background-color: #00000000;
+        color: #838383;
+        border: 1px solid #666666;
+        width: 13rem;
+        font-size: 1.1rem;
+        padding: 0.2rem;
+    }
+
+    &_textBox:hover{
+        border: 1px solid #838383;
+    }
+
+    &_textBox:focus{
+        outline: none !important;
+        border-color: #949494;
+    }
+
+}

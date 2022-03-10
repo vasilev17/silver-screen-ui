@@ -40,6 +40,7 @@ const Register: FC<RegisterProps> = () => {
           console.log(data.token);
           localStorage.setItem("token", data.token);
           navigate("/");
+          window.location.reload();
         } else {
           console.error(data.errorMessage);
 
