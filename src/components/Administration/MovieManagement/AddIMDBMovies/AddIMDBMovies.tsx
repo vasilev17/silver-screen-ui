@@ -5,9 +5,9 @@ import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
-interface AddIMDBMovies { }
+interface AddIMDBMoviesProps { }
 
-const AddIMDBMovies: FC<AddIMDBMovies> = () => {
+const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
   const [title, setTitle] = useState("");
   const [count, setCount] = useState(1);
   const [titleError, setTitleError] = useState(' ');
