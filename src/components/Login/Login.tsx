@@ -49,6 +49,7 @@ const Login: FC<LoginProps> = () => {
           console.log(data.token);
           localStorage.setItem("token", data.token);
           navigate("/");
+          window.location.reload();
         } else {
           
             setEmailError("email or password is wrong");
@@ -95,12 +96,11 @@ const Login: FC<LoginProps> = () => {
           />
         </div>
         <CardActions>
-          <Button className={styles.login}
+          <Button className={styles.login} 
             fullWidth
             variant="contained"
             size="large"
             type="submit">
-
             <span><h1>SIGN IN</h1></span>
           </Button>
         </CardActions>
