@@ -33,7 +33,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       if (MovieRowInfo.content == null) {
         if (MovieRowInfo.genre == null) {
           //myList movies
-          fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
+          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
             .then(response => {
               if (response.ok) {
                 return response.json();
@@ -44,7 +44,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             .then(data => { setMovies(data); setLoaded(true); });
         } else {
           //get movies with genre
-          fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptionsWithoutAuthorization)
+          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptionsWithoutAuthorization)
             .then(response => {
               if (response.ok) {
                 return response.json();
@@ -56,7 +56,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
         }
       } else {
         //get movies with content and genre
-        fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptionsWithoutAuthorization)
+        fetch(`${process.env.REACT_APP_API}/api/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptionsWithoutAuthorization)
           .then(response => {
             if (response.ok) {
               return response.json();

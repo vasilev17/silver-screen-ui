@@ -32,7 +32,7 @@ const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      fetch(`http://localhost:5000/api/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
+      fetch(`${process.env.REACT_APP_API}/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}`, requestOptions)
         .then(response => {
           if(response.ok) {
             setAlertStatus(true);
@@ -75,7 +75,7 @@ const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
           'Authorization': `Bearer ${token}`,
         },
       };
-      fetch(`http://localhost:5000/api/IMDbAPI/AddUpComingMoviesToDB?count=${countUpcoming}`, requestOptions)
+      fetch(`${process.env.REACT_APP_API}/IMDbAPI/AddUpComingMoviesToDB?count=${countUpcoming}`, requestOptions)
         .then(response => {
           if(response.ok) {
             setAlertStatusUpcoming(true);
