@@ -5,11 +5,11 @@ import styles from './MainPage.module.scss';
 function MainPage() {
   return (
   <div className={styles.MovieRow}>
-    <MovieRow genre="Action"/>
-    <MovieRow genre="Drama"/>
-    <MovieRow genre="Comedy"/>
-    <MovieRow genre="Family"/>
-    <MovieRow genre="Adventure"/>
+    <MovieRow genre="Action" showGenreTittle={true}/>
+    <MovieRow genre="Drama" showGenreTittle={true}/>
+    <MovieRow genre="Comedy" showGenreTittle={true}/>
+    <MovieRow genre="Family" showGenreTittle={true}/>
+    <MovieRow genre="Adventure" showGenreTittle={true}/>
 
 
  
