@@ -2,6 +2,7 @@ import { Box, Tab, Tabs } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import React, { FC } from 'react';
 import styles from './MyList.module.scss';
+import MovieRow from '../MovieRow/MovieRow';
 
 export default function MyList() {
   const [value, setValue] = React.useState('1');
@@ -19,7 +20,12 @@ export default function MyList() {
             <Tab label="Completed" value="2" />
           </TabList>
         </Box>
-        <TabPanel value="1">Item One</TabPanel>
+        <TabPanel className={styles.movieRowContainer} value="1">
+          <MovieRow myListIsWatched={false} showGenreTittle={false}/>
+
+
+
+          </TabPanel>
         <TabPanel value="2">Item Two</TabPanel>
       </TabContext>
     </Box>
