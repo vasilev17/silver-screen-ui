@@ -56,7 +56,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
         }
       } else {
         //get movies with content and genre
-        fetch(`${process.env.REACT_APP_API}/api/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptionsWithoutAuthorization)
+        fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptionsWithoutAuthorization)
           .then(response => {
             if (response.ok) {
               return response.json();
