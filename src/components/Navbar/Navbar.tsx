@@ -29,7 +29,7 @@ const Navbar = () => {
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
                 <a href='/' className='logo'>
-                    <img src="logoS.png" alt='logo' />
+                    <img src="/logoS.png" alt='logo' />
                 </a>
                 <div className='hamburger' onClick={handleClick}>
 
