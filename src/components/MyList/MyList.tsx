@@ -22,11 +22,13 @@ export default function MyList() {
         </Box>
         <TabPanel className={styles.movieRowContainer} value="1">
           <MovieRow myListIsWatched={false} showGenreTittle={false}/>
-
-
-
           </TabPanel>
-        <TabPanel value="2">Item Two</TabPanel>
+
+
+        <TabPanel className={styles.movieRowContainer} value="2">
+        <MovieRow myListIsWatched={true} showGenreTittle={false}/>
+        </TabPanel>
+
       </TabContext>
     </Box>
   );

@@ -102,7 +102,7 @@ const NotificationBox: FC<NotificationBoxProps> = (notifications) => {
           <div className={styles.BoxComponent_title_box}>
             <h3 className={styles.BoxComponent_title_text}>Notifications</h3>
             <div className={styles.BoxComponent_title_closeButton}>
-              <IconButton onClick={() => notifications.setButtonState((prev) => !prev)} aria-label="close" size="small" sx={{color:"#c9c9c98c"}}>
+              <IconButton onClick={() => notifications.setButtonState()} aria-label="close" size="small" sx={{color:"#c9c9c98c"}}>
                 <CloseIcon />
               </IconButton>
             </div>

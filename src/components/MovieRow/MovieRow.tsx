@@ -79,19 +79,19 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   };
 
-  function DisplayMoviesInSeparateRows(){
-    return(
+  function DisplayMoviesInSeparateRows() {
+    return (
       <>
-              <div className={styles.rowThumbnails}>
-            {movies.$values.slice(5).map((movie, i) => (
-              <img onClick={() => handleClick(movie.id)} key={i}
-                className={styles.rowThumbnail}
-                src={movie.thumbnail}
-                alt={movie.title}
-              />
-            ))}
-          </div>
-            </>
+        <div className={styles.rowThumbnails2}>
+          {movies.$values.map((movie, i) => (
+            <img onClick={() => handleClick(movie.id)} key={i}
+              className={styles.rowThumbnail}
+              src={movie.thumbnail}
+              alt={movie.title}
+            />
+          ))}
+        </div>
+      </>
 
     )
   }
@@ -101,28 +101,31 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       //movie map code
       if (MovieRowInfo.myListIsWatched != null) {
 
-          DisplayMoviesInSeparateRows();
-      }
-      return (
-        <>
-          {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
+        return DisplayMoviesInSeparateRows();
+      } else {
 
-          <div className={styles.rowThumbnails}>
-            {movies.$values.map((movie, i) => (
-              <img onClick={() => handleClick(movie.id)} key={i}
-                className={styles.rowThumbnail}
-                src={movie.thumbnail}
-                alt={movie.title}
-              />
-            ))}
-          </div>
-        </>
-      );
+
+        return (
+          <>
+            {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
+
+            <div className={styles.rowThumbnails}>
+              {movies.$values.map((movie, i) => (
+                <img onClick={() => handleClick(movie.id)} key={i}
+                  className={styles.rowThumbnail}
+                  src={movie.thumbnail}
+                  alt={movie.title}
+                />
+              ))}
+            </div>
+          </>
+        );
+      }
     }
     else {
       //skeleton code
       return (
-        <>
+        <div style={{ display: "flex" }}>
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
@@ -134,7 +137,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
           <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
-        </>
+        </div>
       );
     }
   }
