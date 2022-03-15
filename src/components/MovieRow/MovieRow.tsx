@@ -2,34 +2,61 @@ import { Skeleton } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieRow.module.scss';
 interface MovieRowProps {
-  genre,
-  content?
+  genre?,
+  content?,
+  showGenreTittle,
+  myListIsWatched?
 }
 const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
+
   const [movies, setMovies] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  var token = localStorage.getItem('token');
 
   useEffect(() => {
     const getDetail = async () => {
-      const requestOptions = {
+      const requestOptionsWithoutAuthorization = {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
       };
+      const requestOptionsWithAuthorization = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      };
       if (MovieRowInfo.content == null) {
-        fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptions)
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            } else {
-              console.warn("Error while processing the request!");
-            }
-          })
-          .then(data => { setMovies(data); setLoaded(true); });
+        if (MovieRowInfo.genre == null) {
+          //myList movies
+          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                console.warn("Error while processing the request!");
+              }
+            })
+            .then(data => { setMovies(data); setLoaded(true); });
+        } else {
+          //get movies with genre
+          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptionsWithoutAuthorization)
+            .then(response => {
+              if (response.ok) {
+                return response.json();
+              } else {
+                console.warn("Error while processing the request!");
+              }
+            })
+            .then(data => { setMovies(data); setLoaded(true); });
+        }
       } else {
-        fetch(`http://localhost:5000/api/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptions)
+        //get movies with content and genre
+        fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesByContentAndGenre?genre=${MovieRowInfo.genre}&content=${MovieRowInfo.content}`, requestOptionsWithoutAuthorization)
           .then(response => {
             if (response.ok) {
               return response.json();
@@ -52,18 +79,43 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   };
 
+  function DisplayMoviesInSeparateRows(){
+    return(
+      <>
+              <div className={styles.rowThumbnails}>
+            {movies.$values.slice(5).map((movie, i) => (
+              <img onClick={() => handleClick(movie.id)} key={i}
+                className={styles.rowThumbnail}
+                src={movie.thumbnail}
+                alt={movie.title}
+              />
+            ))}
+          </div>
+            </>
+
+    )
+  }
+
   function DisplayMovies() {
     if (loaded) {
       //movie map code
+      if (MovieRowInfo.myListIsWatched != null) {
+
+          DisplayMoviesInSeparateRows();
+      }
       return (
         <>
-          {movies.$values.map((movie, i) => (
-            <img onClick={() => handleClick(movie.id)} key={i}
-              className={styles.rowThumbnail}
-              src={movie.thumbnail}
-              alt={movie.title}
-            />
-          ))}
+          {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
+
+          <div className={styles.rowThumbnails}>
+            {movies.$values.map((movie, i) => (
+              <img onClick={() => handleClick(movie.id)} key={i}
+                className={styles.rowThumbnail}
+                src={movie.thumbnail}
+                alt={movie.title}
+              />
+            ))}
+          </div>
         </>
       );
     }
@@ -71,17 +123,17 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       //skeleton code
       return (
         <>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
-          <Skeleton variant="rectangular" width={150} height={225} style={{marginRight: "10px", borderRadius: "25px"}}/>
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
+          <Skeleton variant="rectangular" width={150} height={225} style={{ marginRight: "10px", borderRadius: "25px" }} />
         </>
       );
     }
@@ -94,13 +146,9 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
 
       <div className={styles.row}>
-        <h2 className={styles.title}>{MovieRowInfo.genre}</h2>
-
-        <div className={styles.rowThumbnails}>
-          {DisplayMovies()}
-        </div>
+        {DisplayMovies()}
       </div>
     </>
-  ); 
+  );
 }
 export default MovieRow;

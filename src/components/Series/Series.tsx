@@ -5,11 +5,11 @@ import styles from './Series.module.scss';
 function Series() {
   return (
   <div className={styles.MovieRow}>
-    <MovieRow genre="Action" content="TVSeries"/>
-    <MovieRow genre="Drama" content="TVSeries"/>
-    <MovieRow genre="Comedy" content="TVSeries"/>
-    <MovieRow genre="Family" content="TVSeries"/>
-    <MovieRow genre="Adventure" content="TVSeries"/>
+    <MovieRow genre="Action" content="TVSeries" showGenreTittle={true}/>
+    <MovieRow genre="Drama" content="TVSeries" showGenreTittle={true}/>
+    <MovieRow genre="Comedy" content="TVSeries" showGenreTittle={true}/>
+    <MovieRow genre="Family" content="TVSeries" showGenreTittle={true}/>
+    <MovieRow genre="Adventure" content="TVSeries" showGenreTittle={true}/>
 
 
 
