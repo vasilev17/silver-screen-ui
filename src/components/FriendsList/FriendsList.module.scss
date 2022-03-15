@@ -17,6 +17,7 @@
 }
 .logout {
     max-width: 900px;
+    top: 250px;
     left: 25%;
     position: absolute;
     color: black;
@@ -31,3 +32,48 @@
     padding: 30px 10px;
 
   }
+  .frame2 {
+    width: 200px;
+    height: 250px;
+    border: 1px solid #ccc;
+    background-color: black;
+    margin: auto;
+    padding: 30px 10px;
+
+  }
+  .username {
+    max-width: 900px;
+    top: 15px;
+    left: 40%;
+    position: absolute;
+    
+}
+.avatar {
+    max-width: 900px;
+    left: 10%;
+    position: absolute;
+    
+}
+.friendsList {
+    width: 220px;
+    height: 30px;
+    border: 1px solid #ccc;
+    background-color: #707070;
+    left: 0px;
+    top: 90px;
+    position: absolute;
+  }
+
+  .friends {
+    left: 0px;
+    top: -20px;
+    position: absolute;
+    font-size: 15px;
+  }
+  .search {
+    left: 190px;
+    top: 5px;
+    position: absolute;
+    font-size: 15px;
+  }
+  
