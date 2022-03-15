@@ -1,7 +1,8 @@
 //Color Variables:
 $main-bg: #181919;
+$rating-yellow: #f6c601;
 
-//Presets
+//Presets:
 @mixin flex($aligin-item, $justify-content) {
     display: flex;
     align-items: $aligin-item;
