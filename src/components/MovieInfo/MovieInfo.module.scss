@@ -6,7 +6,7 @@
     grid-template-rows: 18em 4em 7em 17em;
     grid-gap: 2.8em;
     grid-row-gap: 2em;
-    margin: -40vh 17vw;
+    margin: -38vh 17vw;
 }
 
 .banner {
@@ -84,6 +84,49 @@
     }
 }
 
+
+.myList {
+    grid-column: 4/5;
+    grid-row: 3/4;
+    background: #0f0f14;
+    border-radius: 7px;
+    border: solid 2px #393939b5;
+    filter: drop-shadow(0 0 0.7rem black);
+    margin-bottom: 25px;
+    text-align: center;
+    min-width: 120px;
+    padding: 0.5em;
+    transition: 450ms;
+
+    &__title {
+        font-weight: 600;
+        font-size: 21px;
+    }
+
+    &__actionLabel {
+        color: #2e962e;
+        font-weight: bold;
+        font-size: 22px;
+        margin-left: 0.2em;
+    }
+
+
+    &__icon {
+    color: #2e962e;
+    font-size: 40px !important;
+    margin-left: 0.4em;
+    }
+
+
+}
+
+.myList:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 0px gray;
+    border: 2px solid gray;
+}
+
+
 .personalRating {
     grid-column: 3/4;
     grid-row: 3/4;
@@ -102,7 +145,7 @@
         font-size: 21px;
     }
 
-    &__rateLabel {
+    &__actionLabel {
         color: $rating-yellow;
         font-weight: bold;
         font-size: 22px;
@@ -125,17 +168,30 @@
         min-height: 300px;
         filter: drop-shadow(0 0 1rem black);
 
+        &__closeBtn {
+            position: absolute;
+            margin-top: -1.5em;
+            margin-left: 31vh;
+            z-index: 101;
+        }
+        
+        &__closeBtn:hover {
+            filter: drop-shadow(0 0 0.4rem white);
+            cursor: pointer;
+        }
+
+
         &__growingStar {
             color: $rating-yellow;
             font-size: 7em !important;
             margin-top: -6vh;
             z-index: 10;
             transition: 250ms !important;
-             filter: drop-shadow(0 0 1rem gray);
+            filter: drop-shadow(0 0 1rem gray);
         }
 
         &__starTitle {
-            transform: translateY(-8.5vh);
+            transform: translateY(-2.5em);
             padding: 0;
             margin: 0;
             user-select: none;
@@ -169,7 +225,7 @@
             border-radius: 7px;
             pointer-events: none;
             font-weight: 700;
-            
+
             transition: 250ms;
         }
 
@@ -203,7 +259,6 @@
             box-shadow: 0px 0px 15px 0px #af2323;
             border: 2px solid #af2323;
         }
-
     }
 }
 
@@ -268,6 +323,7 @@
         font-weight: bold;
         font-size: 22px;
         margin-left: 0.2em;
+        transition: 500ms;
     }
 
     &__ratingOutOf {
