@@ -1,0 +1,19 @@
+.MisbehavingUsersW {
+    display: flex;
+    justify-content: space-between;
+}
+
+.AddPriv{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 5rem;
+
+    &_title{
+        color: #666666;
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+}

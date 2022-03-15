@@ -1,11 +1,11 @@
-import { fontWeight } from '@mui/system';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieInfo.module.scss';
 import '../MovieInfo/MovieInfo.module.scss';
 import { useParams } from 'react-router-dom';
-import { Title } from '@mui/icons-material';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import { yellow } from '@mui/material/colors';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 interface MovieInfoProps { }
 
@@ -16,9 +16,23 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const [data, setData] = useState(null);
 
+  const [releaseDate, setReleaseDate] = useState(null);
+
   const [duration, setDuration] = useState(null);
 
   const [friendRating, setFriendRating] = useState('?');
+
+  const [personalRating, setPersonalRating] = useState(null);
+
+  //Modal Variables
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => { setOpenModal(true); setStarRatingValue(personalRating); }
+  const handleCloseModal = () => setOpenModal(false);
+  const [starRatingValue, setStarRatingValue] = useState(null);
+
+  //Rating Feedback Variables
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const showSnackbarFeedback = () => setOpenSnackbar(true);
 
 
   var token = localStorage.getItem('token');
@@ -26,8 +40,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
 
 
-
-  const getMovieDetails = async () => {
+  const getMovieDetails = () => {
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -45,8 +58,18 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       })
       .then(info => {
         setData(info);
+
+        //Set the tab title to the title and release date in brackets
         info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
-        info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm')
+
+        //Format duration in "?h ??m" format
+        info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
+
+        //Cut brackets for subtitle string as long as it is not a time period (includes '–')
+        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')))
+          setReleaseDate(info.movie.releaseDate.substring(1, info.movie.releaseDate.length - 1));
+        else
+          setReleaseDate(info.movie.releaseDate);
 
         window.scrollTo(0, 0);
 
@@ -55,10 +78,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
-
-
-
-  const getFriendRating = async () => {
+  const getMovieRatings = () => {
     const requestOptions = {
       method: 'GET',
       headers: {
@@ -67,30 +87,100 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         'Authorization': `Bearer ${token}`,
       },
     };
-    fetch(`${process.env.REACT_APP_API}/MovieInfo/FriendRatingGetRequest?movieID=${id}`, requestOptions)
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/MovieRatingsGetRequest?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
           return response.json();
         } else {
-          console.warn("Error while processing the Friend Rating request!");
+          console.warn("Error while processing the Movie Ratings request!");
         }
       })
       .then(info => {
-        info == 0 ? setFriendRating('?') : setFriendRating(info.toFixed(1));
+        info.friendRating != 0 && setFriendRating(info.friendRating.toFixed(1));
+        info.personalRating != 0 && setPersonalRating(info.personalRating);
       });
 
     window.scrollTo(0, 0);
   }
 
 
+  function displayPersonalRating() {
 
+    if (personalRating == null) {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <StarBorderRoundedIcon className={styles.ratings__ratingStar} />
+            <span className={styles.personalRating__rateLabel}>Rate</span>
+            <span className={styles.ratings__ratingOutOf}></span>
+          </div>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <StarRoundedIcon className={styles.ratings__ratingStar} />
+            <span className={styles.ratings__ratingNumber}>{personalRating}</span>
+            <span className={styles.ratings__ratingOutOf}>/10</span>
+          </div>
+        </>
+      )
+    }
+  }
+
+
+  const submitRating = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/RateMovie?movieID=${id}&rating=${starRatingValue}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          handleCloseModal();
+          setPersonalRating(starRatingValue);
+          showSnackbarFeedback();
+          return response.json();
+        } else {
+          console.warn("Error while processing the the give a rating request!");
+        }
+      })
+  }
+
+
+  const removeRating = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/RemoveRating?movieID=${id}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          handleCloseModal();
+          setPersonalRating(null);
+          showSnackbarFeedback();
+          return response.json();
+        } else {
+          console.warn("Error while processing the the give a rating request!");
+        }
+      })
+  }
 
 
   function formatSubittleInfo() {
 
     let subtitleString: string = "";
 
-    if (data.movie.releaseDate != null) subtitleString += data.movie.releaseDate;
+    if (data.movie.releaseDate != null) subtitleString += releaseDate;
     if (data.movie.maturityRating != null) subtitleString += ' | ' + data.movie.maturityRating;
     if (data.movie.duration != null) subtitleString += ' | ' + duration;
 
@@ -101,16 +191,117 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
 
 
+  function displayCrewMembers(memberPosition) {
+
+    if (data.staff.$values.some(member => member.position === memberPosition))
+      return (
+        <>
+          {
+            memberPosition == "Actor" ?
+              <span className={styles.crew__crewPosition}>{memberPosition}s:</span>
+              :
+              <span className={styles.crew__crewPosition}>{memberPosition}:</span>
+          }
+          <span className={styles.crew__actorNames}>
+            {
+              data.staff.$values.filter(member => member.position === memberPosition).map((member, i) => (
+                <>
+                  <span className={styles.crew__crewName} key={i}>&nbsp;{member.name}</span>
+                  <br />
+                </>
+              ))
+            }
+          </span>
+          <br />
+        </>
+      );
+  }
+
+  function displaySnackbarFeedback() {
+
+    return (
+      <>
+        <Snackbar open={openSnackbar} autoHideDuration={2500} onClose={(event, reason) => {
+          reason != 'clickaway' &&
+            setOpenSnackbar(false);
+        }}>
+
+          <Alert onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
+            reason != 'clickaway' &&
+              setOpenSnackbar(false);
+          }} severity="success" sx={{ background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' }}>
+            Change successful!
+          </Alert>
+
+        </Snackbar>
+      </>
+
+    );
+  }
+
+  function displayRatingModal() {
+
+    return (
+      <>
+        <Modal open={openModal} onClose={handleCloseModal}>
+          <Fade in={openModal}>
+            <Box className={styles.personalRating__modal}>
+
+            
+              <StarRoundedIcon id='growingStar' className={styles.personalRating__modal__growingStar} />
+              
+              {starRatingValue != null ?
+                <h1 id='growingStarTitle' className={styles.personalRating__modal__starTitle}>{starRatingValue}</h1>
+                :
+                <h1 className={styles.personalRating__modal__starTitle}>?</h1>
+              }
+
+
+              <h3 className={styles.personalRating__modal__rateLabel}>Rate</h3>
+              <h2>{data.movie.title}</h2>
+              <Rating max={10}
+                icon={<StarRoundedIcon className={styles.personalRating__modal__pickerStarFilled} />}
+                emptyIcon={<StarBorderRoundedIcon className={styles.personalRating__modal__pickerStarEmpty} />}
+                defaultValue={starRatingValue}
+                onChange={(event, newValue) => {
+
+                  setStarRatingValue(newValue);
+
+                  document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
+
+                  if (newValue != null && newValue != personalRating)
+                    document.getElementById('submitRatingBtn').classList.add("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+                  else
+                    document.getElementById('submitRatingBtn').classList.remove("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+
+                }}
+              />
+
+              <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
+
+                {personalRating != null &&
+                
+                <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
+                
+
+                }
+
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
+
+
 
   useEffect(() => {
 
     getMovieDetails();
-    getFriendRating();
+    getMovieRatings();
+
 
   }, [id]);
-
-
-
 
 
 
@@ -119,16 +310,30 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       {
         data && (
           <>
+            {displayRatingModal()}
+            {displaySnackbarFeedback()}
+
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
 
             <div className={styles.content}>
 
               <div className={styles.movieImage} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
-
               <div className={styles.movieInfo}>
-                <h1 className={styles.movieTitle}>{data.movie.title}</h1>
-                <h2 className={styles.subtitleInfo}>{formatSubittleInfo()}</h2>
-                <p className={styles.movieDescription}>{data.movie.description}</p>
+                <h1 className={styles.movieInfo__title}>{data.movie.title}</h1>
+                <h2 className={styles.movieInfo__subtitle}>{formatSubittleInfo()}</h2>
+                <p className={styles.movieInfo__description}>{data.movie.description}</p>
+              </div>
+
+              <div onClick={handleOpenModal} className={styles.personalRating}>
+                <span className={styles.personalRating__title}>Your Rating:</span>
+                {displayPersonalRating()}
+              </div>
+
+
+              <div>
+
+
+
               </div>
 
               <div className={styles.ratings}>
@@ -149,6 +354,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                     <span className={styles.ratings__ratingNumber}>{friendRating}</span>
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>
+
                 </div>
 
               </div>
@@ -167,40 +373,21 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <span className={styles.sectionTitle}>Crew:</span>
                 <hr className={styles.sectionSeparator} />
                 <div className={styles.crew__crewMembers}>
-                  {data.staff.$values.some(member => member.position === 'Director') &&
-                    <>
-                      <span className={styles.crew__crewPosition}>Director:</span>
-                      <span className={styles.crew__crewName}> {data.staff.$values.find(member => member.position === 'Director').name}</span>
-                    </>}
 
-                  {data.staff.$values.some(member => member.position === 'Writer') &&
-                    <>
-                      <br />
-                      <span className={styles.crew__crewPosition}>Writer:</span>
-                      <span className={styles.crew__crewName}> {data.staff.$values.find(member => member.position === 'Writer').name}</span>
-                    </>}
+                  {displayCrewMembers("Director")}
 
+                  {displayCrewMembers("Writer")}
 
-                  {data.staff.$values.some(member => member.position === 'Actor') &&
-                    <>
-                      <br />
-                      <span className={styles.crew__crewPosition}>Actors:</span>
-                    </>}
-                  <div className={styles.crew__actorNames}>
-                    {data.staff.$values.some(member => member.position === 'Actor') && data.staff.$values.filter(member => member.position === 'Actor').map((member, i) => (
-                      <>
+                  {displayCrewMembers("Actor")}
 
-                        <span className={styles.crew__crewName} key={i}> {member.name}</span>
-                        <br />
-
-                      </>
-                    ))}
-                  </div>
                 </div>
 
               </div>
 
             </div>
+
+
+
           </>
 
         )
