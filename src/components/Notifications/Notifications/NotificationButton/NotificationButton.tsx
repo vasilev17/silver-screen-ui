@@ -158,7 +158,7 @@ const NotificationButton: FC<NotificationButtonProps> = () => {
         >
           <div>
             <NotificationBox 
-              setButtonState={setButtonState} 
+              setButtonState={ToggleButton} 
               notificationInfo={notificationsData} 
               movieNotificationInfo={movieNotificationsData}
               setNotificationInfo={setNotificationsData}
