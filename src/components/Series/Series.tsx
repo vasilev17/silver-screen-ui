@@ -4,7 +4,7 @@ import styles from './Series.module.scss';
 
 function Series() {
   return (
-  <div style = {{marginTop:"100px"}}className="MovieRow">
+  <div className={styles.MovieRow}>
     <MovieRow genre="Action" content="TVSeries"/>
     <MovieRow genre="Drama" content="TVSeries"/>
     <MovieRow genre="Comedy" content="TVSeries"/>

@@ -5,9 +5,9 @@ import FingerprintIcon from '@mui/icons-material/Fingerprint';
 import { SettingsInputAntennaTwoTone } from '@mui/icons-material';
 
 
-interface AddIMDBMovies { }
+interface AddIMDBMoviesProps { }
 
-const AddIMDBMovies: FC<AddIMDBMovies> = () => {
+const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
   const [title, setTitle] = useState("");
   const [alertMessage, setAlertMessage] = useState("You successfully added movie/s!");
   const [alertStatus, setAlertStatus] = useState(false);
@@ -31,11 +31,8 @@ const AddIMDBMovies: FC<AddIMDBMovies> = () => {
         .then(response => {
           if(response.ok) {
             setAlertStatus(true);
-            setAlertMessage("You successfully added movie/s!");
-            setOpenAlert(true);
-            setTimeout(() => {
-              setOpenAlert(false);
-            }, 2000)
+            return response.json();
+            
           } else {
             setAlertStatus(false);
             return response.json();
@@ -49,10 +46,17 @@ const AddIMDBMovies: FC<AddIMDBMovies> = () => {
             setTimeout(() => {
               setOpenAlert(false);
             }, 2000)
+          }else{
+            setAlertMessage("You successfully added " + data + " movie/s!");
+            setOpenAlert(true);
+            setTimeout(() => {
+              setOpenAlert(false);
+            }, 2000)
           }
             
         });
     }
+    
     addMoviesToDB();
 
   };
@@ -80,7 +84,7 @@ const AddIMDBMovies: FC<AddIMDBMovies> = () => {
       <div>
       <TextField id="standard-basic" label="Add movie/s by title" error = {titleError != " "} helperText={titleError} required variant="standard" onChange={handleTitleChange}/>
       <Tooltip title="How much movies do you want to add?">
-        <TextField sx={{ width: "73px" }} id="outlined-number" error = {countError != " "} helperText={countError} label="Number" type="number" InputProps={{ inputProps: { min: 1} }}  defaultValue="1"  variant="standard" onChange={handleCountChange} InputLabelProps={{ shrink: true, }} />
+        <TextField sx={{ width: "73px" }} id="outlined-number" error = {countError != " "} helperText={countError} required label="Number" type="number" InputProps={{ inputProps: { min: 1} }}  defaultValue="1"  variant="standard" onChange={handleCountChange} InputLabelProps={{ shrink: true, }} />
       </Tooltip>
       <IconButton aria-label="fingerprint" type ="submit" color="secondary" onClick={handleClick}>
         <FingerprintIcon />

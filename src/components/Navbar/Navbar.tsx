@@ -10,11 +10,23 @@ const Navbar = () => {
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
 
+    const [color, setColor] = useState(false)
+    const changeColor = () => {
+        if (window.scrollY >= 10){
+            setColor(true)
+        }else{
+            setColor(false)
+        }
+    }
+
+    window.addEventListener('scroll', changeColor)
+
+
     const closeMenu = () => setClick(false)
     const [buttonState, setButtonState] = useState(false);
 
     return (
-        <div id="mainNavbar" className='header'>
+        <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
                 <a href='/' className='logo'>
                     <img src="logoS.png" alt='logo' />
@@ -30,10 +42,10 @@ const Navbar = () => {
                         <a href='/' onClick={closeMenu}>Home</a>
                     </li>
                     <li className='nav-item'>
-                        <a href='#series' onClick={closeMenu}>Series</a>
+                        <a href='/series' onClick={closeMenu}>Series</a>
                     </li>
                     <li className='nav-item'>
-                        <a href='#movies' onClick={closeMenu}>Movies</a>
+                        <a href='/movies' onClick={closeMenu}>Movies</a>
                     </li>
                     <li className='nav-item'>
                         <a href='/mylist' onClick={closeMenu}>My List</a>
