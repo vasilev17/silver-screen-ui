@@ -111,7 +111,7 @@ const NotificationElement: FC<NotificationElementProps> = (notificationInfo) => 
   function HandleModalMoviePage(){
     handleModalClose();
     notificationInfo.setButtonState();
-    navigate(`/movie/${notificationInfo.movie.id}`);
+    navigate(`/title/${notificationInfo.movie.id}`);
   }
 
   function DisplayButtonsForModal(){

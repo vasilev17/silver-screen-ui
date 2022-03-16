@@ -15,6 +15,7 @@ import Unauthorized from './components/Unauthorized/Unauthorized';
 import Administration from './components/Administration/Administration';
 import Series from './components/Series/Series';
 import Movies from './components/Movies/Movies';
+import CommentsTestPage from './components/Comments/CommentsTestPage/CommentsTestPage';
 function App() {
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/administration" element={<Administration />} />
+        <Route path="/commentsTestPage" element={<CommentsTestPage />} />
       </Routes>
     </BrowserRouter>
     </>

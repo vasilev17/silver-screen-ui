@@ -1,0 +1,62 @@
+.CommentWindowTitle{
+    color: #666666;
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.CommentBox {
+    background-color: #333333;
+    width: 50rem;
+    height: 12rem;
+    border-radius: 1rem;
+    border: 0.2rem solid #4D4D4D;
+    box-shadow: 0 0 7px 0px #4d4d4d;
+}
+
+.CommentButtonsBox{
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 0.2rem;
+    margin-right: 0.2rem;
+}
+
+.CommentTextBox{
+    color: #666666;
+    height: 8em;
+    border-bottom: 0.2rem solid #4D4D4D;
+    padding: 0.5rem;
+    display: flex;
+
+    &_input{
+        background-color: #00000000;
+        color: #808080;
+        width: 99.2%;
+        height: 95%;
+        border: 0;
+        font-size: 1.2rem;
+        font-family: Roboto;
+        resize: none;
+    }
+
+    &_input:focus{
+        outline: none !important;
+    }
+
+    &_wordCounter{
+        position: fixed;
+        width: 92.5%;
+        color: inherit;
+        font-size: 18px;
+        text-align: right;
+        top: 56%;
+        pointer-events: none;
+        text-shadow: 0 0 3px black;
+
+        &_text{
+            display: inline;
+            background: #333333;
+            padding: 0 0.4rem 0 0.4rem;
+        }
+    }
+}
