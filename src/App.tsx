@@ -16,6 +16,7 @@ import Administration from './components/Administration/Administration';
 import Series from './components/Series/Series';
 import Movies from './components/Movies/Movies';
 import CommentsTestPage from './components/Comments/CommentsTestPage/CommentsTestPage';
+import Search from './components/Search/Search';
 function App() {
   return (
     <>
@@ -35,6 +36,7 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/administration" element={<Administration />} />
         <Route path="/commentsTestPage" element={<CommentsTestPage />} />
+        <Route path="/search/:searchString" element={<Search />} />
       </Routes>
     </BrowserRouter>
     </>

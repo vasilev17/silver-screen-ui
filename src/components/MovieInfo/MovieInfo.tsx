@@ -6,6 +6,8 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
+import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 
 interface MovieInfoProps { }
 
@@ -23,6 +25,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const [friendRating, setFriendRating] = useState('?');
 
   const [personalRating, setPersonalRating] = useState(null);
+
+  const [addedToMyList, setAddedToMyList] = useState(false);
 
   //Modal Variables
   const [openModal, setOpenModal] = useState(false);
@@ -57,7 +61,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         }
       })
       .then(info => {
+
+
+
+
         setData(info);
+        
 
         //Set the tab title to the title and release date in brackets
         info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
@@ -111,8 +120,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         <>
           <div className={styles.ratings__ratingSource}>
             <StarBorderRoundedIcon className={styles.ratings__ratingStar} />
-            <span className={styles.personalRating__rateLabel}>Rate</span>
-            <span className={styles.ratings__ratingOutOf}></span>
+            <span className={styles.personalRating__actionLabel}>Rate</span>
           </div>
         </>
       )
@@ -130,7 +138,31 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
-  const submitRating = () => {
+  function displayMyList() {
+
+    if (addedToMyList) {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <BookmarkRoundedIcon className={styles.myList__icon} />
+            <span className={styles.myList__actionLabel}>Added</span>
+          </div>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <BookmarkBorderRoundedIcon className={styles.myList__icon} />
+            <span className={styles.myList__actionLabel}>Add</span>
+          </div>
+        </>
+      )
+    }
+  }
+
+
+  const submitRating = async () => {
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -143,8 +175,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           handleCloseModal();
-          setPersonalRating(starRatingValue);
-          showSnackbarFeedback();
+          setTimeout(() => {
+            setPersonalRating(starRatingValue);
+            showSnackbarFeedback();
+          }, 150);
           return response.json();
         } else {
           console.warn("Error while processing the the give a rating request!");
@@ -166,8 +200,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           handleCloseModal();
-          setPersonalRating(null);
-          showSnackbarFeedback();
+          setTimeout(() => {
+            setPersonalRating(null);
+            showSnackbarFeedback();
+          }, 150);
           return response.json();
         } else {
           console.warn("Error while processing the the give a rating request!");
@@ -247,9 +283,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <Fade in={openModal}>
             <Box className={styles.personalRating__modal}>
 
-            
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseModal} className={styles.personalRating__modal__closeBtn} />
+
               <StarRoundedIcon id='growingStar' className={styles.personalRating__modal__growingStar} />
-              
+
               {starRatingValue != null ?
                 <h1 id='growingStarTitle' className={styles.personalRating__modal__starTitle}>{starRatingValue}</h1>
                 :
@@ -270,21 +308,19 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
 
                   if (newValue != null && newValue != personalRating)
-                    document.getElementById('submitRatingBtn').classList.add("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+                    document.getElementById('submitRatingBtn').classList.add(styles['personalRating__modal__submitButtonActive']);
+
                   else
-                    document.getElementById('submitRatingBtn').classList.remove("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+                    document.getElementById('submitRatingBtn').classList.remove(styles['personalRating__modal__submitButtonActive']);
 
                 }}
               />
 
               <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
 
-                {personalRating != null &&
-                
+              {personalRating != null &&
                 <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
-                
-
-                }
+              }
 
             </Box>
           </Fade>
@@ -325,9 +361,18 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               </div>
 
               <div onClick={handleOpenModal} className={styles.personalRating}>
-                <span className={styles.personalRating__title}>Your Rating:</span>
+                <span className={styles.personalRating__title}>My Rating:</span>
                 {displayPersonalRating()}
               </div>
+
+
+              <div onClick={handleOpenModal} className={styles.myList}>
+                <span className={styles.personalRating__title}>My List:</span>
+                {displayMyList()}
+              </div>
+
+
+
 
 
               <div>
@@ -344,7 +389,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   <div className={styles.ratings__ratingSource}>
                     <img src="/IMDb_icon.svg" alt="IMDb:" />
                     <StarRoundedIcon className={styles.ratings__ratingStar} />
-                    <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+                  {data.movie.rating == null ?
+                  <span className={styles.ratings__ratingNumber}>?</span>
+                  :
+
+                  <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+                  
+                  }
+                    
+
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>
 

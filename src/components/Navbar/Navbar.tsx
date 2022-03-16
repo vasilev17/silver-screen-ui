@@ -1,5 +1,6 @@
 import { Grow, IconButton } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import React, { useState } from 'react';
 import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
@@ -29,12 +30,15 @@ const Navbar = () => {
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
                 <a href='/' className='logo'>
-                    <img src="logoS.png" alt='logo' />
+                    <img src="/logoS.png" alt='logo' />
                 </a>
                 <div className='hamburger' onClick={handleClick}>
 
                 </div>
                 <ul className={click ? "nav-menu active" : "nav-menu"}>
+                <div style={{ marginTop: '16px' }}>
+                        <SearchRoundedIcon />
+                    </div>
                     <div style={{ marginTop: '7px' }}>
                         <NotificationButton />
                     </div>
