@@ -15,6 +15,7 @@ import Unauthorized from './components/Unauthorized/Unauthorized';
 import Administration from './components/Administration/Administration';
 import Series from './components/Series/Series';
 import Movies from './components/Movies/Movies';
+import Search from './components/Search/Search';
 function App() {
   return (
     <>
@@ -33,6 +34,7 @@ function App() {
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/administration" element={<Administration />} />
+        <Route path="/search/:searchString" element={<Search />} />
       </Routes>
     </BrowserRouter>
     </>
