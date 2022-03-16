@@ -8,6 +8,9 @@ import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import BeenhereRoundedIcon from '@mui/icons-material/BeenhereRounded';
+import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
+import BookmarkCompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
 
 interface MovieInfoProps { }
 
@@ -26,17 +29,22 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const [personalRating, setPersonalRating] = useState(null);
 
-  const [addedToMyList, setAddedToMyList] = useState(false);
-
-  //Modal Variables
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => { setOpenModal(true); setStarRatingValue(personalRating); }
-  const handleCloseModal = () => setOpenModal(false);
+  //Rating Modal Variables
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+  const handleOpenRatingModal = () => { setOpenRatingModal(true); setStarRatingValue(personalRating); }
+  const handleCloseRatingModal = () => setOpenRatingModal(false);
   const [starRatingValue, setStarRatingValue] = useState(null);
+
+  //MyList Modal Variables
+  const [openMyListModal, setOpenMyListModal] = useState(false);
+  const handleOpenMyListModal = () => { setOpenMyListModal(true);  }
+  const handleCloseMyListModal = () => setOpenMyListModal(false);
+  const [addedToMyList, setAddedToMyList] = useState(false);
 
   //Rating Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const showSnackbarFeedback = () => setOpenSnackbar(true);
+  
 
 
   var token = localStorage.getItem('token');
@@ -66,7 +74,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
 
         setData(info);
-        
+
 
         //Set the tab title to the title and release date in brackets
         info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
@@ -75,7 +83,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
 
         //Cut brackets for subtitle string as long as it is not a time period (includes '–')
-        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')))
+        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')) && !(/[a-zA-Z]/.test(info.movie.releaseDate)) )
           setReleaseDate(info.movie.releaseDate.substring(1, info.movie.releaseDate.length - 1));
         else
           setReleaseDate(info.movie.releaseDate);
@@ -174,7 +182,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RateMovie?movieID=${id}&rating=${starRatingValue}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
+          handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(starRatingValue);
             showSnackbarFeedback();
@@ -199,7 +207,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RemoveRating?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
+          handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(null);
             showSnackbarFeedback();
@@ -223,8 +231,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     return subtitleString;
 
   }
-
-
 
 
   function displayCrewMembers(memberPosition) {
@@ -253,6 +259,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       );
   }
 
+
   function displaySnackbarFeedback() {
 
     return (
@@ -279,12 +286,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     return (
       <>
-        <Modal open={openModal} onClose={handleCloseModal}>
-          <Fade in={openModal}>
+        <Modal open={openRatingModal} onClose={handleCloseRatingModal}>
+          <Fade in={openRatingModal}>
             <Box className={styles.personalRating__modal}>
 
 
-              <CloseRoundedIcon fontSize="medium" onClick={handleCloseModal} className={styles.personalRating__modal__closeBtn} />
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseRatingModal} className={styles.personalRating__modal__closeBtn} />
 
               <StarRoundedIcon id='growingStar' className={styles.personalRating__modal__growingStar} />
 
@@ -295,7 +302,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               }
 
 
-              <h3 className={styles.personalRating__modal__rateLabel}>Rate</h3>
+              <h3 className={styles.personalRating__modal__label}>Rate</h3>
               <h2>{data.movie.title}</h2>
               <Rating max={10}
                 icon={<StarRoundedIcon className={styles.personalRating__modal__pickerStarFilled} />}
@@ -330,6 +337,52 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
+  function displayMyListModal() {
+
+    return (
+      <>
+        <Modal open={openMyListModal} onClose={handleCloseMyListModal}>
+          <Fade in={openMyListModal}>
+            <Box className={styles.personalRating__modal}>
+
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseMyListModal} className={styles.personalRating__modal__closeBtn} />
+
+              <BeenhereRoundedIcon  className={styles.myList__modal__headerIcon} />
+
+
+
+              <h3 className={styles.myList__modal__label}>Add to MyList</h3>
+              <h2 className={styles.myList__modal__titleLabel}>{data.movie.title}</h2>
+
+              <div className={styles.myList__modal__selectionCard}>
+              <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Watchlist</h4>
+                <WatchlistIcon className={styles.myList__modal__selectionIcon}/>
+              </div>
+
+
+              <div className={styles.myList__modal__selectionCard}>
+              <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Completed</h4>
+                <BookmarkCompletedIcon className={styles.myList__modal__selectionCompletedIcon}/>
+              </div>
+
+
+              <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
+
+              {personalRating != null &&
+                <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
+              }
+
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
+
+
 
   useEffect(() => {
 
@@ -347,6 +400,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         data && (
           <>
             {displayRatingModal()}
+            {displayMyListModal()}
             {displaySnackbarFeedback()}
 
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
@@ -360,13 +414,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
               </div>
 
-              <div onClick={handleOpenModal} className={styles.personalRating}>
+              <div onClick={handleOpenRatingModal} className={styles.personalRating}>
                 <span className={styles.personalRating__title}>My Rating:</span>
                 {displayPersonalRating()}
               </div>
 
 
-              <div onClick={handleOpenModal} className={styles.myList}>
+              <div onClick={handleOpenMyListModal} className={styles.myList}>
                 <span className={styles.personalRating__title}>My List:</span>
                 {displayMyList()}
               </div>
@@ -389,14 +443,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   <div className={styles.ratings__ratingSource}>
                     <img src="/IMDb_icon.svg" alt="IMDb:" />
                     <StarRoundedIcon className={styles.ratings__ratingStar} />
-                  {data.movie.rating == null ?
-                  <span className={styles.ratings__ratingNumber}>?</span>
-                  :
 
-                  <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
-                  
-                  }
-                    
+                    {data.movie.rating == null ?
+                      <span className={styles.ratings__ratingNumber}>?</span>
+                      :
+                      <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+                    }
+
 
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>
