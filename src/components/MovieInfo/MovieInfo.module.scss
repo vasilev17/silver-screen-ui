@@ -84,6 +84,38 @@
     }
 }
 
+input[type="radio"] {
+    display: none;
+    &:checked + .myList__modal__selectionCard {
+        background: $adding-green;
+        border-left: 3px solid lime;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionLabel  {
+        color: white;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionIcon  {
+        color: white;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionCompletedIcon  {
+        color: white;
+     }
+
+     &::after {
+        color: hsla(215, 5%, 25%, 1);
+        border: 2px solid hsla(150, 75%, 45%, 1);
+        content: "\f00c";
+        font-size: 24px;
+
+        border-radius: 50%;
+        background: white;
+        box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+      }
+}
+
+
 .myList {
     grid-column: 4/5;
     grid-row: 3/4;
@@ -116,7 +148,7 @@
     }
 
     &__modal {
-        position: absolute;
+        position: relative;
         display: block;
         top: 50%;
         left: 50%;
@@ -131,6 +163,7 @@
         min-height: 300px;
         filter: drop-shadow(0 0 1rem black);
 
+
         &__closeBtn {
             position: absolute;
             margin-top: -1.5em;
@@ -144,15 +177,24 @@
 
         &__selectionCard {
             background: #2b2b2a;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0%);
             height: 4em;
             align-items: center;
             display: flex;
             width: 20em;
-            margin-left: 8em;
             border-radius: 0 7px 7px 0;
             border-left: 3px solid gray;
             margin-top: 1em;
             filter: drop-shadow(0 0 0.7rem black);
+            transition: 250ms;
+        }
+
+        &__selectionCard:hover {
+            filter: drop-shadow(0 0 0.7rem black);
+            cursor: pointer;
+            user-select: none;
         }
 
         &__selectionLabel{
@@ -293,10 +335,13 @@
 
         &__submitButton {
             padding: 1.2vh;
+            position: relative;
+            transform: translate(-50%, 0%);
+            left: 50%;
             color: #939395;
             width: 7em;
             min-width: 7em;
-            margin:2.4vh 0 1.9em 37.5%;
+            margin:2.4vh 0;
             border: solid 2px black;
             background: #575757;
             border-radius: 7px;

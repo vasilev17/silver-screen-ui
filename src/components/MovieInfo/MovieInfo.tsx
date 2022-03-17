@@ -8,9 +8,12 @@ import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
-import BeenhereRoundedIcon from '@mui/icons-material/BeenhereRounded';
 import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
-import BookmarkCompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
+import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+
+
+
 
 interface MovieInfoProps { }
 
@@ -348,25 +351,24 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
               <CloseRoundedIcon fontSize="medium" onClick={handleCloseMyListModal} className={styles.personalRating__modal__closeBtn} />
 
-              <BeenhereRoundedIcon  className={styles.myList__modal__headerIcon} />
-
-
+              <BookmarkAddRoundedIcon  className={styles.myList__modal__headerIcon} />
 
               <h3 className={styles.myList__modal__label}>Add to MyList</h3>
               <h2 className={styles.myList__modal__titleLabel}>{data.movie.title}</h2>
 
-              <div className={styles.myList__modal__selectionCard}>
+              <input type="radio" name="myListOptionSelect" id="optionWatchlist"/>
+              <label htmlFor="optionWatchlist" className={styles.myList__modal__selectionCard}>
               <div className={styles.myList__modal__selectionCheck}></div>
                 <h4 className={styles.myList__modal__selectionLabel}>Watchlist</h4>
                 <WatchlistIcon className={styles.myList__modal__selectionIcon}/>
-              </div>
+              </label>
 
-
-              <div className={styles.myList__modal__selectionCard}>
+              <input type="radio" name="myListOptionSelect" id="optionCompleted"/>
+              <label htmlFor="optionCompleted" className={styles.myList__modal__selectionCard}>
               <div className={styles.myList__modal__selectionCheck}></div>
                 <h4 className={styles.myList__modal__selectionLabel}>Completed</h4>
-                <BookmarkCompletedIcon className={styles.myList__modal__selectionCompletedIcon}/>
-              </div>
+                <CompletedIcon className={styles.myList__modal__selectionCompletedIcon}/>
+              </label>
 
 
               <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
