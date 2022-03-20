@@ -6,7 +6,7 @@
     grid-template-rows: 18em 4em 7em 17em;
     grid-gap: 2.8em;
     grid-row-gap: 2em;
-    margin: -40vh 17vw;
+    margin: -38vh 17vw;
 }
 
 .banner {
@@ -84,6 +84,170 @@
     }
 }
 
+input[type="radio"] {
+    display: none;
+    &:checked + .myList__modal__selectionCard {
+        background: $adding-green;
+        border-left: 3px solid lime;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionLabel  {
+        color: white;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionIcon  {
+        color: white;
+     }
+
+     &:checked + .myList__modal__selectionCard .myList__modal__selectionCompletedIcon  {
+        color: white;
+     }
+
+     &::after {
+        color: hsla(215, 5%, 25%, 1);
+        border: 2px solid hsla(150, 75%, 45%, 1);
+        content: "\f00c";
+        font-size: 24px;
+
+        border-radius: 50%;
+        background: white;
+        box-shadow: 0px 2px 5px -2px hsla(0, 0%, 0%, 0.25);
+      }
+}
+
+
+.myList {
+    grid-column: 4/5;
+    grid-row: 3/4;
+    background: #0f0f14;
+    border-radius: 7px;
+    border: solid 2px #393939b5;
+    filter: drop-shadow(0 0 0.7rem black);
+    margin-bottom: 25px;
+    text-align: center;
+    min-width: 120px;
+    padding: 0.5em;
+    transition: 450ms;
+
+    &__title {
+        font-weight: 600;
+        font-size: 21px;
+    }
+
+    &__actionLabel {
+        color: $adding-green;
+        font-weight: bold;
+        font-size: 22px;
+        margin-left: 0.2em;
+    }
+
+    &__icon {
+        color: $adding-green;
+        font-size: 40px !important;
+        margin-left: 0.4em;
+    }
+
+    &__modal {
+        position: relative;
+        display: block;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 30vw;
+        text-align: center;
+        background: #0f0f14;
+        border-radius: 7px;
+        border: solid 2px #393939b5;
+        outline: 0;
+        min-width: 435px;
+        min-height: 300px;
+        filter: drop-shadow(0 0 1rem black);
+
+
+        &__closeBtn {
+            position: absolute;
+            margin-top: -1.5em;
+            margin-left: 31vh;
+            z-index: 101;
+        }
+
+        &__titleLabel {
+            margin-bottom: 1.5em;
+        }
+
+        &__selectionCard {
+            background: #2b2b2a;
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            height: 4em;
+            align-items: center;
+            display: flex;
+            width: 20em;
+            border-radius: 0 7px 7px 0;
+            border-left: 3px solid gray;
+            margin-top: 1em;
+            filter: drop-shadow(0 0 0.7rem black);
+            transition: 250ms;
+        }
+
+        &__selectionCard:hover {
+            filter: drop-shadow(0 0 0.7rem black);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        &__selectionLabel{
+            font-size: 1.3em;
+            margin-left: 0.2em;
+            color: gray;
+        }
+
+        &__selectionIcon{
+            font-size: 3em !important;
+            margin-left: 2em;
+            color: gray;
+        }
+
+        &__selectionCompletedIcon{
+            font-size: 3em !important;
+            margin-left: 1.65em;
+            color: gray;
+        }
+
+        &__selectionCheck {
+            background: #0f0f14;
+            width: 2.4em;
+            height: 2.4em;
+            border-radius: 50px;
+            margin: 0 1em 0 0.7em;
+        }
+
+        &__headerIcon {
+            color: $adding-green;
+            font-size: 5em !important;
+            margin-top: -4vh;
+            z-index: 10;
+            filter: drop-shadow(0 0 2rem gray);
+        }
+
+        &__label {
+            color: $adding-green;
+        }
+
+        &__closeBtn:hover {
+            filter: drop-shadow(0 0 0.4rem white);
+            cursor: pointer;
+        }
+    }
+}
+
+.myList:hover {
+    cursor: pointer;
+    box-shadow: 0px 0px 10px 0px gray;
+    border: 2px solid gray;
+}
+
 .personalRating {
     grid-column: 3/4;
     grid-row: 3/4;
@@ -102,7 +266,7 @@
         font-size: 21px;
     }
 
-    &__rateLabel {
+    &__actionLabel {
         color: $rating-yellow;
         font-weight: bold;
         font-size: 22px;
@@ -125,23 +289,35 @@
         min-height: 300px;
         filter: drop-shadow(0 0 1rem black);
 
+        &__closeBtn {
+            position: absolute;
+            margin-top: -1.5em;
+            margin-left: 31vh;
+            z-index: 101;
+        }
+
+        &__closeBtn:hover {
+            filter: drop-shadow(0 0 0.4rem white);
+            cursor: pointer;
+        }
+
         &__growingStar {
             color: $rating-yellow;
             font-size: 7em !important;
             margin-top: -6vh;
             z-index: 10;
             transition: 250ms !important;
-             filter: drop-shadow(0 0 1rem gray);
+            filter: drop-shadow(0 0 2rem gray);
         }
 
         &__starTitle {
-            transform: translateY(-8.5vh);
+            transform: translateY(-2.5em);
             padding: 0;
             margin: 0;
             user-select: none;
         }
 
-        &__rateLabel {
+        &__label {
             color: $rating-yellow;
             margin-top: -4vh;
         }
@@ -159,17 +335,19 @@
 
         &__submitButton {
             padding: 1.2vh;
+            position: relative;
+            transform: translate(-50%, 0%);
+            left: 50%;
             color: #939395;
             width: 7em;
             min-width: 7em;
-            margin-left: 37.5%;
-            margin-top: 2.4vh;
+            margin:2.4vh 0;
             border: solid 2px black;
             background: #575757;
             border-radius: 7px;
             pointer-events: none;
             font-weight: 700;
-            
+
             transition: 250ms;
         }
 
@@ -203,7 +381,6 @@
             box-shadow: 0px 0px 15px 0px #af2323;
             border: 2px solid #af2323;
         }
-
     }
 }
 
@@ -268,6 +445,7 @@
         font-weight: bold;
         font-size: 22px;
         margin-left: 0.2em;
+        transition: 500ms;
     }
 
     &__ratingOutOf {

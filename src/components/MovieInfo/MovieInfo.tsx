@@ -6,6 +6,14 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
+import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
+import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
+import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+
+
+
 
 interface MovieInfoProps { }
 
@@ -24,15 +32,22 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const [personalRating, setPersonalRating] = useState(null);
 
-  //Modal Variables
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => { setOpenModal(true); setStarRatingValue(personalRating); }
-  const handleCloseModal = () => setOpenModal(false);
+  //Rating Modal Variables
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+  const handleOpenRatingModal = () => { setOpenRatingModal(true); setStarRatingValue(personalRating); }
+  const handleCloseRatingModal = () => setOpenRatingModal(false);
   const [starRatingValue, setStarRatingValue] = useState(null);
+
+  //MyList Modal Variables
+  const [openMyListModal, setOpenMyListModal] = useState(false);
+  const handleOpenMyListModal = () => { setOpenMyListModal(true);  }
+  const handleCloseMyListModal = () => setOpenMyListModal(false);
+  const [addedToMyList, setAddedToMyList] = useState(false);
 
   //Rating Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const showSnackbarFeedback = () => setOpenSnackbar(true);
+  
 
 
   var token = localStorage.getItem('token');
@@ -57,7 +72,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         }
       })
       .then(info => {
+
+
+
+
         setData(info);
+
 
         //Set the tab title to the title and release date in brackets
         info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
@@ -66,7 +86,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
 
         //Cut brackets for subtitle string as long as it is not a time period (includes '–')
-        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')))
+        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')) && !(/[a-zA-Z]/.test(info.movie.releaseDate)) )
           setReleaseDate(info.movie.releaseDate.substring(1, info.movie.releaseDate.length - 1));
         else
           setReleaseDate(info.movie.releaseDate);
@@ -111,8 +131,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         <>
           <div className={styles.ratings__ratingSource}>
             <StarBorderRoundedIcon className={styles.ratings__ratingStar} />
-            <span className={styles.personalRating__rateLabel}>Rate</span>
-            <span className={styles.ratings__ratingOutOf}></span>
+            <span className={styles.personalRating__actionLabel}>Rate</span>
           </div>
         </>
       )
@@ -130,7 +149,31 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
-  const submitRating = () => {
+  function displayMyList() {
+
+    if (addedToMyList) {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <BookmarkRoundedIcon className={styles.myList__icon} />
+            <span className={styles.myList__actionLabel}>Added</span>
+          </div>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <div className={styles.ratings__ratingSource}>
+            <BookmarkBorderRoundedIcon className={styles.myList__icon} />
+            <span className={styles.myList__actionLabel}>Add</span>
+          </div>
+        </>
+      )
+    }
+  }
+
+
+  const submitRating = async () => {
     const requestOptions = {
       method: 'POST',
       headers: {
@@ -142,9 +185,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RateMovie?movieID=${id}&rating=${starRatingValue}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
-          setPersonalRating(starRatingValue);
-          showSnackbarFeedback();
+          handleCloseRatingModal();
+          setTimeout(() => {
+            setPersonalRating(starRatingValue);
+            showSnackbarFeedback();
+          }, 150);
           return response.json();
         } else {
           console.warn("Error while processing the the give a rating request!");
@@ -165,9 +210,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RemoveRating?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
-          setPersonalRating(null);
-          showSnackbarFeedback();
+          handleCloseRatingModal();
+          setTimeout(() => {
+            setPersonalRating(null);
+            showSnackbarFeedback();
+          }, 150);
           return response.json();
         } else {
           console.warn("Error while processing the the give a rating request!");
@@ -187,8 +234,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     return subtitleString;
 
   }
-
-
 
 
   function displayCrewMembers(memberPosition) {
@@ -217,6 +262,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       );
   }
 
+
   function displaySnackbarFeedback() {
 
     return (
@@ -243,13 +289,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     return (
       <>
-        <Modal open={openModal} onClose={handleCloseModal}>
-          <Fade in={openModal}>
+        <Modal open={openRatingModal} onClose={handleCloseRatingModal}>
+          <Fade in={openRatingModal}>
             <Box className={styles.personalRating__modal}>
 
-            
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseRatingModal} className={styles.personalRating__modal__closeBtn} />
+
               <StarRoundedIcon id='growingStar' className={styles.personalRating__modal__growingStar} />
-              
+
               {starRatingValue != null ?
                 <h1 id='growingStarTitle' className={styles.personalRating__modal__starTitle}>{starRatingValue}</h1>
                 :
@@ -257,7 +305,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               }
 
 
-              <h3 className={styles.personalRating__modal__rateLabel}>Rate</h3>
+              <h3 className={styles.personalRating__modal__label}>Rate</h3>
               <h2>{data.movie.title}</h2>
               <Rating max={10}
                 icon={<StarRoundedIcon className={styles.personalRating__modal__pickerStarFilled} />}
@@ -270,22 +318,71 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
 
                   if (newValue != null && newValue != personalRating)
+<<<<<<< HEAD
                   document.getElementById('submitRatingBtn').classList.add(styles['personalRating__modal__submitButtonActive']);
                   else
                   document.getElementById('submitRatingBtn').classList.remove(styles['personalRating__modal__submitButtonActive']);
 
+=======
+                    document.getElementById('submitRatingBtn').classList.add(styles['personalRating__modal__submitButtonActive']);
+
+                  else
+                    document.getElementById('submitRatingBtn').classList.remove(styles['personalRating__modal__submitButtonActive']);
+>>>>>>> ab78f968cac956ee90f07914b1f087e1dca618e3
 
                 }}
               />
 
               <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
 
-                {personalRating != null &&
-                
+              {personalRating != null &&
                 <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
-                
+              }
 
-                }
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
+
+
+  function displayMyListModal() {
+
+    return (
+      <>
+        <Modal open={openMyListModal} onClose={handleCloseMyListModal}>
+          <Fade in={openMyListModal}>
+            <Box className={styles.personalRating__modal}>
+
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseMyListModal} className={styles.personalRating__modal__closeBtn} />
+
+              <BookmarkAddRoundedIcon  className={styles.myList__modal__headerIcon} />
+
+              <h3 className={styles.myList__modal__label}>Add to MyList</h3>
+              <h2 className={styles.myList__modal__titleLabel}>{data.movie.title}</h2>
+
+              <input type="radio" name="myListOptionSelect" id="optionWatchlist"/>
+              <label htmlFor="optionWatchlist" className={styles.myList__modal__selectionCard}>
+              <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Watchlist</h4>
+                <WatchlistIcon className={styles.myList__modal__selectionIcon}/>
+              </label>
+
+              <input type="radio" name="myListOptionSelect" id="optionCompleted"/>
+              <label htmlFor="optionCompleted" className={styles.myList__modal__selectionCard}>
+              <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Completed</h4>
+                <CompletedIcon className={styles.myList__modal__selectionCompletedIcon}/>
+              </label>
+
+
+              <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
+
+              {personalRating != null &&
+                <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
+              }
 
             </Box>
           </Fade>
@@ -312,6 +409,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         data && (
           <>
             {displayRatingModal()}
+            {displayMyListModal()}
             {displaySnackbarFeedback()}
 
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
@@ -325,10 +423,19 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
               </div>
 
-              <div onClick={handleOpenModal} className={styles.personalRating}>
-                <span className={styles.personalRating__title}>Your Rating:</span>
+              <div onClick={handleOpenRatingModal} className={styles.personalRating}>
+                <span className={styles.personalRating__title}>My Rating:</span>
                 {displayPersonalRating()}
               </div>
+
+
+              <div onClick={handleOpenMyListModal} className={styles.myList}>
+                <span className={styles.personalRating__title}>My List:</span>
+                {displayMyList()}
+              </div>
+
+
+
 
 
               <div>
@@ -345,7 +452,14 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   <div className={styles.ratings__ratingSource}>
                     <img src="/IMDb_icon.svg" alt="IMDb:" />
                     <StarRoundedIcon className={styles.ratings__ratingStar} />
-                    <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+
+                    {data.movie.rating == null ?
+                      <span className={styles.ratings__ratingNumber}>?</span>
+                      :
+                      <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+                    }
+
+
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>
 

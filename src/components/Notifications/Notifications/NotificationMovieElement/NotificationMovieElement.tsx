@@ -55,8 +55,8 @@ const NotificationMovieElement: FC<NotificationMovieElementProps> = (notificatio
   }
 
   function GoToMoviePage(){
-    notificationInfo.setButtonState((prev) => !prev);
-    navigate(`/movie/${notificationInfo.movie.id}`);
+    notificationInfo.setButtonState();
+    navigate(`/title/${notificationInfo.movie.id}`);
   }
   
 
