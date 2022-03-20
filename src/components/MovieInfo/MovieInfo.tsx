@@ -270,9 +270,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
 
                   if (newValue != null && newValue != personalRating)
-                    document.getElementById('submitRatingBtn').classList.add("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+                  document.getElementById('submitRatingBtn').classList.add(styles['personalRating__modal__submitButtonActive']);
                   else
-                    document.getElementById('submitRatingBtn').classList.remove("MovieInfo_personalRating__modal__submitButtonActive__kDtbc");
+                  document.getElementById('submitRatingBtn').classList.remove(styles['personalRating__modal__submitButtonActive']);
+
 
                 }}
               />

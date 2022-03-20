@@ -1,0 +1,27 @@
+.FriendList {
+    max-width: 900px;
+    font-size: 25px;
+    position: absolute;
+    color: rgb(255, 255, 255);
+    background-color: black;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 300px;
+    max-width: 310px;
+}
+
+.username {
+    left: 40px;
+    top: 10px;
+
+    
+    position:relative;
+   
+
+    
+}
+
+.avatar {
+    left: 5px;
+    position: absolute;
+}
