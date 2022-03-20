@@ -4,7 +4,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import React, { useState } from 'react';
 import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
-import FriendsList from '../FriendsList/FriendsList';
+import Profile from '../Profile/Profile';
 
 const Navbar = () => {
 
@@ -25,7 +25,19 @@ const Navbar = () => {
 
     const closeMenu = () => setClick(false)
     const [buttonState, setButtonState] = useState(false);
-
+    const [buttonState1, setButtonState1] = useState(false);
+    function ToggleButton(){
+        setButtonState((prev) => !prev);
+        if(!buttonState){
+          setButtonState1(true);
+        }
+        else
+        {
+          setTimeout(() => {
+            setButtonState1(false);
+          }, 500);
+        }
+      }
     return (
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
@@ -56,9 +68,10 @@ const Navbar = () => {
                     </li>
                     <div style={{ marginTop: '7px' }}>
 
-                        <IconButton aria-label="delete" onClick={() => setButtonState((prev) => !prev)}>
+                        <IconButton aria-label="delete" onClick={() => ToggleButton()}>
                             <AccountCircleIcon />
                         </IconButton>
+                        {buttonState1?
                         <div style={{position: "fixed"}}>
                         <Grow 
                             in={buttonState}
@@ -68,16 +81,18 @@ const Navbar = () => {
                         >
                           <div>
 
-                           <FriendsList/>
+                           <Profile/>
                            
                           </div>
                           
                         </Grow>
                         </div>
+                       :null}
                     </div>
                 </ul>
             </nav>
         </div>
+        
     )
   
 }

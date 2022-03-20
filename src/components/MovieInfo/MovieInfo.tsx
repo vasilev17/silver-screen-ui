@@ -401,6 +401,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
 
                   if (newValue != null && newValue != personalRating)
+
                     document.getElementById('submitRatingBtn').classList.add(styles['submitButton__submitButtonActive']);
 
                   else

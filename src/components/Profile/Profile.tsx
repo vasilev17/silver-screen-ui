@@ -1,10 +1,11 @@
 import { Avatar, Box, Button, Fade, Grow, Modal, TextField, Typography } from '@mui/material';
 import React, { FC, SyntheticEvent, useEffect, useState } from 'react';
-import styles from './FriendsList.module.scss';
+import styles from './Profile.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Backdrop from '@mui/material/Backdrop';
 import Login from '../Login/Login';
 import SearchIcon from '@mui/icons-material/Search';
+import FriendList from '../FriendList/FriendList';
 
 const style = {
   position: 'absolute',
@@ -22,9 +23,9 @@ const style = {
 
 
 
-interface FriendsListProps { }
+interface ProfileProps { }
 
-const FriendsList: FC<FriendsListProps> = () => {
+const Profile: FC<ProfileProps> = () => {
 
 
 
@@ -55,6 +56,7 @@ const FriendsList: FC<FriendsListProps> = () => {
         'Accept': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
+     
     })
       .then(response => {
         if (response.ok) {
@@ -69,8 +71,7 @@ const FriendsList: FC<FriendsListProps> = () => {
 
         setUsername(data.username);
         setAvatar(data.avatar);
-        console.log(data.username);
-        console.log(data.avatar);
+        
 
         if (data!==null) {
           
@@ -80,8 +81,8 @@ const FriendsList: FC<FriendsListProps> = () => {
               <div className={styles.logout}>
                 <Button variant="outlined" type="button" onClick={() => RemoveToken()}>Logout</Button>
               </div>
-              <div className={styles.username}>
-              <h1>{data.username}</h1>
+              <div  className={styles.username} >
+              {data.username}
               </div>
               <div className={styles.avatar}>
               <Avatar src={data.avatar}/>
@@ -94,6 +95,10 @@ const FriendsList: FC<FriendsListProps> = () => {
               <SearchIcon />
               </div>
               </div>
+              <div className={styles.friendsList2}>
+              <FriendList/>
+              </div>
+              
             </div>
 
 
@@ -170,4 +175,4 @@ const FriendsList: FC<FriendsListProps> = () => {
 }
 
 
-export default FriendsList;
+export default Profile;
