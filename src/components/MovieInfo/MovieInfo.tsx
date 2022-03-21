@@ -4,13 +4,16 @@ import '../MovieInfo/MovieInfo.module.scss';
 import { useParams } from 'react-router-dom';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
+import { Alert, Box, Fade, Modal, Rating, Snackbar, Tooltip } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
 import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
 import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import RecommendationIcon from '@mui/icons-material/ForwardToInboxRounded';
+import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
+import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 
 
 
@@ -49,10 +52,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const handleCloseMyListModal = () => { setOpenMyListModal(false); }
   const [myListCategoryChoice, setMyListCategoryChoice] = useState(null);
 
-  //Rating Feedback Variables
+  //Snackbar Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const showSnackbarFeedback = () => setOpenSnackbar(true);
-
+  const showSnackbarFeedback = (message, snackbarType) => {
+    setSnackbarMessage(message);
+    setSnackbarType(snackbarType);
+    setOpenSnackbar(true);
+  }
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarType, setSnackbarType] = useState("");
 
 
   var token = localStorage.getItem('token');
@@ -225,10 +233,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(starRatingValue);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successful!", "success");
           }, 150);
           return response.json();
         } else {
+          showSnackbarFeedback("Rating error!", "error");
           console.warn("Error while processing the the give a rating request!");
         }
       })
@@ -250,10 +259,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(null);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successfully removed!", "success");
           }, 150);
           return response.json();
         } else {
+          showSnackbarFeedback("Remove rating error!", "error");
           console.warn("Error while processing the remove a rating request!");
         }
       })
@@ -274,10 +284,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseMyListModal();
           setTimeout(() => {
             setMyListCategory(myListCategoryChoice);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Successfully added to MyList!", "success");
           }, 150);
           return response.json();
         } else {
+          showSnackbarFeedback("Add to MyList error!", "error");
           console.warn("Error while processing the add a title to MyList request!");
         }
       })
@@ -298,10 +309,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseMyListModal();
           setTimeout(() => {
             setMyListCategory(null);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Successfully removed from MyList!", "success");
           }, 150);
           return response.json();
         } else {
+          showSnackbarFeedback("Remove from MyList error!", "error");
           console.warn("Error while processing the remove from MyList request!");
         }
       })
@@ -359,14 +371,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <Alert onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
             reason != 'clickaway' &&
               setOpenSnackbar(false);
-          }} severity="success" sx={{ background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' }}>
-            Change successful!
+          }} severity={snackbarType == "success" ? "success" : "error"} sx={snackbarType == "success" ? { background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' } : { background: 'rgb(182 49 49)', borderRadius: '7px', color: 'white' }}>
+            {snackbarMessage}
           </Alert>
 
         </Snackbar>
-      </>
 
+      </>
     );
+
   }
 
   function displayRatingModal() {
@@ -434,8 +447,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     else
       document.getElementById('submitMyListBtn').classList.remove(styles['submitButton__submitButtonActive']);
-
-
 
   }
 
@@ -535,7 +546,32 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <h1 className={styles.movieInfo__title}>{data.movie.title}</h1>
                 <h2 className={styles.movieInfo__subtitle}>{formatSubittleInfo()}</h2>
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
+
+                <div className={styles.underDescriptionMenu}>
+
+                  <div className={styles.underDescriptionMenu__friendRecommendation}>
+
+                    <p className={styles.underDescriptionMenu__subsectionLabel}>Recommend:</p>
+
+                    <Tooltip title="Recommend to a friend" enterDelay={500} leaveDelay={200}>
+                      <div className={styles.underDescriptionMenu__subsectionIcon}><RecommendationIcon sx={{ fontSize: '2.3em' }} /> </div>
+                    </Tooltip>
+                  </div>
+
+
+                  <div className={styles.underDescriptionMenu__releaseNotification}>
+                    <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
+                    <Tooltip title="Set a release date notification" enterDelay={500} leaveDelay={200}>
+                      <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
+                    </Tooltip>
+                  </div>
+                </div>
+
+
               </div>
+
+
+
 
               <div onClick={handleOpenRatingModal} className={styles.personalRating}>
                 <span className={styles.personalRating__title}>My Rating:</span>
@@ -547,7 +583,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <span className={styles.personalRating__title}>My List:</span>
                 {displayMyList()}
               </div>
-
 
 
 
