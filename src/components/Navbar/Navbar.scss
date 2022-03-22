@@ -51,6 +51,9 @@
   display: none;
 }
 
+.nav-item:hover{
+  filter: drop-shadow(0 0 0.4rem white);
+}
 
 @media screen and (max-width:940px) {
   .header {
