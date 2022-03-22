@@ -4,10 +4,18 @@ import '../MovieInfo/MovieInfo.module.scss';
 import { useParams } from 'react-router-dom';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
+import { Alert, Box, Fade, Modal, Rating, Snackbar, Tooltip } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
+import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
+import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
+import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import RecommendationIcon from '@mui/icons-material/ForwardToInboxRounded';
+import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
+import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
+
+
 
 interface MovieInfoProps { }
 
@@ -26,17 +34,33 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   const [personalRating, setPersonalRating] = useState(null);
 
-  const [addedToMyList, setAddedToMyList] = useState(false);
+  const [myListCategory, setMyListCategory] = useState(null);
 
-  //Modal Variables
-  const [openModal, setOpenModal] = useState(false);
-  const handleOpenModal = () => { setOpenModal(true); setStarRatingValue(personalRating); }
-  const handleCloseModal = () => setOpenModal(false);
+  //Rating Modal Variables
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+  const handleOpenRatingModal = () => { setOpenRatingModal(true); setStarRatingValue(personalRating); }
+  const handleCloseRatingModal = () => setOpenRatingModal(false);
   const [starRatingValue, setStarRatingValue] = useState(null);
 
-  //Rating Feedback Variables
+  //MyList Modal Variables
+  const [openMyListModal, setOpenMyListModal] = useState(false);
+  const handleOpenMyListModal = () => {
+    setOpenMyListModal(true);
+    setMyListCategoryChoice(myListCategory);
+
+  }
+  const handleCloseMyListModal = () => { setOpenMyListModal(false); }
+  const [myListCategoryChoice, setMyListCategoryChoice] = useState(null);
+
+  //Snackbar Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const showSnackbarFeedback = () => setOpenSnackbar(true);
+  const showSnackbarFeedback = (message, snackbarType) => {
+    setSnackbarMessage(message);
+    setSnackbarType(snackbarType);
+    setOpenSnackbar(true);
+  }
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarType, setSnackbarType] = useState("");
 
 
   var token = localStorage.getItem('token');
@@ -66,7 +90,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
 
         setData(info);
-        
+
 
         //Set the tab title to the title and release date in brackets
         info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
@@ -75,7 +99,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
 
         //Cut brackets for subtitle string as long as it is not a time period (includes '–')
-        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')))
+        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')) && !(/[a-zA-Z]/.test(info.movie.releaseDate)))
           setReleaseDate(info.movie.releaseDate.substring(1, info.movie.releaseDate.length - 1));
         else
           setReleaseDate(info.movie.releaseDate);
@@ -112,6 +136,38 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     window.scrollTo(0, 0);
   }
 
+  const getMyListInfo = () => {
+    const requestOptions = {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/MyListInfoGetRequest?movieID=${id}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          console.warn("Error while processing the Movie Ratings request!");
+        }
+      })
+      .then(info => {
+
+        if (info == "Watchlist")
+          setMyListCategory(false);
+
+        else if (info == "Completed")
+          setMyListCategory(true);
+
+        else
+          setMyListCategory(null);
+
+      });
+
+    window.scrollTo(0, 0);
+  }
 
   function displayPersonalRating() {
 
@@ -140,12 +196,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   function displayMyList() {
 
-    if (addedToMyList) {
+    if (myListCategory == null) {
       return (
         <>
           <div className={styles.ratings__ratingSource}>
-            <BookmarkRoundedIcon className={styles.myList__icon} />
-            <span className={styles.myList__actionLabel}>Added</span>
+            <BookmarkBorderRoundedIcon className={styles.myList__icon} />
+            <span className={styles.myList__actionLabel}>Add</span>
           </div>
         </>
       )
@@ -153,8 +209,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       return (
         <>
           <div className={styles.ratings__ratingSource}>
-            <BookmarkBorderRoundedIcon className={styles.myList__icon} />
-            <span className={styles.myList__actionLabel}>Add</span>
+            <BookmarkRoundedIcon className={styles.myList__iconAdded} />
+            <span className={styles.myList__actionLabel}>Added</span>
           </div>
         </>
       )
@@ -174,13 +230,14 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RateMovie?movieID=${id}&rating=${starRatingValue}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
+          handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(starRatingValue);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successful!", "success");
           }, 150);
           return response.json();
         } else {
+          showSnackbarFeedback("Rating error!", "error");
           console.warn("Error while processing the the give a rating request!");
         }
       })
@@ -199,18 +256,68 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/RemoveRating?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
-          handleCloseModal();
+          handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(null);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successfully removed!", "success");
           }, 150);
           return response.json();
         } else {
-          console.warn("Error while processing the the give a rating request!");
+          showSnackbarFeedback("Remove rating error!", "error");
+          console.warn("Error while processing the remove a rating request!");
         }
       })
   }
 
+  const addToMyList = async () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/AddMovieToMyList?movieID=${id}&watched=${myListCategoryChoice}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          handleCloseMyListModal();
+          setTimeout(() => {
+            setMyListCategory(myListCategoryChoice);
+            showSnackbarFeedback("Successfully added to MyList!", "success");
+          }, 150);
+          return response.json();
+        } else {
+          showSnackbarFeedback("Add to MyList error!", "error");
+          console.warn("Error while processing the add a title to MyList request!");
+        }
+      })
+  }
+
+  const removeMovieFromMyList = () => {
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/MovieInfo/RemoveMovieFromMyList?movieID=${id}`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          handleCloseMyListModal();
+          setTimeout(() => {
+            setMyListCategory(null);
+            showSnackbarFeedback("Successfully removed from MyList!", "success");
+          }, 150);
+          return response.json();
+        } else {
+          showSnackbarFeedback("Remove from MyList error!", "error");
+          console.warn("Error while processing the remove from MyList request!");
+        }
+      })
+  }
 
   function formatSubittleInfo() {
 
@@ -223,8 +330,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     return subtitleString;
 
   }
-
-
 
 
   function displayCrewMembers(memberPosition) {
@@ -253,6 +358,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       );
   }
 
+
   function displaySnackbarFeedback() {
 
     return (
@@ -265,26 +371,27 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <Alert onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
             reason != 'clickaway' &&
               setOpenSnackbar(false);
-          }} severity="success" sx={{ background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' }}>
-            Change successful!
+          }} severity={snackbarType == "success" ? "success" : "error"} sx={snackbarType == "success" ? { background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' } : { background: 'rgb(182 49 49)', borderRadius: '7px', color: 'white' }}>
+            {snackbarMessage}
           </Alert>
 
         </Snackbar>
-      </>
 
+      </>
     );
+
   }
 
   function displayRatingModal() {
 
     return (
       <>
-        <Modal open={openModal} onClose={handleCloseModal}>
-          <Fade in={openModal}>
+        <Modal open={openRatingModal} onClose={handleCloseRatingModal}>
+          <Fade in={openRatingModal}>
             <Box className={styles.personalRating__modal}>
 
 
-              <CloseRoundedIcon fontSize="medium" onClick={handleCloseModal} className={styles.personalRating__modal__closeBtn} />
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseRatingModal} className={styles.personalRating__modal__closeBtn} />
 
               <StarRoundedIcon id='growingStar' className={styles.personalRating__modal__growingStar} />
 
@@ -295,7 +402,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               }
 
 
-              <h3 className={styles.personalRating__modal__rateLabel}>Rate</h3>
+              <h3 className={styles.personalRating__modal__label}>Rate</h3>
               <h2>{data.movie.title}</h2>
               <Rating max={10}
                 icon={<StarRoundedIcon className={styles.personalRating__modal__pickerStarFilled} />}
@@ -304,22 +411,102 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 onChange={(event, newValue) => {
 
                   setStarRatingValue(newValue);
-
                   document.getElementById('growingStar').style.transform = `scale(${1 + newValue * 0.03})`;
 
                   if (newValue != null && newValue != personalRating)
-                    document.getElementById('submitRatingBtn').classList.add(styles['personalRating__modal__submitButtonActive']);
+
+                    document.getElementById('submitRatingBtn').classList.add(styles['submitButton__submitButtonActive']);
 
                   else
-                    document.getElementById('submitRatingBtn').classList.remove(styles['personalRating__modal__submitButtonActive']);
+                    document.getElementById('submitRatingBtn').classList.remove(styles['submitButton__submitButtonActive']);
 
                 }}
               />
 
-              <div id='submitRatingBtn' onClick={submitRating} className={styles.personalRating__modal__submitButton}>Submit</div>
+              <div id='submitRatingBtn' onClick={submitRating} className={styles.submitButton}>Submit</div>
 
               {personalRating != null &&
-                <div onClick={removeRating} className={styles.personalRating__modal__removeRatingButton}>Remove rating</div>
+                <div onClick={removeRating} className={styles.removeButton}>Remove rating</div>
+              }
+
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
+
+  function checkMyListSelection(event) {
+
+    let currentSelection = event.target.value == "true";
+
+    setMyListCategoryChoice(currentSelection);
+
+    if (currentSelection != null && currentSelection != myListCategory)
+      document.getElementById('submitMyListBtn').classList.add(styles['submitButton__submitButtonActive']);
+
+    else
+      document.getElementById('submitMyListBtn').classList.remove(styles['submitButton__submitButtonActive']);
+
+  }
+
+
+
+
+  function displayMyListModal() {
+
+    return (
+      <>
+        <Modal open={openMyListModal} onClose={handleCloseMyListModal}>
+          <Fade in={openMyListModal}>
+            <Box className={styles.personalRating__modal}>
+
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseMyListModal} className={styles.myList__modal__closeBtn} />
+
+              <BookmarkAddRoundedIcon className={styles.myList__modal__headerIcon} />
+
+              <h3 className={styles.myList__modal__label}>Add to MyList</h3>
+              <h2 className={styles.myList__modal__titleLabel}>{data.movie.title}</h2>
+
+
+              {myListCategoryChoice == false ?
+
+                <input type="radio" name="myListOptionSelect" id="optionWatchlist" value="false" onChange={(event) => checkMyListSelection(event)} checked />
+                :
+                <input type="radio" name="myListOptionSelect" id="optionWatchlist" value="false" onChange={(event) => checkMyListSelection(event)} />
+
+              }
+
+
+
+              <label htmlFor="optionWatchlist" className={styles.myList__modal__selectionCard}>
+                <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Watchlist</h4>
+                <WatchlistIcon className={styles.myList__modal__selectionIcon} />
+              </label>
+
+              {
+                myListCategoryChoice == true ?
+                  <input type="radio" name="myListOptionSelect" id="optionCompleted" value="true" onChange={(event) => checkMyListSelection(event)} checked />
+                  :
+                  <input type="radio" name="myListOptionSelect" id="optionCompleted" value="true" onChange={(event) => checkMyListSelection(event)} />
+
+              }
+
+
+
+              <label htmlFor="optionCompleted" className={styles.myList__modal__selectionCard}>
+                <div className={styles.myList__modal__selectionCheck}></div>
+                <h4 className={styles.myList__modal__selectionLabel}>Completed</h4>
+                <CompletedIcon className={styles.myList__modal__selectionCompletedIcon} />
+              </label>
+
+
+              <div id='submitMyListBtn' onClick={addToMyList} className={styles.submitButton}>Submit</div>
+
+              {myListCategory != null &&
+                <div onClick={removeMovieFromMyList} className={styles.removeButton}>Remove from MyList</div>
               }
 
             </Box>
@@ -335,7 +522,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     getMovieDetails();
     getMovieRatings();
-
+    getMyListInfo();
 
   }, [id]);
 
@@ -347,6 +534,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
         data && (
           <>
             {displayRatingModal()}
+            {displayMyListModal()}
             {displaySnackbarFeedback()}
 
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
@@ -358,19 +546,43 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <h1 className={styles.movieInfo__title}>{data.movie.title}</h1>
                 <h2 className={styles.movieInfo__subtitle}>{formatSubittleInfo()}</h2>
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
+
+                <div className={styles.underDescriptionMenu}>
+
+                  <div className={styles.underDescriptionMenu__friendRecommendation}>
+
+                    <p className={styles.underDescriptionMenu__subsectionLabel}>Recommend:</p>
+
+                    <Tooltip title="Recommend to a friend" enterDelay={500} leaveDelay={200}>
+                      <div className={styles.underDescriptionMenu__subsectionIcon}><RecommendationIcon sx={{ fontSize: '2.3em' }} /> </div>
+                    </Tooltip>
+                  </div>
+
+
+                  <div className={styles.underDescriptionMenu__releaseNotification}>
+                    <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
+                    <Tooltip title="Set a release date notification" enterDelay={500} leaveDelay={200}>
+                      <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
+                    </Tooltip>
+                  </div>
+                </div>
+
+
               </div>
 
-              <div onClick={handleOpenModal} className={styles.personalRating}>
+
+
+
+              <div onClick={handleOpenRatingModal} className={styles.personalRating}>
                 <span className={styles.personalRating__title}>My Rating:</span>
                 {displayPersonalRating()}
               </div>
 
 
-              <div onClick={handleOpenModal} className={styles.myList}>
+              <div onClick={handleOpenMyListModal} className={styles.myList}>
                 <span className={styles.personalRating__title}>My List:</span>
                 {displayMyList()}
               </div>
-
 
 
 
@@ -389,14 +601,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   <div className={styles.ratings__ratingSource}>
                     <img src="/IMDb_icon.svg" alt="IMDb:" />
                     <StarRoundedIcon className={styles.ratings__ratingStar} />
-                  {data.movie.rating == null ?
-                  <span className={styles.ratings__ratingNumber}>?</span>
-                  :
 
-                  <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
-                  
-                  }
-                    
+                    {data.movie.rating == null ?
+                      <span className={styles.ratings__ratingNumber}>?</span>
+                      :
+                      <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+                    }
+
 
                     <span className={styles.ratings__ratingOutOf}>/10</span>
                   </div>

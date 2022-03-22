@@ -9,12 +9,13 @@ import NotificationBox from './components/Notifications/Notifications/Notificati
 import NotificationAPITest from './components/Notifications/NotificationAPITest/NotificationAPITest';
 import MovieInfo from './components/MovieInfo/MovieInfo';
 import Register from './components/Register/Register';
-import FriendsList from './components/FriendsList/FriendsList';
+import FriendList from './components/FriendList/FriendList';
 import AddFriend from './components/AddFriend/AddFriend';
 import Unauthorized from './components/Unauthorized/Unauthorized';
 import Administration from './components/Administration/Administration';
 import Series from './components/Series/Series';
 import Movies from './components/Movies/Movies';
+import CommentsTestPage from './components/Comments/CommentsTestPage/CommentsTestPage';
 import Search from './components/Search/Search';
 function App() {
   return (
@@ -30,10 +31,11 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/notificationsAPITest" element={<NotificationAPITest />} />
         <Route path="/title/:id" element={<MovieInfo />} />
-        <Route path="/friendslist" element={<FriendsList />} />
+        <Route path="/friendslist" element={<FriendList />} />
         <Route path="/addfriend" element={<AddFriend />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/administration" element={<Administration />} />
+        <Route path="/commentsTestPage" element={<CommentsTestPage />} />
         <Route path="/search/:searchString" element={<Search />} />
       </Routes>
     </BrowserRouter>

@@ -4,7 +4,7 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import React, { useState } from 'react';
 import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
-import FriendsList from '../FriendsList/FriendsList';
+import Profile from '../Profile/Profile';
 import { useNavigate } from 'react-router';
 
 const Navbar = () => {
@@ -37,7 +37,19 @@ const Navbar = () => {
 
     const closeMenu = () => setClick(false)
     const [buttonState, setButtonState] = useState(false);
-
+    const [buttonState1, setButtonState1] = useState(false);
+    function ToggleButton(){
+        setButtonState((prev) => !prev);
+        if(!buttonState){
+          setButtonState1(true);
+        }
+        else
+        {
+          setTimeout(() => {
+            setButtonState1(false);
+          }, 500);
+        }
+      }
     return (
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
@@ -71,28 +83,31 @@ const Navbar = () => {
                     </li>
                     <div style={{ marginTop: '7px' }}>
 
-                        <IconButton aria-label="delete" onClick={() => setButtonState((prev) => !prev)}>
+                        <IconButton aria-label="delete" onClick={() => ToggleButton()}>
                             <AccountCircleIcon />
                         </IconButton>
-                        <div style={{ position: "fixed" }}>
-                            <Grow
-                                in={buttonState}
-                                style={{ transformOrigin: '0 0 0' }}
-                                {...(buttonState ? { timeout: 500 } : {})}
+                        {buttonState1?
+                        <div style={{position: "fixed"}}>
+                        <Grow 
+                            in={buttonState}
+                            style={{ transformOrigin: '0 0 0' }}
+                            {...(buttonState ? { timeout: 500 } : {})}
+                           
+                        >
+                          <div>
 
-                            >
-                                <div>
-
-                                    <FriendsList />
-
-                                </div>
-
-                            </Grow>
+                           <Profile/>
+                           
+                          </div>
+                          
+                        </Grow>
                         </div>
+                       :null}
                     </div>
                 </ul>
             </nav>
         </div>
+        
     )
 
 }
