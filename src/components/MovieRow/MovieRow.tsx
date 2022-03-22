@@ -5,7 +5,8 @@ interface MovieRowProps {
   genre?,
   content?,
   showGenreTittle,
-  myListIsWatched?
+  myListIsWatched?,
+  searchString?
 }
 const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
@@ -32,16 +33,34 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       };
       if (MovieRowInfo.content == null) {
         if (MovieRowInfo.genre == null) {
-          //myList movies
-          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
-            .then(response => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                console.warn("Error while processing the request!");
-              }
-            })
-            .then(data => { setMovies(data); setLoaded(true); });
+          if (MovieRowInfo.myListIsWatched == null) {
+
+            fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesBySearch?searchString=${MovieRowInfo.searchString}`, requestOptionsWithoutAuthorization)
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  console.warn("Error while processing the Movie Info request!");
+                }
+              })
+              .then(data => {
+
+                setMovies(data);
+                setLoaded(true);
+              });
+
+          } else {
+            //myList movies
+            fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  console.warn("Error while processing the request!");
+                }
+              })
+              .then(data => { setMovies(data); setLoaded(true); });
+          }
         } else {
           //get movies with genre
           fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptionsWithoutAuthorization)
@@ -99,7 +118,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   function DisplayMovies() {
     if (loaded) {
       //movie map code
-      if (MovieRowInfo.myListIsWatched != null) {
+      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null) {
 
         return DisplayMoviesInSeparateRows();
       } else {
