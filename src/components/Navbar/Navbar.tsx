@@ -24,7 +24,7 @@ const Navbar = () => {
     }
 
     const handleSearch = () => {
-        if (searchString != ""){
+        if (searchString != null){
             navigate(`/search/${searchString}`);
             window.location.reload();
         }

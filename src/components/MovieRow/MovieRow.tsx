@@ -1,6 +1,8 @@
 import { Skeleton } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieRow.module.scss';
+import ArrowLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
 interface MovieRowProps {
   genre?,
   content?,
@@ -12,7 +14,25 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   const [movies, setMovies] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const contentWrapper = React.useRef(null);
   var token = localStorage.getItem('token');
+
+  const sideScroll = (
+    element: HTMLDivElement,
+    speed: number,
+    distance: number,
+    step: number
+  ) => {
+    let scrollAmount = 0;
+
+    const slideTimer = setInterval(() => {
+      element.scrollLeft += step;
+      scrollAmount += Math.abs(step);
+      if (scrollAmount >= distance) {
+        clearInterval(slideTimer);
+      }
+    }, speed);
+  };
 
   useEffect(() => {
     const getDetail = async () => {
@@ -129,6 +149,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
 
             <div className={styles.rowThumbnails}>
+            <div className={styles.ContentWrapper} ref={contentWrapper}>
               {movies.$values.map((movie, i) => (
                 <img onClick={() => handleClick(movie.id)} key={i}
                   className={styles.rowThumbnail}
@@ -136,7 +157,25 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
                   alt={movie.title}
                 />
               ))}
-            </div>
+              </div>
+              </div>
+              <div className={styles.ButtonWrapper}>
+                <div className={styles.Button}
+                  onClick={() => {
+                    sideScroll(contentWrapper.current, 15, 620, -30);
+                  }}
+                >
+                  <ArrowLeftIcon className={styles.Arrow}/>
+                </div>
+                <div className={styles.Button}
+                  onClick={() => {
+                    sideScroll(contentWrapper.current, 15, 620, 30);
+                  }}
+                >
+                  <ArrowRightIcon className={styles.Arrow}/>
+                </div>
+              </div>
+            
           </>
         );
       }
