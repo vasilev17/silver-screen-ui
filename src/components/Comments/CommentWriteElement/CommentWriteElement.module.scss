@@ -42,6 +42,7 @@
     border-bottom: 0.2rem solid #4D4D4D;
     padding: 0.5rem;
     display: flex;
+    position: relative;
 
     &_input{
         background-color: #00000000;
@@ -59,12 +60,12 @@
     }
 
     &_wordCounter{
-        position: fixed;
-        width: 92.5%;
+        position: absolute;
+        width: 48.2rem;
         color: inherit;
         font-size: 18px;
         text-align: right;
-        top: 10.2rem;
+        top: 7.2rem;
         pointer-events: none;
         text-shadow: 0 0 3px black;
 
