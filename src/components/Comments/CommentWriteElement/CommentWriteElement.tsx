@@ -55,6 +55,7 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           return response.json();
         } else {
           setLoadingComment(false);
+          setNotLoggedIn(true);
         }
       })
       .then(data => {
@@ -74,6 +75,7 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       })
       .catch(error => {
         setLoadingComment(false);
+        setNotLoggedIn(true);
       });
   }
 
@@ -209,14 +211,54 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       )
     }
 
-    if(notLoggedIn) {
+    if(!notLoggedIn) {
       return (
         <>
-          <div className={styles.CommentBoxLoading}>
-            <div>
-              <LockOutlinedIcon style={{width: '3.2rem', height: '3.2rem', color: '#8b8b8b'}} />
+          <div className={styles.CommentTextBox}>
+            <textarea id="commentTextArea" 
+              onChange={() => RefreshTextLenght()} 
+              onKeyDown={(e) => RestrictEnter(e)}        
+              className={styles.CommentTextBox_input}
+              defaultValue={ commentContents }
+              />
+            <div className={styles.CommentTextBox_wordCounter}>
+              <div className={styles.CommentTextBox_wordCounter_text}>
+                {contentLength}/500
+              </div>
             </div>
-            <div className={styles.CommentBoxLoading_text}>You are currently not logged in to post a comment!</div>
+          </div>
+          <div className={styles.CommentButtonsBox}>
+            {DisplayButtonSet()}
+            
+            <div style={{marginRight: "8rem"}}>
+              <LockOutlinedIcon
+                style={{
+                  fontSize: '2rem',
+                  position: 'absolute',
+                  marginLeft: '-1.3rem',
+                  marginTop: '0.2rem',
+                  color: '#a3a3a3'
+                }}/>
+              <Tooltip title="Make this comment only visible to your friends">
+                <FormControlLabel
+                  value="start"
+                  control={
+                    <Switch color="default" 
+                      checked={commentIsFriendOnly} 
+                      onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
+                    />
+                  }
+                  label="Friends only"
+                  style={{color: "#a3a3a3"}}
+                  labelPlacement="start"
+                />
+              </Tooltip>  
+            </div>
+  
+            {/* <div style={{width: '57%', alignSelf: 'center'}}>
+              #BUTTONS#
+            </div>*/}
+  
           </div>
         </>
       );
@@ -224,54 +266,14 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
 
     return (
       <>
-        <div className={styles.CommentTextBox}>
-          <textarea id="commentTextArea" 
-            onChange={() => RefreshTextLenght()} 
-            onKeyDown={(e) => RestrictEnter(e)}        
-            className={styles.CommentTextBox_input}
-            defaultValue={ commentContents }
-            />
-          <div className={styles.CommentTextBox_wordCounter}>
-            <div className={styles.CommentTextBox_wordCounter_text}>
-              {contentLength}/500
-            </div>
+        <div className={styles.CommentBoxLoading}>
+          <div>
+            <LockOutlinedIcon style={{width: '3.2rem', height: '3.2rem', color: '#8b8b8b'}} />
           </div>
-        </div>
-        <div className={styles.CommentButtonsBox}>
-          {DisplayButtonSet()}
-          
-          <div style={{marginRight: "8rem"}}>
-            <LockOutlinedIcon
-              style={{
-                fontSize: '2rem',
-                position: 'absolute',
-                marginLeft: '-1.3rem',
-                marginTop: '0.2rem',
-                color: '#a3a3a3'
-              }}/>
-            <Tooltip title="Make this comment only visible to your friends">
-              <FormControlLabel
-                value="start"
-                control={
-                  <Switch color="default" 
-                    checked={commentIsFriendOnly} 
-                    onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
-                  />
-                }
-                label="Friends only"
-                style={{color: "#a3a3a3"}}
-                labelPlacement="start"
-              />
-            </Tooltip>  
-          </div>
-
-          {/* <div style={{width: '57%', alignSelf: 'center'}}>
-            #BUTTONS#
-          </div>*/}
-
+          <div className={styles.CommentBoxLoading_text}>You are currently not logged in to post a comment!</div>
         </div>
       </>
-    )
+    ); 
   }
 
   useEffect(() => {
