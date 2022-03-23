@@ -606,6 +606,11 @@ input[type="radio"] {
     }
 }
 
+.commentSection{
+grid-column: 2/7;
+grid-row: 5/6;
+}
+
 .disabled {
     filter: blur(1px);
     opacity: 45%;

@@ -16,6 +16,8 @@ import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
 import LockIcon from '@mui/icons-material/HttpsRounded';
 import PlayIcon from '@mui/icons-material/PlayArrowRounded';
 import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
+import CommentWriteElement from '../Comments/CommentWriteElement/CommentWriteElement';
+import CommentLoader from '../Comments/CommentLoader/CommentLoader';
 
 
 
@@ -448,7 +450,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               data.staff.$values.filter(member => member.position === memberPosition).map((member, i) => (
                 <div key={i}>
                   <span className={styles.crew__crewName}>&nbsp;{member.name}</span>
-                  <br/>
+                  <br />
                 </div>
               ))
             }
@@ -629,7 +631,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               <CloseRoundedIcon fontSize="medium" onClick={handleCloseTrailerModal} className={styles.trailerModal__closeBtn} />
 
               <iframe className={styles.trailerModal__player} src={`https://www.youtube.com/embed/${data.movie.trailer}?autoplay=1`} title="YouTube trailer" frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
 
             </Box>
@@ -691,7 +693,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
             {displayTrailerModal()}
             {displaySnackbarFeedback()}
 
-            
+
 
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
 
@@ -774,8 +776,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
               </div>
 
-            </div>
 
+
+              <div className={styles.commentSection}>
+                <CommentWriteElement movieId={parseInt(id)} />
+                <br/>
+                <CommentLoader movieId={parseInt(id)} />
+              </div>
+
+
+            </div>
 
 
           </>
