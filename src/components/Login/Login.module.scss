@@ -1,5 +1,12 @@
 @import "/src/App.scss";
 
+.everything {
+    left: 50%;
+    top:  50%;
+    transform: translate(-50%);
+    position: relative;
+ 
+}
 
 .sign_in {
     @include flex(flex-start, flex-start);

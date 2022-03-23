@@ -42,7 +42,6 @@ const FriendList: FC<FriendListProps> = () => {
 
 
 
-          console.log(data.obj.$values[1].username);
           for (var i = 0; i < length; i++) {
             setCode(
               <div className={styles.FriendList}>

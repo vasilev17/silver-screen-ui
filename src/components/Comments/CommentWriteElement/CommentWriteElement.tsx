@@ -8,9 +8,6 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 interface CommentWriteElementProps {
   movieId:number;
-  setOpenAlert;
-  setAlertMsg;
-  setAlertErr;
 }
 
 const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
@@ -23,6 +20,9 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
   const [commentContents, setCommentContents] = useState("");
   const [commentIsFriendOnly, setCommentIsFriendOnly] = useState(false);
   const [inEditMode, setInEditMode] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("Test message.");
+  const [alertErr, setAlertErr] = useState(false);
 
   function RefreshTextLenght() {  
     var textBox = document.getElementById('commentTextArea') as HTMLTextAreaElement;
@@ -55,6 +55,7 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           return response.json();
         } else {
           setLoadingComment(false);
+          setNotLoggedIn(true);
         }
       })
       .then(data => {
@@ -74,6 +75,7 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       })
       .catch(error => {
         setLoadingComment(false);
+        setNotLoggedIn(true);
       });
   }
 
@@ -117,9 +119,9 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
 
   function SendComment(){
     if(commentContents.length === 0){
-      props.setOpenAlert(true);
-      props.setAlertMsg("You can't send comment with empty contents!");;
-      props.setAlertErr(true);
+      setOpenAlert(true);
+      setAlertMsg("You can't send comment with empty contents!");;
+      setAlertErr(true);
       return;
     }
     setLoadingComment(true);
@@ -138,21 +140,21 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           ExistingCommentD();
           setInEditMode(true);
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(`Your comment has been ${inEditMode ? "edited successfully!" : "published!"}`);
-          props.setAlertErr(false);
+          setOpenAlert(true);
+          setAlertMsg(`Your comment has been ${inEditMode ? "edited successfully!" : "published!"}`);
+          setAlertErr(false);
         } else {
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
-          props.setAlertErr(true);
+          setOpenAlert(true);
+          setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
+          setAlertErr(true);
         }
       })
       .catch(error => {
         setLoadingComment(false);
-        props.setOpenAlert(true);
-        props.setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
-        props.setAlertErr(true);
+        setOpenAlert(true);
+        setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
+        setAlertErr(true);
       });
   }
 
@@ -175,22 +177,22 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           EmptyCommentD();
           setInEditMode(false);
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(`Your comment has been deleted successfully!`);
-          props.setAlertErr(false);
+          setOpenAlert(true);
+          setAlertMsg(`Your comment has been deleted successfully!`);
+          setAlertErr(false);
           RefreshTextLenght();
         } else {
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg("Something went wrong while deleting your comment!");
-          props.setAlertErr(true);
+          setOpenAlert(true);
+          setAlertMsg("Something went wrong while deleting your comment!");
+          setAlertErr(true);
         }
       })
       .catch(error => {
         setLoadingComment(false);
-        props.setOpenAlert(true);
-        props.setAlertMsg("Something went wrong while deleting your comment!");
-        props.setAlertErr(true);
+        setOpenAlert(true);
+        setAlertMsg("Something went wrong while deleting your comment!");
+        setAlertErr(true);
       });
   }
 
@@ -209,14 +211,54 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       )
     }
 
-    if(notLoggedIn) {
+    if(!notLoggedIn) {
       return (
         <>
-          <div className={styles.CommentBoxLoading}>
-            <div>
-              <LockOutlinedIcon style={{width: '3.2rem', height: '3.2rem', color: '#8b8b8b'}} />
+          <div className={styles.CommentTextBox}>
+            <textarea id="commentTextArea" 
+              onChange={() => RefreshTextLenght()} 
+              onKeyDown={(e) => RestrictEnter(e)}        
+              className={styles.CommentTextBox_input}
+              defaultValue={ commentContents }
+              />
+            <div className={styles.CommentTextBox_wordCounter}>
+              <div className={styles.CommentTextBox_wordCounter_text}>
+                {contentLength}/500
+              </div>
             </div>
-            <div className={styles.CommentBoxLoading_text}>You are currently not logged in to post a comment!</div>
+          </div>
+          <div className={styles.CommentButtonsBox}>
+            {DisplayButtonSet()}
+            
+            <div style={{marginRight: "8rem"}}>
+              <LockOutlinedIcon
+                style={{
+                  fontSize: '2rem',
+                  position: 'absolute',
+                  marginLeft: '-1.3rem',
+                  marginTop: '0.2rem',
+                  color: '#a3a3a3'
+                }}/>
+              <Tooltip title="Make this comment only visible to your friends">
+                <FormControlLabel
+                  value="start"
+                  control={
+                    <Switch color="default" 
+                      checked={commentIsFriendOnly} 
+                      onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
+                    />
+                  }
+                  label="Friends only"
+                  style={{color: "#a3a3a3"}}
+                  labelPlacement="start"
+                />
+              </Tooltip>  
+            </div>
+  
+            {/* <div style={{width: '57%', alignSelf: 'center'}}>
+              #BUTTONS#
+            </div>*/}
+  
           </div>
         </>
       );
@@ -224,54 +266,14 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
 
     return (
       <>
-        <div className={styles.CommentTextBox}>
-          <textarea id="commentTextArea" 
-            onChange={() => RefreshTextLenght()} 
-            onKeyDown={(e) => RestrictEnter(e)}        
-            className={styles.CommentTextBox_input}
-            defaultValue={ commentContents }
-            />
-          <div className={styles.CommentTextBox_wordCounter}>
-            <div className={styles.CommentTextBox_wordCounter_text}>
-              {contentLength}/500
-            </div>
+        <div className={styles.CommentBoxLoading}>
+          <div>
+            <LockOutlinedIcon style={{width: '3.2rem', height: '3.2rem', color: '#8b8b8b'}} />
           </div>
-        </div>
-        <div className={styles.CommentButtonsBox}>
-          {DisplayButtonSet()}
-          
-          <div style={{marginRight: "8rem"}}>
-            <LockOutlinedIcon
-              style={{
-                fontSize: '2rem',
-                position: 'absolute',
-                marginLeft: '-1.3rem',
-                marginTop: '0.2rem',
-                color: '#a3a3a3'
-              }}/>
-            <Tooltip title="Make this comment only visible to your friends">
-              <FormControlLabel
-                value="start"
-                control={
-                  <Switch color="default" 
-                    checked={commentIsFriendOnly} 
-                    onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
-                  />
-                }
-                label="Friends only"
-                style={{color: "#a3a3a3"}}
-                labelPlacement="start"
-              />
-            </Tooltip>  
-          </div>
-
-          {/* <div style={{width: '57%', alignSelf: 'center'}}>
-            #BUTTONS#
-          </div>*/}
-
+          <div className={styles.CommentBoxLoading_text}>You are currently not logged in to post a comment!</div>
         </div>
       </>
-    )
+    ); 
   }
 
   useEffect(() => {
@@ -285,6 +287,11 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       <div className={styles.CommentBox}>
         {RenderComment(loadingComment)}
       </div>
+      <Snackbar open={openAlert} autoHideDuration={3000} onClose={() => setOpenAlert(false)}>
+        <Alert onClose={() => setOpenAlert(false)} severity={alertErr ? "error" : "success"} sx={{ width: '100%' }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

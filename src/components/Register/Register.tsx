@@ -47,19 +47,34 @@ const Register: FC<RegisterProps> = () => {
           let re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
           
-          if (data.errorMessage === "This username is already in use") {
+          if (data.errorMessage == "This username is already in use") {
           setUsernameError(data.errorMessage);
           setEmailError(" ");
           setPasswordError(" ");
-          }else if (data.errorMessage === "This email is already in use") {
+          setConfirmPasswordError(" ");
+          }else if (data.errorMessage == "Username is not valid") {
+          setUsernameError(data.errorMessage);
+          setEmailError(" ");
+          setPasswordError(" ");
+          setConfirmPasswordError(" ");
+          }else if (data.errorMessage == "The username requires more than 3 and less than 20 characters") {
+          setUsernameError(data.errorMessage);
+          setEmailError(" ");
+          setPasswordError(" ");
+          setConfirmPasswordError(" ");
+        
+          }else if (data.errorMessage == "This email is already in use") {
             setEmailError(data.errorMessage);
             setUsernameError(" ");
             setPasswordError(" ");
-            if ( re.test(email) ) {
-              
-          }else{
-            setEmailError("invalid email");
-          }
+            setConfirmPasswordError(" ");
+            
+          }else if (data.errorMessage == "Invalid Email") {
+            setEmailError(data.errorMessage);
+            setUsernameError(" ");
+            setPasswordError(" ");
+            setConfirmPasswordError(" ");
+            
           }else if(data.errorMessage === "wrong password"){
             setPasswordError(data.errorMessage);
             setConfirmPasswordError(data.errorMessage);
@@ -68,6 +83,8 @@ const Register: FC<RegisterProps> = () => {
           }else{
             setPasswordError(data.errorMessage);
             setConfirmPasswordError(data.errorMessage);
+            setEmailError(" ");
+            setUsernameError(" ");
           }
           
           
@@ -80,7 +97,7 @@ const Register: FC<RegisterProps> = () => {
     navigate("/login");
   }
   return (
-    <div className={styles.Login}>
+    <div className={styles.everything}>
       <form onSubmit={submit}>
         <div >
 
