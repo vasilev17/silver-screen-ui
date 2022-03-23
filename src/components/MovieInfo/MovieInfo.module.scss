@@ -87,7 +87,7 @@
 .underDescriptionMenu {
     grid-column: 3/7;
     display: flex;
-    color: #959595;
+    color: #b5b5b5;
 
     &__subsectionLabel {
         font-size: 21px;
@@ -541,9 +541,44 @@ input[type="radio"] {
 }
 
 .disabled {
-    opacity: 25%;
     filter: blur(1px);
+    opacity: 25%;
     pointer-events: none;
+    user-select: none;
+
+    &__friendRating {
+        transform: translate(78px, -65px);
+        font-size: 2.4em !important;
+        opacity: 85%;
+    }
+
+    &__personalRating {
+        grid-column: 3/4;
+        grid-row: 3/4;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2.4em !important;
+        opacity: 85%;
+    }
+
+    &__myList {
+        grid-column: 4/5;
+        grid-row: 3/4;
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2.4em !important;
+        opacity: 85%;
+    }
+
+    &__underDescriptionMenu {
+        transform: translate(502%, -143%);
+        font-size: 2.4em !important;
+        opacity: 85%;
+    }
 }
 
 @media only screen and (max-width: 1200px) {

@@ -21,6 +21,21 @@
     margin-right: 0.2rem;
 }
 
+.CommentBoxLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3rem;
+
+    &_text{
+        color: #b1b1b1;
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+}
+
 .CommentTextBox{
     color: #666666;
     height: 8em;
@@ -49,7 +64,7 @@
         color: inherit;
         font-size: 18px;
         text-align: right;
-        top: 56%;
+        top: 10.2rem;
         pointer-events: none;
         text-shadow: 0 0 3px black;
 
