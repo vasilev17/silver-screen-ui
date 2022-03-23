@@ -6,8 +6,10 @@ interface AddFriendProps { }
 
 const AddFriend: FC<AddFriendProps> = () => {
 
-  const [id, setId] = useState(' ');
+  const [username, setUsername] = useState(' ');
   const [message, setMessage] = useState(' ');
+  const [errormessage, setErrorMessage] = useState(' ');
+  const [response, setResponse] = useState(' ');
   var token = localStorage.getItem('token');
 
   const submit = async (e: SyntheticEvent) => {
@@ -19,26 +21,21 @@ const AddFriend: FC<AddFriendProps> = () => {
       'Authorization': `Bearer ${token}`},
       
       body: JSON.stringify({
-        friendID:id,
+        username,
         message,
 
       })
     })
       .then(response => {
         if (response.ok) {
+          setResponse("Sent Request");
+          setErrorMessage(" ");
           return response.json();
         } else {
-          alert("Error while processing the request!");
+          setErrorMessage("this username doesn't exist");
+          setResponse(" ");
         }
-      }).then(data => {
-          console.log(data.token);
-          window.location.reload();
-        
-          
-
-
-        
-      });
+      })
       
 
   }
@@ -52,13 +49,14 @@ const AddFriend: FC<AddFriendProps> = () => {
 
           <TextField className={styles.id}
             fullWidth
-            label="Id"
+            label="Username"
             id="filled-size-normal"
             defaultValue=""
             // variant="filled"
-            required onChange={e => setId(e.target.value)}
+            required onChange={e => setUsername(e.target.value)}
             variant="standard"
-
+            error={errormessage != " "}
+            helperText={errormessage}
           />
         </div>
         <div >
@@ -78,8 +76,11 @@ const AddFriend: FC<AddFriendProps> = () => {
             size="large"
             type="submit">
             <span><h1>Submit</h1></span>
+            
           </Button>
         </CardActions>
+        <div className={styles.request}>{response}</div>
+        
       </form>
     </div>
     </div>

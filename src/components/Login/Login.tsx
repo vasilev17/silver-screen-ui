@@ -64,7 +64,7 @@ const Login: FC<LoginProps> = () => {
 
   }
   return (
-    <div className={styles.Login}>
+    <div className={styles.everything}>
       <form onSubmit={submit}>
         <div >
 
