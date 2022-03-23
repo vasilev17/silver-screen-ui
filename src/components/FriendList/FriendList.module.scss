@@ -1,7 +1,6 @@
 .FriendList {
-    max-width: 900px;
     font-size: 25px;
-    position: absolute;
+    position: relative;
     color: rgb(255, 255, 255);
     background-color: black;
     overflow-y: scroll;
@@ -11,10 +10,9 @@
 }
 
 .username {
-    left: 40px;
-    top: 10px;
-
-    
+    left: -15px;
+    top: 5px;
+    font-size: 30px;
     position:relative;
    
 
@@ -22,6 +20,7 @@
 }
 
 .avatar {
-    left: 5px;
-    position: absolute;
+    left: -10px;
+    top: -0px;
+    position: relative;
 }
