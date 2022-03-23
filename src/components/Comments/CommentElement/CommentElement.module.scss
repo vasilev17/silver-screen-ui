@@ -27,3 +27,12 @@
     width: 200rem;
     align-self: flex-start;
 }
+
+.ProfileBox {
+    padding: 2rem;
+    width: 40rem;
+    max-width: 40rem;
+    border-right: 0.2rem solid rgb(77, 77, 77);
+    height: -webkit-fill-available;
+    overflow: hidden;
+}

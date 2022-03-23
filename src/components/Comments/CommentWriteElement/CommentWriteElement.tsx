@@ -1,4 +1,4 @@
-import { Alert, CircularProgress, FormControlLabel, IconButton, Snackbar, Switch } from '@mui/material';
+import { Alert, CircularProgress, FormControlLabel, IconButton, Snackbar, Switch, Tooltip } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './CommentWriteElement.module.scss';
 import SendIcon from '@mui/icons-material/Send';
@@ -89,21 +89,27 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
     if(inEditMode){
       return(
         <>
-          <IconButton aria-label="EditComment" onClick={SendComment} style={{color: "#808080"}}>
-            <EditOutlinedIcon />
-          </IconButton>
-          <IconButton aria-label="DeleteComment" onClick={DeleteComment} style={{color: "#808080"}}>
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
+          <Tooltip title="Edit comment">
+            <IconButton aria-label="EditComment" onClick={SendComment} style={{color: "#808080"}}>
+              <EditOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Delete comment">
+            <IconButton aria-label="DeleteComment" onClick={DeleteComment} style={{color: "#808080"}}>
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Tooltip>
         </>
       );
     } 
     else {
       return(
         <>
-          <IconButton aria-label="Send" onClick={SendComment} style={{color: "#808080"}}>
-            <SendIcon />
-          </IconButton>
+          <Tooltip title="Publish comment">
+            <IconButton aria-label="Send" onClick={SendComment} style={{color: "#808080"}}>
+              <SendIcon />
+            </IconButton>
+          </Tooltip>
         </>
       );
     }
@@ -243,18 +249,20 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
                 marginTop: '0.2rem',
                 color: '#a3a3a3'
               }}/>
-            <FormControlLabel
-              value="start"
-              control={
-                <Switch color="default" 
-                  checked={commentIsFriendOnly} 
-                  onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
-                />
-              }
-              label="Friends only"
-              style={{color: "#a3a3a3"}}
-              labelPlacement="start"
-            />
+            <Tooltip title="Make this comment only visible to your friends">
+              <FormControlLabel
+                value="start"
+                control={
+                  <Switch color="default" 
+                    checked={commentIsFriendOnly} 
+                    onChange={() => setCommentIsFriendOnly((prev) => !prev)} 
+                  />
+                }
+                label="Friends only"
+                style={{color: "#a3a3a3"}}
+                labelPlacement="start"
+              />
+            </Tooltip>  
           </div>
 
           {/* <div style={{width: '57%', alignSelf: 'center'}}>

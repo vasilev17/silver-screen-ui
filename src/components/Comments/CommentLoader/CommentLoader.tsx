@@ -57,11 +57,12 @@ const CommentLoader: FC<CommentLoaderProps> = (props) => {
     else {
       return (
         <>
-          {comments !== null ? comments.$values.map(data => (
+          {comments !== null ? comments.comments.$values.map(data => (
               <div key={data.id}>
                 <CommentElement
                   comment={data}
                   ReportComment={ReportComment}
+                  isAuthorized={comments.authorized}
                 />
                 <br/>
               </div>
