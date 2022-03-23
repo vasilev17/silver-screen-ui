@@ -21,12 +21,28 @@
     margin-right: 0.2rem;
 }
 
+.CommentBoxLoading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 3rem;
+
+    &_text{
+        color: #b1b1b1;
+        font-size: 1.3rem;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+}
+
 .CommentTextBox{
     color: #666666;
     height: 8em;
     border-bottom: 0.2rem solid #4D4D4D;
     padding: 0.5rem;
     display: flex;
+    position: relative;
 
     &_input{
         background-color: #00000000;
@@ -44,12 +60,12 @@
     }
 
     &_wordCounter{
-        position: fixed;
-        width: 92.5%;
+        position: absolute;
+        width: 48.2rem;
         color: inherit;
         font-size: 18px;
         text-align: right;
-        top: 56%;
+        top: 7.2rem;
         pointer-events: none;
         text-shadow: 0 0 3px black;
 

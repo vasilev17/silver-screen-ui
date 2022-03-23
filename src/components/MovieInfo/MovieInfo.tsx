@@ -4,13 +4,17 @@ import '../MovieInfo/MovieInfo.module.scss';
 import { useParams } from 'react-router-dom';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import { Alert, Box, Fade, Modal, Rating, Snackbar } from '@mui/material';
+import { Alert, Box, Fade, Modal, Rating, Snackbar, Tooltip } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
 import WatchlistIcon from '@mui/icons-material/AddToQueueRounded';
 import BookmarkAddRoundedIcon from '@mui/icons-material/BookmarkAddRounded';
 import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
+import RecommendationIcon from '@mui/icons-material/ForwardToInboxRounded';
+import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
+import LockIcon from '@mui/icons-material/HttpsRounded';
+import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 
 
 
@@ -49,13 +53,22 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const handleCloseMyListModal = () => { setOpenMyListModal(false); }
   const [myListCategoryChoice, setMyListCategoryChoice] = useState(null);
 
-  //Rating Feedback Variables
+  //Snackbar Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const showSnackbarFeedback = () => setOpenSnackbar(true);
+  const showSnackbarFeedback = (message, snackbarType) => {
+    setSnackbarMessage(message);
+    setSnackbarType(snackbarType);
+    setOpenSnackbar(true);
+  }
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarType, setSnackbarType] = useState("");
 
 
+  const [logged, setLogged] = useState(false);
+  var loggedUsersOnly = !logged ? styles.disabled : '';
 
   var token = localStorage.getItem('token');
+
 
 
 
@@ -72,9 +85,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           return response.json();
-        } else {
-          console.warn("Error while processing the Movie Info request!");
         }
+      }).catch(() => {
+
+        console.warn("Error while processing the Movie Info request!");
+
       })
       .then(info => {
 
@@ -115,10 +130,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/MovieRatingsGetRequest?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
+          setLogged(true);
           return response.json();
-        } else {
-          console.warn("Error while processing the Movie Ratings request!");
         }
+      }).catch(() => {
+
+        console.warn("Error while processing the Movie Ratings request!");
+
       })
       .then(info => {
         info.friendRating != 0 && setFriendRating(info.friendRating.toFixed(1));
@@ -140,10 +158,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     fetch(`${process.env.REACT_APP_API}/MovieInfo/MyListInfoGetRequest?movieID=${id}`, requestOptions)
       .then(response => {
         if (response.ok) {
+          setLogged(true);
           return response.json();
-        } else {
-          console.warn("Error while processing the Movie Ratings request!");
         }
+      }).catch(() => {
+
+        console.warn("Error while processing the Movie Ratings request!");
+
       })
       .then(info => {
 
@@ -166,19 +187,33 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     if (personalRating == null) {
       return (
         <>
-          <div className={styles.ratings__ratingSource}>
-            <StarBorderRoundedIcon className={styles.ratings__ratingStar} />
-            <span className={styles.personalRating__actionLabel}>Rate</span>
+          <div onClick={handleOpenRatingModal} className={`${styles.personalRating} ${loggedUsersOnly}`} >
+            <span className={styles.personalRating__title}>My Rating:</span>
+            <div className={styles.ratings__ratingSource}>
+              <StarBorderRoundedIcon className={styles.ratings__ratingStar} />
+              <span className={styles.personalRating__actionLabel}>Rate</span>
+            </div>
           </div>
+
+          {!logged &&
+            <Tooltip title="Sign in to rate" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+              <LockIcon className={styles.disabled__personalRating} />
+            </Tooltip>
+          }
+
+
         </>
       )
     } else {
       return (
         <>
-          <div className={styles.ratings__ratingSource}>
-            <StarRoundedIcon className={styles.ratings__ratingStar} />
-            <span className={styles.ratings__ratingNumber}>{personalRating}</span>
-            <span className={styles.ratings__ratingOutOf}>/10</span>
+          <div onClick={handleOpenRatingModal} className={`${styles.personalRating} ${loggedUsersOnly}`} >
+            <span className={styles.personalRating__title}>My Rating:</span>
+            <div className={styles.ratings__ratingSource}>
+              <StarRoundedIcon className={styles.ratings__ratingStar} />
+              <span className={styles.ratings__ratingNumber}>{personalRating}</span>
+              <span className={styles.ratings__ratingOutOf}>/10</span>
+            </div>
           </div>
         </>
       )
@@ -191,22 +226,72 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     if (myListCategory == null) {
       return (
         <>
-          <div className={styles.ratings__ratingSource}>
-            <BookmarkBorderRoundedIcon className={styles.myList__icon} />
-            <span className={styles.myList__actionLabel}>Add</span>
+          <div onClick={handleOpenMyListModal} className={`${styles.myList} ${loggedUsersOnly}`}>
+            <span className={styles.personalRating__title}>My List:</span>
+            <div className={styles.ratings__ratingSource}>
+              <BookmarkBorderRoundedIcon className={styles.myList__icon} />
+              <span className={styles.myList__actionLabel}>Add</span>
+            </div>
           </div>
+
+          {!logged &&
+            <Tooltip title="Sign in to add to MyList" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+              <LockIcon className={styles.disabled__myList} />
+            </Tooltip>
+          }
         </>
       )
     } else {
       return (
         <>
-          <div className={styles.ratings__ratingSource}>
-            <BookmarkRoundedIcon className={styles.myList__iconAdded} />
-            <span className={styles.myList__actionLabel}>Added</span>
+          <div onClick={handleOpenMyListModal} className={styles.myList}>
+            <span className={styles.personalRating__title}>My List:</span>
+            <div className={styles.ratings__ratingSource}>
+              <BookmarkRoundedIcon className={styles.myList__iconAdded} />
+              <span className={styles.myList__actionLabel}>Added</span>
+            </div>
           </div>
         </>
       )
     }
+  }
+
+  function displayIMDBRating() {
+
+    return (
+      <div className={styles.ratings__ratingSource}>
+        <img src="/IMDb_icon.svg" alt="IMDb:" />
+        <StarRoundedIcon className={styles.ratings__ratingStar} />
+
+        {data.movie.rating == null ?
+          <span className={styles.ratings__ratingNumber}>?</span>
+          :
+          <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+        }
+
+        <span className={styles.ratings__ratingOutOf}>/10</span>
+      </div>
+    )
+  }
+
+  function displayFriendRating() {
+
+    return (
+      <>
+        <div className={`${styles.ratings__ratingSource} ${loggedUsersOnly}`}>
+          <img src="/FriendRating_icon.svg" alt="Friend Rating:" />
+          <StarRoundedIcon className={styles.ratings__ratingStar} />
+          <span className={styles.ratings__ratingNumber}>{friendRating}</span>
+          <span className={styles.ratings__ratingOutOf}>/10</span>
+        </div>
+        {!logged &&
+          <Tooltip title="Sign in to see your friends' ratings" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+            <LockIcon className={styles.disabled__friendRating} />
+          </Tooltip>
+        }
+      </>
+    )
+
   }
 
 
@@ -225,13 +310,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(starRatingValue);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successful!", "success");
           }, 150);
           return response.json();
-        } else {
-          console.warn("Error while processing the the give a rating request!");
         }
-      })
+      }).catch(() => {
+
+        showSnackbarFeedback("Rating error!", "error");
+        console.warn("Error while processing the the give a rating request!");
+
+      });
   }
 
 
@@ -250,13 +338,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseRatingModal();
           setTimeout(() => {
             setPersonalRating(null);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Rating successfully removed!", "success");
           }, 150);
           return response.json();
-        } else {
-          console.warn("Error while processing the remove a rating request!");
         }
-      })
+      }).catch(() => {
+
+        showSnackbarFeedback("Remove rating error!", "error");
+        console.warn("Error while processing the remove a rating request!");
+
+      });
   }
 
   const addToMyList = async () => {
@@ -274,13 +365,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseMyListModal();
           setTimeout(() => {
             setMyListCategory(myListCategoryChoice);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Successfully added to MyList!", "success");
           }, 150);
           return response.json();
-        } else {
-          console.warn("Error while processing the add a title to MyList request!");
         }
-      })
+      }).catch(() => {
+
+        showSnackbarFeedback("Add to MyList error!", "error");
+        console.warn("Error while processing the add a title to MyList request!");
+
+      });
   }
 
   const removeMovieFromMyList = () => {
@@ -298,13 +392,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           handleCloseMyListModal();
           setTimeout(() => {
             setMyListCategory(null);
-            showSnackbarFeedback();
+            showSnackbarFeedback("Successfully removed from MyList!", "success");
           }, 150);
           return response.json();
-        } else {
-          console.warn("Error while processing the remove from MyList request!");
         }
-      })
+      }).catch(() => {
+
+        showSnackbarFeedback("Remove from MyList error!", "error");
+        console.warn("Error while processing the remove from MyList request!");
+
+      });
   }
 
   function formatSubittleInfo() {
@@ -359,14 +456,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <Alert onClose={(event?: React.SyntheticEvent | Event, reason?: string) => {
             reason != 'clickaway' &&
               setOpenSnackbar(false);
-          }} severity="success" sx={{ background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' }}>
-            Change successful!
+          }} severity={snackbarType == "success" ? "success" : "error"} sx={snackbarType == "success" ? { background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' } : { background: 'rgb(182 49 49)', borderRadius: '7px', color: 'white' }}>
+            {snackbarMessage}
           </Alert>
 
         </Snackbar>
-      </>
 
+      </>
     );
+
   }
 
   function displayRatingModal() {
@@ -434,8 +532,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     else
       document.getElementById('submitMyListBtn').classList.remove(styles['submitButton__submitButtonActive']);
-
-
 
   }
 
@@ -505,6 +601,36 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     );
   }
 
+  function displayRecommendSection() {
+
+    return (
+      <>
+        <div className={styles.underDescriptionMenu__friendRecommendation}>
+
+          <p className={styles.underDescriptionMenu__subsectionLabel}>Recommend:</p>
+
+          <Tooltip title="Recommend to a friend" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+            <div className={styles.underDescriptionMenu__subsectionIcon}><RecommendationIcon sx={{ fontSize: '2.3em' }} /> </div>
+          </Tooltip>
+        </div>
+      </>
+    );
+  }
+
+
+  function displayNotifyMeSection() {
+
+    return (
+      <>
+        <div className={styles.underDescriptionMenu__releaseNotification}>
+          <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
+          <Tooltip title="Set a release date notification" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+            <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
+          </Tooltip>
+        </div>
+      </>
+    );
+  }
 
 
   useEffect(() => {
@@ -535,26 +661,28 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <h1 className={styles.movieInfo__title}>{data.movie.title}</h1>
                 <h2 className={styles.movieInfo__subtitle}>{formatSubittleInfo()}</h2>
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
+
+                <div className={`${styles.underDescriptionMenu} ${loggedUsersOnly}`}>
+
+                  {displayRecommendSection()}
+                  {displayNotifyMeSection()}
+                </div>
+
+                {!logged &&
+                  <Tooltip title="Sign in to recommend to friends and set notifications" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+                    <LockIcon className={styles.disabled__underDescriptionMenu} />
+                  </Tooltip>
+                }
+
+
               </div>
 
-              <div onClick={handleOpenRatingModal} className={styles.personalRating}>
-                <span className={styles.personalRating__title}>My Rating:</span>
-                {displayPersonalRating()}
-              </div>
 
+              {displayPersonalRating()}
 
-              <div onClick={handleOpenMyListModal} className={styles.myList}>
-                <span className={styles.personalRating__title}>My List:</span>
-                {displayMyList()}
-              </div>
-
-
-
-
+              {displayMyList()}
 
               <div>
-
-
 
               </div>
 
@@ -563,26 +691,14 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <hr className={styles.sectionSeparator} />
 
                 <div className={styles.ratings__ratingSection}>
-                  <div className={styles.ratings__ratingSource}>
-                    <img src="/IMDb_icon.svg" alt="IMDb:" />
-                    <StarRoundedIcon className={styles.ratings__ratingStar} />
 
-                    {data.movie.rating == null ?
-                      <span className={styles.ratings__ratingNumber}>?</span>
-                      :
-                      <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
-                    }
+                  {displayIMDBRating()}
+                  {displayFriendRating()}
 
 
-                    <span className={styles.ratings__ratingOutOf}>/10</span>
-                  </div>
 
-                  <div className={styles.ratings__ratingSource}>
-                    <img src="/FriendRating_icon.svg" alt="Friend Rating:" />
-                    <StarRoundedIcon className={styles.ratings__ratingStar} />
-                    <span className={styles.ratings__ratingNumber}>{friendRating}</span>
-                    <span className={styles.ratings__ratingOutOf}>/10</span>
-                  </div>
+
+
 
                 </div>
 
@@ -593,7 +709,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <hr className={styles.sectionSeparator} />
                 {
                   data.genres.$values.map((genre, i) => (
-                    <a href={'/' + genre} key={i} className={styles.genres__item}>{genre}</a>
+                    <a href={'/genre/' + genre.toLowerCase()} key={i} className={styles.genres__item}>{genre}</a>
                   ))
                 }
               </div>

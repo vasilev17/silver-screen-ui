@@ -1,17 +1,38 @@
 import { Skeleton } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieRow.module.scss';
+import ArrowLeftIcon from '@mui/icons-material/ArrowCircleLeft';
+import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
 interface MovieRowProps {
   genre?,
   content?,
   showGenreTittle,
-  myListIsWatched?
+  myListIsWatched?,
+  searchString?
 }
 const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   const [movies, setMovies] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const contentWrapper = React.useRef(null);
   var token = localStorage.getItem('token');
+
+  const sideScroll = (
+    element: HTMLDivElement,
+    speed: number,
+    distance: number,
+    step: number
+  ) => {
+    let scrollAmount = 0;
+
+    const slideTimer = setInterval(() => {
+      element.scrollLeft += step;
+      scrollAmount += Math.abs(step);
+      if (scrollAmount >= distance) {
+        clearInterval(slideTimer);
+      }
+    }, speed);
+  };
 
   useEffect(() => {
     const getDetail = async () => {
@@ -32,16 +53,34 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       };
       if (MovieRowInfo.content == null) {
         if (MovieRowInfo.genre == null) {
-          //myList movies
-          fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
-            .then(response => {
-              if (response.ok) {
-                return response.json();
-              } else {
-                console.warn("Error while processing the request!");
-              }
-            })
-            .then(data => { setMovies(data); setLoaded(true); });
+          if (MovieRowInfo.myListIsWatched == null) {
+
+            fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesBySearch?searchString=${MovieRowInfo.searchString}`, requestOptionsWithoutAuthorization)
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  console.warn("Error while processing the Movie Info request!");
+                }
+              })
+              .then(data => {
+
+                setMovies(data);
+                setLoaded(true);
+              });
+
+          } else {
+            //myList movies
+            fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMyList?watched=${MovieRowInfo.myListIsWatched}`, requestOptionsWithAuthorization)
+              .then(response => {
+                if (response.ok) {
+                  return response.json();
+                } else {
+                  console.warn("Error while processing the request!");
+                }
+              })
+              .then(data => { setMovies(data); setLoaded(true); });
+          }
         } else {
           //get movies with genre
           fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesForMainPage?genre=${MovieRowInfo.genre}`, requestOptionsWithoutAuthorization)
@@ -99,7 +138,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   function DisplayMovies() {
     if (loaded) {
       //movie map code
-      if (MovieRowInfo.myListIsWatched != null) {
+      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null) {
 
         return DisplayMoviesInSeparateRows();
       } else {
@@ -110,6 +149,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
 
             <div className={styles.rowThumbnails}>
+            <div className={styles.ContentWrapper} ref={contentWrapper}>
               {movies.$values.map((movie, i) => (
                 <img onClick={() => handleClick(movie.id)} key={i}
                   className={styles.rowThumbnail}
@@ -117,7 +157,25 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
                   alt={movie.title}
                 />
               ))}
-            </div>
+              </div>
+              </div>
+              <div className={styles.ButtonWrapper}>
+                <div className={styles.Button}
+                  onClick={() => {
+                    sideScroll(contentWrapper.current, 15, 620, -30);
+                  }}
+                >
+                  <ArrowLeftIcon className={styles.Arrow}/>
+                </div>
+                <div className={styles.Button}
+                  onClick={() => {
+                    sideScroll(contentWrapper.current, 15, 620, 30);
+                  }}
+                >
+                  <ArrowRightIcon className={styles.Arrow}/>
+                </div>
+              </div>
+            
           </>
         );
       }
