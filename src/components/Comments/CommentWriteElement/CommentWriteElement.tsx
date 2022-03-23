@@ -288,7 +288,7 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
         {RenderComment(loadingComment)}
       </div>
       <Snackbar open={openAlert} autoHideDuration={3000} onClose={() => setOpenAlert(false)}>
-        <Alert onClose={() => setOpenAlert(false)} severity={alertErr ? "error" : "success"} sx={{ width: '100%' }}>
+        <Alert onClose={() => setOpenAlert(false)} severity={alertErr ? "error" : "success"}  sx={!alertErr ? { background: 'rgb(56, 142, 60)', borderRadius: '7px', color: 'white' } : { background: 'rgb(182 49 49)', borderRadius: '7px', color: 'white' }}>
           {alertMsg}
         </Alert>
       </Snackbar>
