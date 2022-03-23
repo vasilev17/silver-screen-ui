@@ -36,3 +36,33 @@
 .rowThumbnail:hover{
     transform: scale(1.08);
 }
+
+.ButtonWrapper{
+  display: flex;
+  position: absolute;
+  margin-top: -155px;
+  margin-left: -65px;
+  width: 99%;
+  justify-content: space-between;
+}
+
+.Button{
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.ContentWrapper{
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.Arrow{
+    font-size: 50px !important;
+    margin: 0 25px;
+}
