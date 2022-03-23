@@ -8,9 +8,6 @@ import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined
 
 interface CommentWriteElementProps {
   movieId:number;
-  setOpenAlert;
-  setAlertMsg;
-  setAlertErr;
 }
 
 const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
@@ -23,6 +20,9 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
   const [commentContents, setCommentContents] = useState("");
   const [commentIsFriendOnly, setCommentIsFriendOnly] = useState(false);
   const [inEditMode, setInEditMode] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("Test message.");
+  const [alertErr, setAlertErr] = useState(false);
 
   function RefreshTextLenght() {  
     var textBox = document.getElementById('commentTextArea') as HTMLTextAreaElement;
@@ -117,9 +117,9 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
 
   function SendComment(){
     if(commentContents.length === 0){
-      props.setOpenAlert(true);
-      props.setAlertMsg("You can't send comment with empty contents!");;
-      props.setAlertErr(true);
+      setOpenAlert(true);
+      setAlertMsg("You can't send comment with empty contents!");;
+      setAlertErr(true);
       return;
     }
     setLoadingComment(true);
@@ -138,21 +138,21 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           ExistingCommentD();
           setInEditMode(true);
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(`Your comment has been ${inEditMode ? "edited successfully!" : "published!"}`);
-          props.setAlertErr(false);
+          setOpenAlert(true);
+          setAlertMsg(`Your comment has been ${inEditMode ? "edited successfully!" : "published!"}`);
+          setAlertErr(false);
         } else {
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
-          props.setAlertErr(true);
+          setOpenAlert(true);
+          setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
+          setAlertErr(true);
         }
       })
       .catch(error => {
         setLoadingComment(false);
-        props.setOpenAlert(true);
-        props.setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
-        props.setAlertErr(true);
+        setOpenAlert(true);
+        setAlertMsg(inEditMode ? "Something went wrong while editing your comment!" : "Your comment has already been published!");
+        setAlertErr(true);
       });
   }
 
@@ -175,22 +175,22 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
           EmptyCommentD();
           setInEditMode(false);
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg(`Your comment has been deleted successfully!`);
-          props.setAlertErr(false);
+          setOpenAlert(true);
+          setAlertMsg(`Your comment has been deleted successfully!`);
+          setAlertErr(false);
           RefreshTextLenght();
         } else {
           setLoadingComment(false);
-          props.setOpenAlert(true);
-          props.setAlertMsg("Something went wrong while deleting your comment!");
-          props.setAlertErr(true);
+          setOpenAlert(true);
+          setAlertMsg("Something went wrong while deleting your comment!");
+          setAlertErr(true);
         }
       })
       .catch(error => {
         setLoadingComment(false);
-        props.setOpenAlert(true);
-        props.setAlertMsg("Something went wrong while deleting your comment!");
-        props.setAlertErr(true);
+        setOpenAlert(true);
+        setAlertMsg("Something went wrong while deleting your comment!");
+        setAlertErr(true);
       });
   }
 
@@ -285,6 +285,11 @@ const CommentWriteElement: FC<CommentWriteElementProps> = (props) => {
       <div className={styles.CommentBox}>
         {RenderComment(loadingComment)}
       </div>
+      <Snackbar open={openAlert} autoHideDuration={3000} onClose={() => setOpenAlert(false)}>
+        <Alert onClose={() => setOpenAlert(false)} severity={alertErr ? "error" : "success"} sx={{ width: '100%' }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </>
   );
 }
