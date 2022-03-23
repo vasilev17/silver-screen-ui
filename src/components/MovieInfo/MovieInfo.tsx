@@ -14,6 +14,7 @@ import CompletedIcon from '@mui/icons-material/BookmarkAddedRounded';
 import RecommendationIcon from '@mui/icons-material/ForwardToInboxRounded';
 import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
 import LockIcon from '@mui/icons-material/HttpsRounded';
+import PlayIcon from '@mui/icons-material/PlayArrowRounded';
 import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 
 
@@ -48,10 +49,20 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const handleOpenMyListModal = () => {
     setOpenMyListModal(true);
     setMyListCategoryChoice(myListCategory);
-
   }
   const handleCloseMyListModal = () => { setOpenMyListModal(false); }
   const [myListCategoryChoice, setMyListCategoryChoice] = useState(null);
+
+  //Trailer Modal Variables
+  const [openTrailerModal, setOpenTrailerModal] = useState(false);
+  const handleOpenTrailerModal = () => {
+    setOpenTrailerModal(true);
+  }
+  const handleCloseTrailerModal = () => setOpenTrailerModal(false);
+
+
+
+
 
   //Snackbar Feedback Variables
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -259,18 +270,20 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   function displayIMDBRating() {
 
     return (
-      <div className={styles.ratings__ratingSource}>
-        <img src="/IMDb_icon.svg" alt="IMDb:" />
-        <StarRoundedIcon className={styles.ratings__ratingStar} />
+      <Tooltip title="IMDb rating" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+        <div className={styles.ratings__ratingSource}>
+          <img src="/IMDb_icon.svg" alt="IMDb:" />
+          <StarRoundedIcon className={styles.ratings__ratingStar} />
 
-        {data.movie.rating == null ?
-          <span className={styles.ratings__ratingNumber}>?</span>
-          :
-          <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
-        }
+          {data.movie.rating == null ?
+            <span className={styles.ratings__ratingNumber}>?</span>
+            :
+            <span className={styles.ratings__ratingNumber}>{data.movie.rating.toFixed(1)}</span>
+          }
 
-        <span className={styles.ratings__ratingOutOf}>/10</span>
-      </div>
+          <span className={styles.ratings__ratingOutOf}>/10</span>
+        </div>
+      </Tooltip>
     )
   }
 
@@ -278,12 +291,14 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     return (
       <>
-        <div className={`${styles.ratings__ratingSource} ${loggedUsersOnly}`}>
-          <img src="/FriendRating_icon.svg" alt="Friend Rating:" />
-          <StarRoundedIcon className={styles.ratings__ratingStar} />
-          <span className={styles.ratings__ratingNumber}>{friendRating}</span>
-          <span className={styles.ratings__ratingOutOf}>/10</span>
-        </div>
+        <Tooltip title="Average of your friends' ratings" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+          <div className={`${styles.ratings__ratingSource} ${loggedUsersOnly}`}>
+            <img src="/FriendRating_icon.svg" alt="Friend Rating:" />
+            <StarRoundedIcon className={styles.ratings__ratingStar} />
+            <span className={styles.ratings__ratingNumber}>{friendRating}</span>
+            <span className={styles.ratings__ratingOutOf}>/10</span>
+          </div>
+        </Tooltip>
         {!logged &&
           <Tooltip title="Sign in to see your friends' ratings" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
             <LockIcon className={styles.disabled__friendRating} />
@@ -431,10 +446,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <span className={styles.crew__actorNames}>
             {
               data.staff.$values.filter(member => member.position === memberPosition).map((member, i) => (
-                <>
-                  <span className={styles.crew__crewName} key={i}>&nbsp;{member.name}</span>
-                  <br />
-                </>
+                <div key={i}>
+                  <span className={styles.crew__crewName}>&nbsp;{member.name}</span>
+                  <br/>
+                </div>
               ))
             }
           </span>
@@ -601,6 +616,29 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     );
   }
 
+
+
+  function displayTrailerModal() {
+
+    return (
+      <>
+        <Modal open={openTrailerModal} onClose={handleCloseTrailerModal}>
+          <Fade in={openTrailerModal}>
+            <Box className={styles.trailerModal}>
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseTrailerModal} className={styles.trailerModal__closeBtn} />
+
+              <iframe className={styles.trailerModal__player} src={`https://www.youtube.com/embed/${data.movie.trailer}?autoplay=1`} title="YouTube trailer" frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
+
   function displayRecommendSection() {
 
     return (
@@ -650,7 +688,10 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <>
             {displayRatingModal()}
             {displayMyListModal()}
+            {displayTrailerModal()}
             {displaySnackbarFeedback()}
+
+            
 
             <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
 
@@ -663,7 +704,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 <p className={styles.movieInfo__description}>{data.movie.description}</p>
 
                 <div className={`${styles.underDescriptionMenu} ${loggedUsersOnly}`}>
-
                   {displayRecommendSection()}
                   {displayNotifyMeSection()}
                 </div>
@@ -674,7 +714,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   </Tooltip>
                 }
 
+              </div>
 
+
+              <div onClick={handleOpenTrailerModal} className={styles.trailerButton}>
+                <PlayIcon className={styles.trailerButton__icon} />
+                <p className={styles.trailerButton__label}>Trailer</p>
               </div>
 
 

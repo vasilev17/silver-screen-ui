@@ -47,7 +47,7 @@
      font-size: 30px;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 167px;
+  max-width: 250px;
     position: absolute;
     
     
@@ -74,18 +74,16 @@
     position: absolute;
     font-size: 15px;
   }
-  .search {
-    left: 190px;
-    top: 5px;
+  .addFriend {
+    left: 270px;
+    top: -4px;
     position: absolute;
     font-size: 15px;
   }
   .friendsList2 {
-    width: 310px;
-    height: 110px;
-    border: 1px solid #ccc;
-    left: 0px;
+    left: 1px;
     top: 121px;
+    width: 310px;
     position: absolute;
   }
   

@@ -162,14 +162,14 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
               <div className={styles.ButtonWrapper}>
                 <div className={styles.Button}
                   onClick={() => {
-                    sideScroll(contentWrapper.current, 15, 620, -30);
+                    sideScroll(contentWrapper.current, 15, 630, -30);
                   }}
                 >
                   <ArrowLeftIcon className={styles.Arrow}/>
                 </div>
                 <div className={styles.Button}
                   onClick={() => {
-                    sideScroll(contentWrapper.current, 15, 620, 30);
+                    sideScroll(contentWrapper.current, 15, 630, 30);
                   }}
                 >
                   <ArrowRightIcon className={styles.Arrow}/>
