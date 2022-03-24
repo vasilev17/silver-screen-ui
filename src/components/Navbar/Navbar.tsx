@@ -1,13 +1,18 @@
 import { Grow, IconButton, TextField } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
 import Profile from '../Profile/Profile';
 import { useNavigate } from 'react-router';
 
 const Navbar = () => {
+
+    const [logged, setLogged] = useState(false);
+    var loggedUsersOnly = !logged ? "disabled" : '';
+
+    var token = localStorage.getItem('token');
 
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
@@ -50,6 +55,39 @@ const Navbar = () => {
           }, 500);
         }
       }
+
+      const getUserInfo = () => {
+        const requestOptions = {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        };
+        fetch(`${process.env.REACT_APP_API}/User/UserGetInfo`, requestOptions)
+          .then(response => {
+            if (response.ok) {
+              setLogged(true);
+              return response.json();
+            }
+          }).catch(() => {
+    
+            console.warn("Error while processing the User Get request!");
+    
+          })
+    
+        window.scrollTo(0, 0);
+      }
+
+
+      useEffect(() => {
+
+        getUserInfo();
+    
+      }, []);
+
+
     return (
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
@@ -78,7 +116,7 @@ const Navbar = () => {
                     <li className='nav-item'>
                         <a href='/movies' onClick={closeMenu}>Movies</a>
                     </li>
-                    <li className='nav-item'>
+                    <li className={`nav-item ${loggedUsersOnly}`}>
                         <a href='/mylist' onClick={closeMenu}>My List</a>
                     </li>
                     <div style={{ marginTop: '7px' }}>

@@ -40,6 +40,7 @@
 .header .nav-item {
   padding: 1rem;
   font-weight: 500;
+  transition: 200ms;
 }
 
 .header .nav-item a:hover {
@@ -88,10 +89,13 @@
 
   .nav-item {
       margin: 1.5rem 0;
-      transition: 200ms;
   }
 
   .header .navbar img {
       width: 150px;
   }
+}
+
+.disabled{
+  display: none !important;
 }

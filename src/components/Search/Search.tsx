@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, Component } from 'react';
 import { useParams } from 'react-router';
 import MovieRow from '../MovieRow/MovieRow';
 import styles from './Search.module.scss';
@@ -14,6 +14,7 @@ const Search: FC<SearchProps> = () => {
   
   return (
     <>
+    <h1 className={styles.Title}>Results for: {searchString}</h1>
       <div className={styles.Search}>
       <MovieRow searchString={searchString} showGenreTittle={false}/>
       </div>

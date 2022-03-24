@@ -1,5 +1,5 @@
 import { Skeleton } from '@mui/material';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, Component } from 'react';
 import styles from './MovieRow.module.scss';
 import ArrowLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
@@ -54,7 +54,6 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
       if (MovieRowInfo.content == null) {
         if (MovieRowInfo.genre == null) {
           if (MovieRowInfo.myListIsWatched == null) {
-
             fetch(`${process.env.REACT_APP_API}/MainPageMovieInfo/GetMoviesBySearch?searchString=${MovieRowInfo.searchString}`, requestOptionsWithoutAuthorization)
               .then(response => {
                 if (response.ok) {
