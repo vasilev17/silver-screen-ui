@@ -106,26 +106,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       })
       .then(info => {
 
-
-
-
         setData(info);
 
-
-        //Set the tab title to the title and release date in brackets
-        info.movie.releaseDate.includes('(') ? document.title = info.movie.title + " " + info.movie.releaseDate : document.title = info.movie.title + " (" + info.movie.releaseDate + ")";
-
-        //Format duration in "?h ??m" format
+        setReleaseDate(info.movie.releaseDate.substring(0, 4));
+        document.title = info.movie.title + " (" + info.movie.releaseDate.substring(0, 4) + ")"
         info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
 
-        //Cut brackets for subtitle string as long as it is not a time period (includes '–')
-        if (info.movie.releaseDate.includes('(') && !(info.movie.releaseDate.includes('–')) && !(/[a-zA-Z]/.test(info.movie.releaseDate)))
-          setReleaseDate(info.movie.releaseDate.substring(1, info.movie.releaseDate.length - 1));
-        else
-          setReleaseDate(info.movie.releaseDate);
-
         window.scrollTo(0, 0);
-
 
       });
   }
@@ -660,16 +647,18 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   function displayNotifyMeSection() {
 
-    return (
-      <>
-        <div className={styles.underDescriptionMenu__releaseNotification}>
-          <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
-          <Tooltip title="Set a release date notification" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
-            <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
-          </Tooltip>
-        </div>
-      </>
-    );
+    if(new Date(data.movie.releaseDate) > new Date()){
+      return (
+        <>
+          <div className={styles.underDescriptionMenu__releaseNotification}>
+            <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
+            <Tooltip title="Set a release date notification" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+              <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
+            </Tooltip>
+          </div>
+        </>
+      );
+    }
   }
 
 
@@ -710,10 +699,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   {displayNotifyMeSection()}
                 </div>
 
-                {!logged &&
+                { !logged ? new Date(data.movie.releaseDate) > new Date() ?
                   <Tooltip title="Sign in to recommend to friends and set notifications" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
-                    <LockIcon className={styles.disabled__underDescriptionMenu} />
+                    <LockIcon className={styles.disabled__underDescriptionMenuFull} />
                   </Tooltip>
+                  :
+                  <Tooltip title="Sign in to recommend to friends" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+                    <LockIcon className={styles.disabled__underDescriptionMenuPartial} />
+                  </Tooltip>
+                  :
+                  null
                 }
 
               </div>
@@ -780,7 +775,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
               <div className={styles.commentSection}>
                 <CommentWriteElement movieId={parseInt(id)} />
-                <br/>
+                <br />
                 <CommentLoader movieId={parseInt(id)} />
               </div>
 

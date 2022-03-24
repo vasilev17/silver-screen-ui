@@ -1,14 +1,11 @@
 import styled from '@emotion/styled';
-import { Button, CardActions, IconButton, Stack } from '@mui/material';
+import { Button, CardActions, IconButton, Input, Stack } from '@mui/material';
 import React, { FC, SyntheticEvent, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import styles from './UploadAvatar.module.scss';
 
 
 interface UploadAvatarProps { }
-const Input = styled('input')({
-    display: 'none',
-});
 const UploadAvatar: FC<UploadAvatarProps> = () => {
 
     const [avatar, setAvatar] = useState(' ');
@@ -36,7 +33,6 @@ const UploadAvatar: FC<UploadAvatarProps> = () => {
                 }
             }).then(data => {
                 console.log(data.token);
-                window.location.reload();
 
 
 
@@ -47,17 +43,12 @@ const UploadAvatar: FC<UploadAvatarProps> = () => {
     return (
         <div  >
             <form onSubmit={submit}>
+                
 
-                <Stack direction="row" alignItems="center" spacing={2} className={styles.UploadAvatar2}>
-
-                    <label htmlFor="icon-button-file">
-                        <Input accept="image/*"id="icon-button-file"type="file" required onChange={e => setAvatar(e.target.value)}
-                        />
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                            <PhotoCamera />
-                        </IconButton>
+                    <label htmlFor="contained-button-file" className={styles.UploadAvatar2}>
+                        <Input  id="contained-button-file"  type="file" required onChange={e => setAvatar(e.target.value)}/>
+                        
                     </label>
-                </Stack>
 
 
                 <CardActions className={styles.UploadAvatar} >
@@ -66,7 +57,7 @@ const UploadAvatar: FC<UploadAvatarProps> = () => {
                         variant="contained"
                         size="small"
                         type="submit">
-                        <span><h1>Submit</h1></span>
+                        <span>Submit</span>
                     </Button>
                 </CardActions>
             </form>
