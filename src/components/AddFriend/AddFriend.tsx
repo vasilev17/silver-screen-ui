@@ -41,10 +41,12 @@ const AddFriend: FC<AddFriendProps> = () => {
   }
 
   return (
-<div>
-    <div>
+    <div className={styles.everything}>
       <form onSubmit={submit}>
 
+      <div className={styles.header}>
+        <h1>ADD FRIEND</h1>
+      </div >
         <div >
 
           <TextField className={styles.id}
@@ -83,7 +85,7 @@ const AddFriend: FC<AddFriendProps> = () => {
         
       </form>
     </div>
-    </div>
+    
 
 
   );

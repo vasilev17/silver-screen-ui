@@ -1,7 +1,14 @@
+.everything {
+    left: 50%;
+    top:  50%;
+    transform: translate(-50%);
+    position: relative;
+ 
+}
 .id {
     max-width: 290px;
-    top: 200px;
-    left: 38%;
+    top: 220px;
+    left: 42%;
     position: absolute;
     color: black;
     
@@ -9,8 +16,8 @@
 .message {
     
     max-width: 290px;
-    top: 220px;
-    left: 38%;
+    top: 240px;
+    left: 42%;
     position: absolute;
     color: black;
  
@@ -19,17 +26,24 @@
     
     max-width: 290px;
     height: 60px;
-    top: 250px;
+    top: 270px;
     font-size: 55px;
-    left: 38%;
+    left: 42%;
     position: absolute;
     color: black;
  
 }
 .request {
     
-    left: 41%;
-    top:  50%;
+    left: 44.8%;
+    top:  500px;
     position: absolute;
     font-size: 30px;
+}
+.header{
+    left: 40.5%;
+    top:  40%;
+    position: absolute;
+    font-size: 30px;
+
 }

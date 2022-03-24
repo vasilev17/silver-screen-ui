@@ -1,9 +1,7 @@
 @import "/src/App.scss";
 
 .everything {
-    left: 50%;
-    top:  50%;
-    transform: translate(-50%);
+    left: 4.5%;
     position: relative;
  
 }
@@ -12,7 +10,7 @@
     max-width: 900px;
     font-size: 25px;
     top: 70px;
-    left: 34%;
+    left: 34.5%;
     position: absolute;
     color: rgb(255, 255, 255);
  
@@ -30,7 +28,7 @@
 .username {
     @include flex(flex-start, flex-start);
     max-width: 290px;
-    top: 250px;
+    top: 220px;
     left: 38%;
     position: absolute;
     color: black;
@@ -39,7 +37,7 @@
 .password {
     
     max-width: 290px;
-    top: 300px;
+    top: 240px;
     left: 38%;
     position: absolute;
     color: black;
@@ -48,7 +46,7 @@
 .confirmPassword {
     
     max-width: 290px;
-    top: 350px;
+    top: 260px;
     left: 38%;
     position: absolute;
     color: black;
@@ -59,7 +57,7 @@
     
     max-width: 290px;
     height: 60px;
-    top: 400px;
+    top: 310px;
     font-size: 55px;
     left: 38%;
     position: absolute;
@@ -67,12 +65,12 @@
  
 }
 .createaccounttext{
-    top: 800px;
+    top: 700px;
     left: 42%;
     position: absolute;
 }
 .createaccount{
-    top: 850px;
+    top: 750px;
     left: 43%;
     position: absolute;
 }
