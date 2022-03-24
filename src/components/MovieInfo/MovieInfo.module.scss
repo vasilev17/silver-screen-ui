@@ -135,6 +135,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 10px;
     background: white;
     border-radius: 14px;
     margin: 0.5em;
@@ -612,8 +613,8 @@ grid-row: 5/6;
 }
 
 .disabled {
-    filter: blur(1px);
-    opacity: 45%;
+  //  filter: blur(1px);
+    opacity: 30%;
     pointer-events: none;
     user-select: none;
 
@@ -645,8 +646,14 @@ grid-row: 5/6;
         opacity: 85%;
     }
 
-    &__underDescriptionMenu {
+    &__underDescriptionMenuFull {
         transform: translate(502%, -143%);
+        font-size: 2.4em !important;
+        opacity: 85%;
+    }
+
+    &__underDescriptionMenuPartial {
+        transform: translate(177%, -143%);
         font-size: 2.4em !important;
         opacity: 85%;
     }
