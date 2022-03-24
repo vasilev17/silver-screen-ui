@@ -103,7 +103,6 @@ const Profile: FC<ProfileProps> = () => {
                       
 
                 </div>
-
                 <div className={styles.friendsList}>
                   <div className={styles.friends}>
                     <h1>Friends</h1>
