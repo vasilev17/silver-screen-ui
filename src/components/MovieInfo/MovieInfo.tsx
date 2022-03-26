@@ -647,7 +647,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   function displayNotifyMeSection() {
 
-    if(new Date(data.movie.releaseDate) > new Date()){
+    if (new Date(data.movie.releaseDate) > new Date()) {
       return (
         <>
           <div className={styles.underDescriptionMenu__releaseNotification}>
@@ -699,7 +699,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   {displayNotifyMeSection()}
                 </div>
 
-                { !logged ? new Date(data.movie.releaseDate) > new Date() ?
+                <div onClick={handleOpenTrailerModal} className={styles.trailerButton}>
+                  <PlayIcon className={styles.trailerButton__icon} />
+                  <p className={styles.trailerButton__label}>Trailer</p>
+                </div>
+
+                {!logged ? new Date(data.movie.releaseDate) > new Date() ?
                   <Tooltip title="Sign in to recommend to friends and set notifications" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
                     <LockIcon className={styles.disabled__underDescriptionMenuFull} />
                   </Tooltip>
@@ -712,13 +717,6 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 }
 
               </div>
-
-
-              <div onClick={handleOpenTrailerModal} className={styles.trailerButton}>
-                <PlayIcon className={styles.trailerButton__icon} />
-                <p className={styles.trailerButton__label}>Trailer</p>
-              </div>
-
 
               {displayPersonalRating()}
 

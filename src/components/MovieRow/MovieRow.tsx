@@ -115,6 +115,11 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   const handleClick = (id) => {
     window.location.href = "/title/" + id;
 
+    //Save scroll data
+    if (window.location.pathname == "/") {
+      sessionStorage.setItem('mainPageScrollPosition', String(window.pageYOffset));
+    }
+
   };
 
   function DisplayMoviesInSeparateRows() {
@@ -148,33 +153,33 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
 
             <div className={styles.rowThumbnails}>
-            <div className={styles.ContentWrapper} ref={contentWrapper}>
-              {movies.$values.map((movie, i) => (
-                <img onClick={() => handleClick(movie.id)} key={i}
-                  className={styles.rowThumbnail}
-                  src={movie.thumbnail}
-                  alt={movie.title}
-                />
-              ))}
+              <div className={styles.ContentWrapper} ref={contentWrapper}>
+                {movies.$values.map((movie, i) => (
+                  <img onClick={() => handleClick(movie.id)} key={i}
+                    className={styles.rowThumbnail}
+                    src={movie.thumbnail}
+                    alt={movie.title}
+                  />
+                ))}
               </div>
+            </div>
+            <div className={styles.ButtonWrapper}>
+              <div className={styles.Button}
+                onClick={() => {
+                  sideScroll(contentWrapper.current, 15, 630, -30);
+                }}
+              >
+                <ArrowLeftIcon className={styles.Arrow} />
               </div>
-              <div className={styles.ButtonWrapper}>
-                <div className={styles.Button}
-                  onClick={() => {
-                    sideScroll(contentWrapper.current, 15, 630, -30);
-                  }}
-                >
-                  <ArrowLeftIcon className={styles.Arrow}/>
-                </div>
-                <div className={styles.Button}
-                  onClick={() => {
-                    sideScroll(contentWrapper.current, 15, 630, 30);
-                  }}
-                >
-                  <ArrowRightIcon className={styles.Arrow}/>
-                </div>
+              <div className={styles.Button}
+                onClick={() => {
+                  sideScroll(contentWrapper.current, 15, 630, 30);
+                }}
+              >
+                <ArrowRightIcon className={styles.Arrow} />
               </div>
-            
+            </div>
+
           </>
         );
       }

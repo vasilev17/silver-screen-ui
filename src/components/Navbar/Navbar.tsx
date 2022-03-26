@@ -91,7 +91,7 @@ const Navbar = () => {
     return (
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
-                <a href='/' className='logo'>
+                <a href='/' className='logo' onClick={() => sessionStorage.removeItem("mainPageScrollPosition")}>
                     <img src="/logoS.png" alt='logo' />
                 </a>
                 <div className='hamburger' onClick={handleClick}>
@@ -108,7 +108,7 @@ const Navbar = () => {
                         <NotificationButton />
                     </div>
                     <li className='nav-item'>
-                        <a href='/' onClick={closeMenu}>Home</a>
+                        <a href='/' onClick={() => {closeMenu(); sessionStorage.removeItem("mainPageScrollPosition");}}>Home</a>
                     </li>
                     <li className='nav-item'>
                         <a href='/series' onClick={closeMenu}>Series</a>
