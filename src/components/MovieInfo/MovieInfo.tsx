@@ -609,23 +609,24 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   function displayTrailerModal() {
 
-    return (
-      <>
-        <Modal open={openTrailerModal} onClose={handleCloseTrailerModal}>
-          <Fade in={openTrailerModal}>
-            <Box className={styles.trailerModal}>
+    if (data.movie.trailer != null) {
+      return (
+        <>
+          <Modal open={openTrailerModal} onClose={handleCloseTrailerModal}>
+            <Fade in={openTrailerModal}>
+              <Box className={styles.trailerModal}>
 
-              <CloseRoundedIcon fontSize="medium" onClick={handleCloseTrailerModal} className={styles.trailerModal__closeBtn} />
+                <CloseRoundedIcon fontSize="medium" onClick={handleCloseTrailerModal} className={styles.trailerModal__closeBtn} />
 
-              <iframe className={styles.trailerModal__player} src={`https://www.youtube.com/embed/${data.movie.trailer}?autoplay=1`} title="YouTube trailer" frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                <iframe className={styles.trailerModal__player} src={`${data.movie.trailer}?autoplay=1`} title="Title trailer" frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
-
-            </Box>
-          </Fade>
-        </Modal>
-      </>
-    );
+              </Box>
+            </Fade>
+          </Modal>
+        </>
+      );
+    }
   }
 
   function displayRecommendSection() {
@@ -684,7 +685,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
 
 
-            <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.thumbnail})` }}></div>
+            <div className={styles.banner} style={{ backgroundImage: `url(${data.movie.bgimage})` }}></div>
 
             <div className={styles.content}>
 
@@ -699,11 +700,13 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                   {displayNotifyMeSection()}
                 </div>
 
-                <div onClick={handleOpenTrailerModal} className={styles.trailerButton}>
-                  <PlayIcon className={styles.trailerButton__icon} />
-                  <p className={styles.trailerButton__label}>Trailer</p>
-                </div>
-
+                {data.movie.trailer != null &&
+                  <div onClick={handleOpenTrailerModal} className={styles.trailerButton}>
+                    <PlayIcon className={styles.trailerButton__icon} />
+                    <p className={styles.trailerButton__label}>Trailer</p>
+                  </div>
+                }
+                
                 {!logged ? new Date(data.movie.releaseDate) > new Date() ?
                   <Tooltip title="Sign in to recommend to friends and set notifications" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
                     <LockIcon className={styles.disabled__underDescriptionMenuFull} />
