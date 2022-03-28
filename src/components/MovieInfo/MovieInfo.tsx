@@ -15,9 +15,9 @@ import RecommendationIcon from '@mui/icons-material/ForwardToInboxRounded';
 import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
 import LockIcon from '@mui/icons-material/HttpsRounded';
 import PlayIcon from '@mui/icons-material/PlayArrowRounded';
-import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 import CommentWriteElement from '../Comments/CommentWriteElement/CommentWriteElement';
 import CommentLoader from '../Comments/CommentLoader/CommentLoader';
+import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 
 
 
@@ -256,12 +256,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
     }
   }
 
-  function displayIMDBRating() {
+  function displayTMDBRating() {
 
     return (
-      <Tooltip title="IMDb rating" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+      <Tooltip title="TMDb rating" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
         <div className={styles.ratings__ratingSource}>
-          <img src="/IMDb_icon.svg" alt="IMDb:" />
+          <img src="/TMDB_icon.svg" alt="TMDB:" />
           <StarRoundedIcon className={styles.ratings__ratingStar} />
 
           {data.movie.rating == null ?
@@ -732,13 +732,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
                 <div className={styles.ratings__ratingSection}>
 
-                  {displayIMDBRating()}
+                  {displayTMDBRating()}
                   {displayFriendRating()}
-
-
-
-
-
 
                 </div>
 
