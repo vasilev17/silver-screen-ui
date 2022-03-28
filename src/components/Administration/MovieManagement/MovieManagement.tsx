@@ -7,7 +7,7 @@ interface MovieManagementProps {}
 
 const MovieManagement: FC<MovieManagementProps> = () => (
   <div className={styles.MovieManagement}>
-    <AdminWindowComponent title={"Add movies via the IMDb API:"} iconSet={1} height={'12rem'} padding={'2.4rem'}> 
+    <AdminWindowComponent title={"Add movies via the TMDB API:"} iconSet={1} height={'12rem'} padding={'2.4rem'}> 
       <AddIMDBMovies />
     </AdminWindowComponent>
   </div>
