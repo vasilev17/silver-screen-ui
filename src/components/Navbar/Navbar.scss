@@ -40,6 +40,7 @@
 .header .nav-item {
   padding: 1rem;
   font-weight: 500;
+  transition: 200ms;
 }
 
 .header .nav-item a:hover {
@@ -51,6 +52,9 @@
   display: none;
 }
 
+.nav-item:hover{
+  filter: drop-shadow(0 0 0.4rem white);
+}
 
 @media screen and (max-width:940px) {
   .header {
@@ -90,4 +94,8 @@
   .header .navbar img {
       width: 150px;
   }
+}
+
+.disabled{
+  display: none !important;
 }

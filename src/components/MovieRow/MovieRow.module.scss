@@ -12,7 +12,6 @@
     display: flex;
     overflow-y: hidden;
     overflow-x: scroll;
-    padding: 10px 20px 20px;
 }
 
 
@@ -35,4 +34,37 @@
 
 .rowThumbnail:hover{
     transform: scale(1.08);
+}
+
+.ButtonWrapper{
+  display: flex;
+  position: absolute;
+  margin-top: -155px;
+  margin-left: -65px;
+  width: 99.5%;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.Button{
+  color: white;
+  cursor: pointer;
+  pointer-events: all;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
+.ContentWrapper{
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  border-radius: 10px;
+  padding: 10px 20px 20px;
+}
+
+.Arrow{
+    font-size: 50px !important;
+    margin: 0 9px;
 }

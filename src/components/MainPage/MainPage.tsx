@@ -1,8 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import MovieRow from '../MovieRow/MovieRow';
 import styles from './MainPage.module.scss';
 
 function MainPage() {
+
+
+  useEffect(() => {
+
+    //Load scroll data
+    setTimeout(() => {
+      const scrollPosition = sessionStorage.getItem("mainPageScrollPosition");
+      if (scrollPosition) {
+        window.scroll(0, parseInt(scrollPosition));
+        sessionStorage.removeItem("mainPageScrollPosition");
+      }else{
+        window.scrollTo(0, 0);
+      }
+    }, 150);
+
+  }, []);
+
   return (
   <div className={styles.MovieRow}>
 
