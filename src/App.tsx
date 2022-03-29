@@ -18,6 +18,7 @@ import Movies from './components/Movies/Movies';
 import CommentsTestPage from './components/Comments/CommentsTestPage/CommentsTestPage';
 import Search from './components/Search/Search';
 import PageNotFound from './components/PageNotFound/PageNotFound';
+import GenrePage from './components/GenrePage/GenrePage';
 function App() {
   return (
     <>
@@ -34,13 +35,14 @@ function App() {
         <Route path="/title/:id" element={<MovieInfo />} />
         <Route path="/friendslist" element={<FriendList />} />
         <Route path="/addfriend" element={<AddFriend />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/administration" element={<Administration />} />
         <Route path="/commentsTestPage" element={<CommentsTestPage />} />
         <Route path="/search/:searchString" element={<Search />} />
+        <Route path="/genre/:genre" element={<GenrePage />} />
+        
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/pageNotFound" element={<PageNotFound />} />
-
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="*" element={<PageNotFound />}/>
 
       </Routes>
     </BrowserRouter>

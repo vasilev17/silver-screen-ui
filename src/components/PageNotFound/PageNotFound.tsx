@@ -23,8 +23,11 @@ const PageNotFound: FC<PageNotFoundProps> = () => {
       <div className={styles.border} />
 
       <div className={styles.textUnderBorder}>
-        This page does not seem to exist. Please return to the main webpage
+        This page does not seem to exist. Please return to the <a className={styles.mainPageLink} href={'/'}>main webpage</a>
       </div>
+
+
+
     </div>
   );
 };

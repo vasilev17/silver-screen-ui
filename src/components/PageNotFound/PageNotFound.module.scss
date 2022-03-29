@@ -32,3 +32,16 @@
     padding-right: 1.2rem;
     max-width: 42.5rem;
 }
+
+.mainPageLink {
+    color: #b7b7b7;
+}
+
+.mainPageLink {
+    color: #b7b7b7;
+    transition: 250ms;
+}
+
+.mainPageLink:hover {
+    color: gray;
+}

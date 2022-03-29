@@ -100,6 +100,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           return response.json();
+        }else{
+          navigate("/pageNotFound");
         }
       }).catch(() => {
 
