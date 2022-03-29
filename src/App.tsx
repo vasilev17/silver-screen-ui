@@ -17,6 +17,7 @@ import Series from './components/Series/Series';
 import Movies from './components/Movies/Movies';
 import CommentsTestPage from './components/Comments/CommentsTestPage/CommentsTestPage';
 import Search from './components/Search/Search';
+import GenrePage from './components/GenrePage/GenrePage';
 function App() {
   return (
     <>
@@ -37,6 +38,7 @@ function App() {
         <Route path="/administration" element={<Administration />} />
         <Route path="/commentsTestPage" element={<CommentsTestPage />} />
         <Route path="/search/:searchString" element={<Search />} />
+        <Route path="/genre/:genre" element={<GenrePage />} />
       </Routes>
     </BrowserRouter>
     </>

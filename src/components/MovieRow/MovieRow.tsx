@@ -6,7 +6,7 @@ import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
 interface MovieRowProps {
   genre?,
   content?,
-  showGenreTittle,
+  showGenreTittle?,
   myListIsWatched?,
   searchString?
 }
@@ -142,7 +142,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   function DisplayMovies() {
     if (loaded) {
       //movie map code
-      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null) {
+      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null || MovieRowInfo.showGenreTittle == null) {
 
         return DisplayMoviesInSeparateRows();
       } else {
@@ -150,7 +150,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
         return (
           <>
-            {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
+            {MovieRowInfo.showGenreTittle && <a className={styles.genreTitle} href={`/genre/` + MovieRowInfo.genre.toLowerCase()}><h2 className={styles.title}>{MovieRowInfo.genre}</h2></a>}
 
             <div className={styles.rowThumbnails}>
               <div className={styles.ContentWrapper} ref={contentWrapper}>
