@@ -129,7 +129,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
           >
             Revoke admin privileges
           </Button>
-          <Button
+          {/* <Button
             variant="contained"
             color="primary"
             size="small"
@@ -137,7 +137,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
             style={{ marginLeft: 14, background: "#833a3a", color: "#d9d9d9", fontSize: '0.7rem' }}
           >
             Ban user
-          </Button>
+          </Button> */}
         </strong>
       ), 
     }

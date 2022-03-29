@@ -27,7 +27,7 @@ const CommentElement: FC<CommentElementProps> = (props) => (
         }}/>
       </Tooltip> : null}
 
-      {props.isAuthorized ?
+      {/* {props.isAuthorized */ false ?
       <Tooltip title="Report comment">
         <IconButton aria-label="report" style={{
           position: 'absolute',

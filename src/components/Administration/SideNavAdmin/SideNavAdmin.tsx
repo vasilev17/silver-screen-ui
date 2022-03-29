@@ -63,10 +63,10 @@ const SideNavAdmin: FC<SideNavAdminProps> = (userData) => {
           <MovieCreationOutlinedIcon style={{width: '2rem', height: '2rem', color: '#808080'}}/>
           <div className={styles.ButtonElement_Text} style={{marginRight: '3.5rem'}}>Movie management</div>
         </div>
-        <div onClick={NavigateToCommentManagement} className={userData.currentNav === 2 ? styles.ButtonElementSelected : styles.ButtonElement}>
+        {/* <div onClick={NavigateToCommentManagement} className={userData.currentNav === 2 ? styles.ButtonElementSelected : styles.ButtonElement}>
           <ForumOutlinedIcon style={{width: '2rem', height: '2rem', color: '#808080'}}/>
           <div className={styles.ButtonElement_Text} style={{marginRight: '2.7rem'}}>Comment management</div>
-        </div>
+        </div> */}
         <div onClick={NavigateToUserManagement} className={userData.currentNav === 3 ? styles.ButtonElementSelected : styles.ButtonElement}>
           <ManageAccountsOutlinedIcon style={{width: '2rem', height: '2rem', color: '#808080'}}/>
           <div className={styles.ButtonElement_Text} style={{marginRight: '3.9rem'}}>User management</div>
