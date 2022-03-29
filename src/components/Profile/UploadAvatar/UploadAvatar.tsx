@@ -4,7 +4,7 @@ import React, { FC, SyntheticEvent, useState } from 'react';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import styles from './UploadAvatar.module.scss';
 
-
+//not ready
 interface UploadAvatarProps { }
 const UploadAvatar: FC<UploadAvatarProps> = () => {
 
