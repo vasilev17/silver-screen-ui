@@ -108,7 +108,11 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
         setData(info);
 
-        setReleaseDate(info.movie.releaseDate.substring(0, 4));
+        if (new Date(info.movie.releaseDate).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0))
+          setReleaseDate(info.movie.releaseDate.replace(/-/g, "/"));
+        else
+          setReleaseDate(info.movie.releaseDate.substring(0, 4));
+
         document.title = info.movie.title + " (" + info.movie.releaseDate.substring(0, 4) + ")"
         info.movie.duration < 60 ? setDuration(info.movie.duration + "m") : setDuration(Math.floor(info.movie.duration / 60) + 'h ' + info.movie.duration % 60 + 'm');
 
@@ -259,7 +263,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   function displayTMDBRating() {
 
     return (
-      <Tooltip title="TMDb rating" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
+      <Tooltip title="TMDB rating" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
         <div className={styles.ratings__ratingSource}>
           <img src="/TMDB_icon.svg" alt="TMDB:" />
           <StarRoundedIcon className={styles.ratings__ratingStar} />
@@ -412,8 +416,9 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
     let subtitleString: string = "";
 
+
     if (data.movie.releaseDate != null) subtitleString += releaseDate;
-    if (data.movie.maturityRating != null) subtitleString += ' | ' + data.movie.maturityRating;
+    if (data.movie.contentType != null) subtitleString += ' | ' + data.movie.contentType;
     if (data.movie.duration != null) subtitleString += ' | ' + duration;
 
     return subtitleString;
@@ -706,7 +711,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                     <p className={styles.trailerButton__label}>Trailer</p>
                   </div>
                 }
-                
+
                 {!logged ? new Date(data.movie.releaseDate) > new Date() ?
                   <Tooltip title="Sign in to recommend to friends and set notifications" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
                     <LockIcon className={styles.disabled__underDescriptionMenuFull} />
