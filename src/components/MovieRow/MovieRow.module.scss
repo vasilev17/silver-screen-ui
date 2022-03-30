@@ -1,6 +1,12 @@
 
 .title{
     margin-left: 20px;
+    display: inline-block;
+}
+
+.title:hover{
+  filter: drop-shadow(0 0 0.4rem white);
+  transition: 200ms;
 }
 
 .rowThumbnails2{
