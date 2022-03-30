@@ -45,38 +45,32 @@ const FriendList: FC<FriendListProps> = () => {
           for (var i = 0; i < length; i++) {
             setCode(
               <div className={styles.FriendList}>
-
-
-
-
-
                 {data.obj.$values.map((username, i) => (
-
-
-
-                  <><List sx={{ width: '100%', maxWidth: 360, }}>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar className={styles.avatar}>
-                        <Avatar src={data.obj.$values[i].avatar} />
-                      </ListItemAvatar>
-                      <div className={styles.username}>
-                      {data.obj.$values[i].username}
-                        </div>
-                      {/* <ListItemText 
-                        primary={data.obj.$values[i].username}
-                         secondary={<React.Fragment>
-                           <Typography
-                             sx={{ display: 'inline' }}
-                             component="span"
-                             variant="body2"
-                             color="text.primary"
-                           >
-                           </Typography>
-                         </React.Fragment>} 
-                        /> */}
-                    </ListItem>
-                    
-                  </List></>
+                  <div key={i}>
+                    <List sx={{ width: '100%', maxWidth: 360, }}>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar className={styles.avatar}>
+                          <Avatar src={data.obj.$values[i].avatar} />
+                        </ListItemAvatar>
+                        <div className={styles.username}>
+                        {data.obj.$values[i].username}
+                          </div>
+                        {/* <ListItemText 
+                          primary={data.obj.$values[i].username}
+                           secondary={<React.Fragment>
+                             <Typography
+                               sx={{ display: 'inline' }}
+                               component="span"
+                               variant="body2"
+                               color="text.primary"
+                             >
+                             </Typography>
+                           </React.Fragment>} 
+                          /> */}
+                      </ListItem>
+                        
+                    </List>
+                  </div>
                 ))
                 }
               </div>
