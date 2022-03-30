@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import styles from './MovieInfo.module.scss';
 import '../MovieInfo/MovieInfo.module.scss';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import { Alert, Box, Fade, Modal, Rating, Snackbar, Tooltip } from '@mui/material';
@@ -29,6 +29,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const { id } = useParams();
 
   const [data, setData] = useState(null);
+
+  const navigate = useNavigate();
 
   const [releaseDate, setReleaseDate] = useState(null);
 
@@ -98,6 +100,8 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           return response.json();
+        }else{
+          navigate("/pageNotFound");
         }
       }).catch(() => {
 
@@ -105,6 +109,9 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
       })
       .then(info => {
+
+        if(info.movie == null) 
+        navigate('/pageNotFound');
 
         setData(info);
 
