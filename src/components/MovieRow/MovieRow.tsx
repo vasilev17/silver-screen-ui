@@ -3,10 +3,11 @@ import React, { FC, useEffect, useState, Component } from 'react';
 import styles from './MovieRow.module.scss';
 import ArrowLeftIcon from '@mui/icons-material/ArrowCircleLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowCircleRight';
+import { Navigate, useNavigate } from 'react-router';
 interface MovieRowProps {
   genre?,
   content?,
-  showGenreTittle,
+  showGenreTittle?,
   myListIsWatched?,
   searchString?
 }
@@ -14,6 +15,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
   const [movies, setMovies] = useState(null);
   const [loaded, setLoaded] = useState(false);
+  const navigate = useNavigate();
   const contentWrapper = React.useRef(null);
   var token = localStorage.getItem('token');
 
@@ -88,6 +90,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
                 return response.json();
               } else {
                 console.warn("Error while processing the request!");
+                navigate("/pageNotFound");
               }
             })
             .then(data => { setMovies(data); setLoaded(true); });
@@ -142,7 +145,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   function DisplayMovies() {
     if (loaded) {
       //movie map code
-      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null) {
+      if (MovieRowInfo.myListIsWatched != null || MovieRowInfo.searchString != null || MovieRowInfo.showGenreTittle == null) {
 
         return DisplayMoviesInSeparateRows();
       } else {
@@ -150,7 +153,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
         return (
           <>
-            {MovieRowInfo.showGenreTittle && <h2 className={styles.title}>{MovieRowInfo.genre}</h2>}
+            {MovieRowInfo.showGenreTittle && <a className={styles.genreTitle} href={`/genre/` + MovieRowInfo.genre.toLowerCase()}><h2 className={styles.title}>{MovieRowInfo.genre}</h2></a>}
 
             <div className={styles.rowThumbnails}>
               <div className={styles.ContentWrapper} ref={contentWrapper}>

@@ -1,6 +1,12 @@
 
 .title{
     margin-left: 20px;
+    display: inline-block;
+}
+
+.title:hover{
+  filter: drop-shadow(0 0 0.4rem white);
+  transition: 200ms;
 }
 
 .rowThumbnails2{
@@ -67,4 +73,9 @@
 .Arrow{
     font-size: 50px !important;
     margin: 0 9px;
+}
+
+.genreTitle{
+  color: white;
+  text-decoration: none;
 }

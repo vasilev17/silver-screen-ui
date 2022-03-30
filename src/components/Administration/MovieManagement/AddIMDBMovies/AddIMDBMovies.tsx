@@ -13,6 +13,7 @@ const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
   const [contentType, setContentType] = useState("movie");
   const [alertMessage, setAlertMessage] = useState("You successfully added movie/s!");
   const [alertStatus, setAlertStatus] = useState(false);
+  const [alertContent, setAlertContent] = useState("");
   const [alertMessageUpcoming, setAlertMessageUpcoming] = useState("You successfully added movie/s!");
   const [alertStatusUpcoming, setAlertStatusUpcoming] = useState(false);
   const [count, setCount] = useState(1);
@@ -36,29 +37,26 @@ const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
       };
       fetch(`${process.env.REACT_APP_API}/IMDbAPI/AddMoviesToDB?title=${title}&count=${count}&contentType=${contentType}`, requestOptions)
         .then(response => {
-          if (response.ok) {
-            setAlertStatus(true);
+         // if (response.ok) {
+           // setAlertStatus(true);
             return response.json();
 
-          } else {
-            setAlertStatus(false);
-            return response.json();
-          }
+          //} else {
+            //setAlertStatus(false);
+            //return response.json();
+            
+          //}
 
         })
         .then(data => {
-          if (!alertStatus) {
+          if (isNaN(data)) {
+            setAlertStatus(false);
             setAlertMessage(data.errorMessage)
-            setOpenAlert(true);
-            setTimeout(() => {
-              setOpenAlert(false);
-            }, 2000)
+            openAlertWindow();
           } else {
+            setAlertStatus(true);
             setAlertMessage("You successfully added " + data + " movie/s!");
-            setOpenAlert(true);
-            setTimeout(() => {
-              setOpenAlert(false);
-            }, 2000)
+            openAlertWindow();
           }
 
         });
@@ -67,6 +65,13 @@ const AddIMDBMovies: FC<AddIMDBMoviesProps> = () => {
     addMoviesToDB();
 
   };
+  const openAlertWindow = ()=>{
+    setOpenAlert(true);
+    setTimeout(() => {
+      setOpenAlert(false);
+    }, 2000)
+    
+  }
   const handleClickUpcoming = (e: React.ChangeEvent<any>) => {
     function addUpcomingMoviesToDB() {
       const requestOptions = {
