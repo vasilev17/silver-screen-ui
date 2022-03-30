@@ -97,7 +97,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
         if(response.ok) {
           return response.json();
         } else {
-          setAlertMsg(`Error while granting "${targetUsername}" admin privileges. Maybe he already has there rights?`);
+          setAlertMsg(`Error while granting "${targetUsername}" admin privileges. Maybe he already has admin rights?`);
           setAlertErr(true);
           setOpenAlert(true);
         }
@@ -109,7 +109,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
         FetchAdministrators();
       })
       .catch(error => {
-        setAlertMsg(`Error while granting "${targetUsername}" admin privileges. Maybe he already has there rights?`);
+        setAlertMsg(`Error while granting "${targetUsername}" admin privileges. Maybe he already has admin rights?`);
         setAlertErr(true);
         setOpenAlert(true);
       });
