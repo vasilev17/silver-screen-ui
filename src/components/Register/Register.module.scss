@@ -1,10 +1,9 @@
 @import "/src/App.scss";
 
 .everything {
-    left: 4.5%;
-    max-width: 1800px;
+    left: 15.5%;
+    width: 1300px;
     height: 900px;
-    position: relative;
     overflow-y: hidden;
     overflow-x: hidden;
     position: relative;
@@ -14,7 +13,7 @@
     max-width: 900px;
     font-size: 25px;
     top: 70px;
-    left: 34.5%;
+    left: 34%;
     position: absolute;
     color: rgb(255, 255, 255);
  
@@ -70,12 +69,12 @@
 }
 .createaccounttext{
     top: 700px;
-    left: 42.4%;
+    left: 44.3%;
     position: absolute;
 }
 .createaccount{
     top: 750px;
-    left: 43.5%;
+    left: 46%;
     position: absolute;
 }
 
