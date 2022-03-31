@@ -2,11 +2,11 @@
 .title{
     margin-left: 20px;
     display: inline-block;
+    transition: 200ms;
 }
 
 .title:hover{
-  filter: drop-shadow(0 0 0.4rem white);
-  transition: 200ms;
+    filter: drop-shadow(0 0 0.4rem white);
 }
 
 .rowThumbnails2{
