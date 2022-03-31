@@ -28,7 +28,7 @@ function MainPage() {
     <MovieRow genre="Family" showGenreTittle={true}/>
     <MovieRow genre="History" showGenreTittle={true}/>
     <MovieRow genre="Mystery" showGenreTittle={true}/>
-    <MovieRow genre="Sci-Fi" showGenreTittle={true}/>
+    <MovieRow genre="Science Fiction" showGenreTittle={true}/>
     <MovieRow genre="War" showGenreTittle={true}/>
     <MovieRow genre="Adventure" showGenreTittle={true}/>
     <MovieRow genre="Crime" showGenreTittle={true}/>
