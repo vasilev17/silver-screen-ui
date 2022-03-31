@@ -2,7 +2,10 @@
 
 .everything {
     left: 4.5%;
-    
+    max-width: 1800px;
+    height: 900px;
+    overflow-y: hidden;
+    overflow-x: hidden;
     position: relative;
  
 }
@@ -55,12 +58,12 @@
 }
 .createaccounttext{
     top: 550px;
-    left: 42.5%;
+    left: 42.7%;
     position: absolute;
 }
 .createaccount{
     top: 600px;
-    left: 41.5%;
+    left: 41.7%;
     position: absolute;
 }
 
