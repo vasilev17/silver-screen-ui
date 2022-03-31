@@ -10,7 +10,7 @@ function Series() {
     <MovieRow genre="Family" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="History" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="Mystery" content="TVSeries" showGenreTittle={true}/>
-    <MovieRow genre="Sci-Fi" content="TVSeries" showGenreTittle={true}/>
+    <MovieRow genre="Science Fiction" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="War" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="Adventure" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="Crime" content="TVSeries" showGenreTittle={true}/>
