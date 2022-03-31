@@ -22,6 +22,7 @@ return (
       <MovieRow genre={genre} />
       </div>
     </>
+    
   )
 };
 
