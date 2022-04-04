@@ -1,14 +1,22 @@
-import { Button } from '@mui/material';
+import { Alert, Button, Snackbar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import styles from './MisbehavingUsersW.module.scss';
 
 interface MisbehavingUsersWProps {}
 
 const MisbehavingUsersW: FC<MisbehavingUsersWProps> = () => {
 
-  function SelectUser(userId){
-    alert(`Selected user ${userId}`);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("Test message.");
+  const [alertErr, setAlertErr] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(false);
+
+  function SelectUser(userId, username){
+    setSelectedUser(userId);
+    setAlertMsg(`Selected ${username} with ID ${userId}`);
+    setAlertErr(false);
+    setOpenAlert(true);
   }
 
   const columns = [
@@ -23,7 +31,7 @@ const MisbehavingUsersW: FC<MisbehavingUsersWProps> = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => SelectUser(params.row.id)}
+            onClick={() => SelectUser(params.row.id, params.row.username)}
             style={{ marginLeft: 0, background: "#2d5591", color: "#d9d9d9", fontSize: '0.7rem' }}
           >
             Select
@@ -55,6 +63,12 @@ const MisbehavingUsersW: FC<MisbehavingUsersWProps> = () => {
         <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}}>Issue a warning to the user</Button>
         <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem'}}>Issue a ban to the user</Button>
       </div>
+      
+      <Snackbar open={openAlert} autoHideDuration={2000} onClose={() => setOpenAlert(false)} anchorOrigin={{vertical:'bottom', horizontal:  'right'}}>
+        <Alert onClose={() => setOpenAlert(false)} severity={alertErr ? "error" : "success"} sx={{ width: '100%' }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

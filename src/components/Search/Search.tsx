@@ -11,6 +11,7 @@ const Search: FC<SearchProps> = () => {
   
   const { searchString } = useParams();
   
+  document.title = `Silver Screen - Search for "${searchString}"`;
   
   return (
     <>

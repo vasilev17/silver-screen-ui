@@ -1,0 +1,164 @@
+.root {
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 14px;
+    text-align: start;
+    position: relative;
+    z-index: 99;
+    min-width: 300px;
+    width: 3em;
+    margin: 0;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.label {
+    padding: 0 0 4px;
+    line-height: 1.5;
+    display: block;
+}
+
+.inputWrapper {
+    border: 1px solid #434343;
+    background-color: #141414;
+    border-radius: 4px;
+    padding: 1px;
+    display: flex;
+    flex-wrap: wrap;
+
+    &:hover {
+        border-color: #177ddc;
+    }
+
+    & input {
+        background-color: #141414;
+        color: rgba(255, 255, 255, 0.65);
+        height: 30px;
+        box-sizing: border-box;
+        padding: 4px 6px;
+        width: 0;
+        min-width: 30px;
+        flex-grow: 1;
+        border: 0px;
+        margin: 0;
+        outline: 0;
+    }
+}
+
+.focused {
+    border-color: #177ddc;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.listBox {
+    width: 100%;
+    margin: 2px 0 0;
+    padding: 0;
+    position: absolute;
+    list-style: none;
+    background-color: #141414;
+    overflow: auto;
+    cursor: pointer;
+
+    ::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        //box-shadow: inset 0 0 5px grey;
+        background: #303030;
+        border-radius: 5px;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #6b6b6b;
+        border-radius: 5px;
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #525252;
+    }
+
+    max-height: 250px;
+    border-radius: 4px;
+    border: 1px solid #ffffff0d;
+    box-shadow: 0 2px 20px 20px rgba(0, 0, 0,  0.15);
+    z-index: 1;
+
+    & li {
+        padding: 5px 12px;
+        display: flex;
+
+        & span {
+            flex-grow: 1;
+        }
+
+        & svg {
+            color: transparent;
+        }
+    }
+
+    & li[aria-selected="true"] {
+        background-color: #2b2b2b;
+        font-weight: 600;
+
+        & svg {
+            color: #1890ff;
+        }
+    }
+
+    & li[data-focus="true"] {
+        background-color: #003b57;
+        cursor: pointer;
+
+        & svg {
+            color: currentColor;
+        }
+    }
+}
+
+.styledTag {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    margin: 2px;
+    line-height: 22px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid #303030;
+    border-radius: 2px;
+    box-sizing: content-box;
+    padding: 0 4px 0 10px;
+    outline: 0;
+    overflow: hidden;
+
+    &:focus {
+        border-color: #177ddc;
+        background-color: #003b57;
+    }
+
+    & span {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    & svg {
+        font-size: 12px;
+        cursor: pointer;
+        padding: 4px;
+    }
+}
+
+.optionContainer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: start;
+    font-size: 1.2em;
+}
+
+.optionContainer:hover{
+    background: #6f6f6f38;
+}

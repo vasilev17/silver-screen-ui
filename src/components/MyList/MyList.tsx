@@ -11,6 +11,8 @@ export default function MyList() {
     setValue(newValue);
   };
 
+  document.title = `Silver Screen - My List`;
+
   return (
     <Box sx={{ width: '100%', typography: 'body1', marginTop: '70px' }}>
       <TabContext value={value}>
