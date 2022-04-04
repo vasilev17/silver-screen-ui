@@ -84,7 +84,6 @@ export default function AutoCompleteInput(data:AutoCompleteInputProps) {
     focused,
     setAnchorEl
   } = useAutocomplete({
-    id: "customized-hook-demo",
     multiple: true,
     disableCloseOnSelect: true,
     options: friendList,
@@ -101,7 +100,7 @@ export default function AutoCompleteInput(data:AutoCompleteInputProps) {
             {value.map((option: any, index) => (
               <Tag label={option.username} {...getTagProps({ index })} />
             ))}
-            <input {...getInputProps()} value={data.onAutocompleteChange(value)} />
+            <input {...getInputProps()} defaultValue={data.onAutocompleteChange(value)} />
           </div>
         </div>
         {groupedOptions.length > 0 ? (
@@ -119,17 +118,3 @@ export default function AutoCompleteInput(data:AutoCompleteInputProps) {
     </>
   );
 }
-
-const names = [
-  { username: 'valio03', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: 'dvny', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: 'b0gi', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: 'Pairik', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: 'Logan', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: "tonkisa_24", avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  { username: 'koza7a', avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png" },
-  {
-    username: 'Pust_on_fire',
-    avatar: "https://i.ibb.co/zVd6Vnv/defautprifilepic.png",
-  },
-];
