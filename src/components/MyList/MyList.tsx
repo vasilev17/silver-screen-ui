@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import styles from './MyList.module.scss';
 import MovieRow from '../MovieRow/MovieRow';
 

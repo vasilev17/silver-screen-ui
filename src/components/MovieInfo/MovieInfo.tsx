@@ -67,7 +67,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const handleOpenRecommendModal = () => {
     setOpenRecommendModal(true);
   }
-  const handleCloseRecommendModal = () => { setOpenRecommendModal(false); setCommentContents(""); setContentLength(0); }
+  const handleCloseRecommendModal = () => { setOpenRecommendModal(false); setRecommendationMessageContents(""); setRecommendationMessageLength(0); }
 
 
   //Trailer Modal Variables
@@ -453,7 +453,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       body: JSON.stringify({
         friendIds: friendSelectValue.map((user) => user.id),
         movieId: id,
-        message: commentContents,
+        message: recommendationMessageContents,
       })
     };
 
@@ -674,17 +674,17 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
-  const [commentContents, setCommentContents] = useState("");
-  const [contentLength, setContentLength] = useState(0);
+  const [recommendationMessageContents, setRecommendationMessageContents] = useState("");
+  const [recommendationMessageLength, setRecommendationMessageLength] = useState(0);
 
   function RefreshTextLenght() {
     var textBox = document.getElementById('recommendationMessage') as HTMLTextAreaElement;
-    setContentLength(textBox.value.length);
+    setRecommendationMessageLength(textBox.value.length);
     if (textBox.value.length > 300) {
       textBox.value = textBox.value.substring(0, 300);
-      setContentLength(300);
+      setRecommendationMessageLength(300);
     };
-    setCommentContents(textBox.value);
+    setRecommendationMessageContents(textBox.value);
   }
 
   const RestrictEnter = (e) => {
@@ -720,12 +720,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               <textarea className={styles.recommend__modal__message} id="recommendationMessage"
                 onChange={() => RefreshTextLenght()}
                 onKeyDown={(e) => RestrictEnter(e)}
-                defaultValue={commentContents}
+                defaultValue={recommendationMessageContents}
 
               />
 
               <div className={styles.recommend__modal__message__wordCounter}>
-                {contentLength}/300
+                {recommendationMessageLength}/300
               </div>
 
 

@@ -1,10 +1,25 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import MovieRow from '../MovieRow/MovieRow';
 import styles from './Series.module.scss';
 
 function Series() {
 
   document.title = `Silver Screen - Series`;
+
+  useEffect(() => {
+
+    //Load scroll data
+    setTimeout(() => {
+      const scrollPosition = sessionStorage.getItem("seriesPageScrollPosition");
+      if (scrollPosition) {
+        window.scroll(0, parseInt(scrollPosition));
+        sessionStorage.removeItem("seriesPageScrollPosition");
+      }else{
+        window.scrollTo(0, 0);
+      }
+    }, 150);
+
+  }, []);
 
   return (
   <div className={styles.MovieRow}>
