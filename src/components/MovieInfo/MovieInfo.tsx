@@ -716,7 +716,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               <AutoCompleteInput onAutocompleteChange={onAutocompleteChange} />
 
 
-              <label className={styles.recommend__modal__messageLabel}>Message:</label>
+              <label className={styles.recommend__modal__messageLabel}>Message (optional):</label>
               <textarea className={styles.recommend__modal__message} id="recommendationMessage"
                 onChange={() => RefreshTextLenght()}
                 onKeyDown={(e) => RestrictEnter(e)}
