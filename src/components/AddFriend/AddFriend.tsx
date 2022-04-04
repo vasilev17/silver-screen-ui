@@ -69,7 +69,7 @@ const AddFriend: FC<AddFriendProps> = () => {
             label="Message"
             id="filled-size-normal"
             defaultValue=""
-            required onChange={e => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             variant="standard"
           />
         </div>
