@@ -84,7 +84,6 @@ const Profile: FC<ProfileProps> = () => {
         if (data !== null) {
 
           setCode(
-            <form onSubmit={submit}>
               <div className={styles.frame2}>
                 <div className={styles.logout}>
                   <Button variant="outlined" type="button" onClick={() => RemoveToken()}>Logout</Button>
@@ -103,6 +102,8 @@ const Profile: FC<ProfileProps> = () => {
                       
 
                 </div>
+
+                <UploadAvatar/>
                 <div className={styles.friendsList}>
                   <div className={styles.friends}>
                     <h1>Friends</h1>
@@ -119,7 +120,6 @@ const Profile: FC<ProfileProps> = () => {
 
               </div>
 
-            </form>
           );
           console.log("logout")
         } else {
@@ -171,41 +171,7 @@ const Profile: FC<ProfileProps> = () => {
   }, [])
 
 
-  const [uploadavatar, setUploadAvatar] = useState(' ');
-  var token = localStorage.getItem('token');
-  const submit = async (e: SyntheticEvent) => {
-    e.preventDefault();
-    await fetch(`${process.env.REACT_APP_API}/User/UploadAvatar`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-
-      body: JSON.stringify({
-        uploadavatar
-
-      })
-    })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          alert("Error while processing the request!");
-        }
-      }).then(data => {
-        console.log(data.token);
-        window.location.reload();
-
-
-
-
-
-      });
-
-
-  }
+  
 
 
 

@@ -1,1 +1,82 @@
-.CommentManagement {}
+.NoReportedText {
+    display: flex;
+    flex-direction: column;
+    margin: 3rem;
+
+    &1{
+        color: #666666;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    
+    &2{
+        color: #666666;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        margin-top: -1.5rem;
+    }
+}
+
+.ReportWindow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.AddPriv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-right: 0.5rem;
+
+    &_title{
+        color: #666666;
+        font-size: 1.3rem;
+        font-weight: 600;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+}
+
+.ContentTitle {
+    color: #666666;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+}
+
+.ContentBox {
+    background: #232323;
+    width: 32rem;
+    max-width: 32rem;
+    height: 9.5rem;
+    max-height: 9.5rem;
+    box-shadow: 0px 0px 3px 0px black;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    &_text{
+        color: #999999;
+        padding: 0.3rem 0.3em 0.3rem 0.7rem;
+    }
+}
+
+.ContentBottomTitle{
+    color: #666666;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 0.6rem;
+    display: flex;
+    align-items: center;
+}
+
+.LoadingContent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #666666;
+    font-size: 1.2rem;
+    font-weight: 600; 
+    height: 13rem;
+}
