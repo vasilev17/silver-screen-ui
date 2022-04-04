@@ -3,6 +3,9 @@ import MovieRow from '../MovieRow/MovieRow';
 import styles from './Movies.module.scss';
 
 function Movies() {
+
+  document.title = `Silver Screen - Movies`;
+
   return (
   <div className={styles.MovieRow}>
 

@@ -6,6 +6,8 @@ interface UnauthorizedProps {}
 
 const Unauthorized: FC<UnauthorizedProps> = () => {
 
+  document.title = `Silver Screen - Unauthorized`;
+
   useEffect(() => {
     var navbar = document.getElementById('mainNavbar');
     navbar.hidden = true;  

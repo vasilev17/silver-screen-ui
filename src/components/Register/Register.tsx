@@ -15,8 +15,16 @@ const Register: FC<RegisterProps> = () => {
   const [emailError, setEmailError] = useState(' ');
   const [passwordError, setPasswordError] = useState(' ');
   const [confirmpasswordError, setConfirmPasswordError] = useState(' ');
+
+  useEffect(() => {
+
+    document.title = `Silver Screen - Register`;
+
+  }, []);
+
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
+
 
     await fetch(`${process.env.REACT_APP_API}/User/Register`, {
       method: 'POST',

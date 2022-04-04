@@ -4,6 +4,7 @@ import styles from './MainPage.module.scss';
 
 function MainPage() {
 
+  document.title = `Silver Screen`;
 
   useEffect(() => {
 

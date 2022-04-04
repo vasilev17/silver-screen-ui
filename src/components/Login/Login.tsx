@@ -11,7 +11,11 @@ interface LoginProps {
 
 const Login: FC<LoginProps> = () => {
 
+  useEffect(() => {
 
+    document.title = `Silver Screen - Sign In`;
+
+  }, []);
 
   const [email, setEmail] = useState(' ');
   const [password, setPassword] = useState(' ');

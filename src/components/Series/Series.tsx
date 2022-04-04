@@ -3,6 +3,9 @@ import MovieRow from '../MovieRow/MovieRow';
 import styles from './Series.module.scss';
 
 function Series() {
+
+  document.title = `Silver Screen - Series`;
+
   return (
   <div className={styles.MovieRow}>
     <MovieRow genre="Action" content="TVSeries" showGenreTittle={true}/>
