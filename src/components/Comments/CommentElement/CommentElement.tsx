@@ -5,9 +5,10 @@ import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 
 interface CommentElementProps {
-  comment;
-  ReportComment;
-  isAuthorized;
+  comment,
+  ReportComment,
+  isAuthorized,
+  alreadyReported:number[],
 }
 
 const ReportModalStyle = {
@@ -20,6 +21,7 @@ const ReportModalStyle = {
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
+  borderRadius: '0.5rem'
 };
 
 const CommentElement: FC<CommentElementProps> = (props) => {
@@ -31,7 +33,6 @@ const CommentElement: FC<CommentElementProps> = (props) => {
   return (
     <div className={styles.CommentElement}>
       <div className={styles.ProfileBox}>
-
         {/* <Skeleton variant="circular" width={"5rem"} height={"5rem"} style={{margin: 'auto'}} />
         <Skeleton variant="text" /> */}
         {props.comment.isFriendsOnly ? 
@@ -44,8 +45,7 @@ const CommentElement: FC<CommentElementProps> = (props) => {
             color: '#808080'
           }}/>
         </Tooltip> : null}
-
-        {props.isAuthorized ?
+        {props.isAuthorized && props.alreadyReported.find(x => x === props.comment.id) === undefined ?
         <Tooltip title="Report comment">
           <IconButton aria-label="report" 
           onClick={handleOpenReportWindow}

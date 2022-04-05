@@ -19,8 +19,8 @@ import CommentWriteElement from '../Comments/CommentWriteElement/CommentWriteEle
 import CommentLoader from '../Comments/CommentLoader/CommentLoader';
 import MailRoundedIcon from '@mui/icons-material/MailRounded';
 import CheckIcon from "@mui/icons-material/Check";
-
 import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
+import NotificationMovieButton from '../Notifications/NotificationMovieButton/NotificationMovieButton';
 import AutoCompleteInput from '../AutoCompleteInput/AutoCompleteInput';
 
 
@@ -790,7 +790,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <div className={styles.underDescriptionMenu__releaseNotification}>
             <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
             <Tooltip title="Set a release date notification" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
-              <div className={styles.underDescriptionMenu__subsectionIcon}><NotifyMeIcon sx={{ fontSize: '2.3em' }} /> </div>
+              <div className={styles.underDescriptionMenu__subsectionIcon}><NotificationMovieButton movieId={data.movie.id} /> </div>
             </Tooltip>
           </div>
         </>
