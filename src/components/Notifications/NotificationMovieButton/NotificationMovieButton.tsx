@@ -4,7 +4,8 @@ import NotifyMeIcon from '@mui/icons-material/NotificationAddRounded';
 import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 
 interface NotificationMovieButtonProps {
-  movieId: number
+  movieId: number,
+  snackbarAlert
 }
 
 const NotificationMovieButton: FC<NotificationMovieButtonProps> = (props) => {
@@ -29,7 +30,7 @@ const NotificationMovieButton: FC<NotificationMovieButtonProps> = (props) => {
         setIsMovieSubscriptionSet(data.status);
       })
       .catch(error => {
-        console.warn("Error while processing the request!"); 
+        console.warn("Error while processing the request!");
       });
   }
 
@@ -55,9 +56,11 @@ const NotificationMovieButton: FC<NotificationMovieButtonProps> = (props) => {
       .then(data => {
         status = !status;
         setIsMovieSubscriptionSet(status);
+        props.snackbarAlert(`Notification successfully ${status? "set":"removed"}!`, "success");
       })
       .catch(error => {
-        console.warn("Error while processing the request!"); 
+        console.warn("Error while processing the request!");
+        props.snackbarAlert("Notification setting error!", "error");
       });
   }
 
