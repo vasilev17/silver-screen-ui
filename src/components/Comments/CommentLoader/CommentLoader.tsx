@@ -63,6 +63,7 @@ const CommentLoader: FC<CommentLoaderProps> = (props) => {
                   comment={data}
                   ReportComment={ReportComment}
                   isAuthorized={comments.authorized}
+                  alreadyReported={comments.reportedComments.$values}
                 />
                 <br/>
               </div>
