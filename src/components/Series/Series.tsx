@@ -44,7 +44,6 @@ function Series() {
     <MovieRow genre="Reality" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="Drama" content="TVSeries" showGenreTittle={true}/>
     <MovieRow genre="Romance" content="TVSeries" showGenreTittle={true}/>
-    <MovieRow genre="Thriller" content="TVSeries" showGenreTittle={true}/>
 
     </div>
 
