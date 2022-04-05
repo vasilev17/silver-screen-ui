@@ -13,7 +13,9 @@ const GenrePage: FC<GenrePageProps> = () => {
   useEffect(() => {
 
     //Load scroll data
-    setTimeout(() => {
+    let stateCheck = setInterval(() => {
+      if (document.readyState === 'complete') {
+        clearInterval(stateCheck);
       const scrollPosition = sessionStorage.getItem(`genrePageScrollPosition - ${genre}`);
       if (scrollPosition) {
         window.scroll(0, parseInt(scrollPosition));
@@ -21,7 +23,8 @@ const GenrePage: FC<GenrePageProps> = () => {
       }else{
         window.scrollTo(0, 0);
       }
-    }, 150);
+    }
+  }, 100);
 
   }, []);
   

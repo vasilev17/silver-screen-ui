@@ -9,7 +9,9 @@ function Series() {
   useEffect(() => {
 
     //Load scroll data
-    setTimeout(() => {
+    let stateCheck = setInterval(() => {
+      if (document.readyState === 'complete') {
+        clearInterval(stateCheck);
       const scrollPosition = sessionStorage.getItem("seriesPageScrollPosition");
       if (scrollPosition) {
         window.scroll(0, parseInt(scrollPosition));
@@ -17,7 +19,10 @@ function Series() {
       }else{
         window.scrollTo(0, 0);
       }
-    }, 150);
+    }
+  }, 100);
+
+    
 
   }, []);
 

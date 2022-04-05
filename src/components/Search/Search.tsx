@@ -16,7 +16,9 @@ const Search: FC<SearchProps> = () => {
   useEffect(() => {
 
     //Load scroll data
-    setTimeout(() => {
+    let stateCheck = setInterval(() => {
+      if (document.readyState === 'complete') {
+        clearInterval(stateCheck);
       const scrollPosition = sessionStorage.getItem(`searchPageScrollPosition - ${searchString}`);
       if (scrollPosition) {
         window.scroll(0, parseInt(scrollPosition));
@@ -24,7 +26,8 @@ const Search: FC<SearchProps> = () => {
       }else{
         window.scrollTo(0, 0);
       }
-    }, 150);
+    }
+  }, 100);
 
   }, []);
 

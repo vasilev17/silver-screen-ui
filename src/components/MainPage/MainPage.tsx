@@ -9,15 +9,20 @@ function MainPage() {
   useEffect(() => {
 
     //Load scroll data
-    setTimeout(() => {
-      const scrollPosition = sessionStorage.getItem("mainPageScrollPosition");
+    
+    let stateCheck = setInterval(() => {
+      if (document.readyState === 'complete') {
+        clearInterval(stateCheck);
+        const scrollPosition = sessionStorage.getItem("mainPageScrollPosition");
       if (scrollPosition) {
         window.scroll(0, parseInt(scrollPosition));
         sessionStorage.removeItem("mainPageScrollPosition");
       }else{
         window.scrollTo(0, 0);
       }
-    }, 150);
+      }
+    }, 100);
+
 
   }, []);
 
