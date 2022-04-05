@@ -9,7 +9,6 @@ function MainPage() {
   useEffect(() => {
 
     //Load scroll data
-    
     let stateCheck = setInterval(() => {
       if (document.readyState === 'complete') {
         clearInterval(stateCheck);
