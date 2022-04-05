@@ -11,7 +11,26 @@ const Search: FC<SearchProps> = () => {
   
   const { searchString } = useParams();
   
+  document.title = `Silver Screen - Search for "${searchString}"`;
   
+  useEffect(() => {
+
+    //Load scroll data
+    let stateCheck = setInterval(() => {
+      if (document.readyState === 'complete') {
+        clearInterval(stateCheck);
+      const scrollPosition = sessionStorage.getItem(`searchPageScrollPosition - ${searchString}`);
+      if (scrollPosition) {
+        window.scroll(0, parseInt(scrollPosition));
+        sessionStorage.removeItem(`searchPageScrollPosition - ${searchString}`);
+      }else{
+        window.scrollTo(0, 0);
+      }
+    }
+  }, 100);
+
+  }, []);
+
   return (
     <>
     <h1 className={styles.Title}>Results for: {searchString}</h1>

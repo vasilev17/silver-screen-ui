@@ -4,7 +4,7 @@ import '../MovieInfo/MovieInfo.module.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import { Alert, Box, Fade, Modal, Rating, Snackbar, Tooltip } from '@mui/material';
+import { Alert, Autocomplete, Box, Fade, Modal, Rating, Snackbar, TextField, Tooltip, useAutocomplete } from '@mui/material';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import BookmarkBorderRoundedIcon from '@mui/icons-material/BookmarkBorderRounded';
 import BookmarkRoundedIcon from '@mui/icons-material/BookmarkRounded';
@@ -17,8 +17,11 @@ import LockIcon from '@mui/icons-material/HttpsRounded';
 import PlayIcon from '@mui/icons-material/PlayArrowRounded';
 import CommentWriteElement from '../Comments/CommentWriteElement/CommentWriteElement';
 import CommentLoader from '../Comments/CommentLoader/CommentLoader';
+import MailRoundedIcon from '@mui/icons-material/MailRounded';
+import CheckIcon from "@mui/icons-material/Check";
 import NotifyMeActiveIcon from '@mui/icons-material/NotificationsActiveRounded';
 import NotificationMovieButton from '../Notifications/NotificationMovieButton/NotificationMovieButton';
+import AutoCompleteInput from '../AutoCompleteInput/AutoCompleteInput';
 
 
 
@@ -58,6 +61,15 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   const handleCloseMyListModal = () => { setOpenMyListModal(false); }
   const [myListCategoryChoice, setMyListCategoryChoice] = useState(null);
 
+
+  //Recommend Modal Variables
+  const [openRecommendModal, setOpenRecommendModal] = useState(false);
+  const handleOpenRecommendModal = () => {
+    setOpenRecommendModal(true);
+  }
+  const handleCloseRecommendModal = () => { setOpenRecommendModal(false); setRecommendationMessageContents(""); setRecommendationMessageLength(0); }
+
+
   //Trailer Modal Variables
   const [openTrailerModal, setOpenTrailerModal] = useState(false);
   const handleOpenTrailerModal = () => {
@@ -85,7 +97,16 @@ const MovieInfo: FC<MovieInfoProps> = () => {
 
   var token = localStorage.getItem('token');
 
+  //Friend Select
+  const [friendSelectValue, setFriendSelectValue] = useState(null);
 
+
+
+  const onAutocompleteChange = (value) => {
+
+    setFriendSelectValue(value);
+
+  }
 
 
 
@@ -101,7 +122,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       .then(response => {
         if (response.ok) {
           return response.json();
-        }else{
+        } else {
           navigate("/pageNotFound");
         }
       }).catch(() => {
@@ -111,12 +132,12 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       })
       .then(info => {
 
-        if(info.movie == null) 
-        navigate('/pageNotFound');
+        if (info.movie == null)
+          navigate('/pageNotFound');
 
         setData(info);
 
-        if (new Date(info.movie.releaseDate).setHours(0,0,0,0) >= new Date().setHours(0,0,0,0))
+        if (new Date(info.movie.releaseDate).setHours(0, 0, 0, 0) >= new Date().setHours(0, 0, 0, 0))
           setReleaseDate(info.movie.releaseDate.replace(/-/g, "/"));
         else
           setReleaseDate(info.movie.releaseDate.substring(0, 4));
@@ -420,6 +441,40 @@ const MovieInfo: FC<MovieInfoProps> = () => {
       });
   }
 
+  const SendRecommendation = async () => {
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        friendIds: friendSelectValue.map((user) => user.id),
+        movieId: id,
+        message: recommendationMessageContents,
+      })
+    };
+
+    fetch(`${process.env.REACT_APP_API}/NotificationManagement/RecommendMovieToAFriend`, requestOptions)
+      .then(response => {
+        if (response.ok) {
+          handleCloseRecommendModal();
+          setTimeout(() => {
+            showSnackbarFeedback("Recommendation successfully sent!", "success");
+          }, 150);
+          return response.json();
+        }
+      }).catch(() => {
+
+        showSnackbarFeedback("Send recommendation error!", "error");
+        console.warn("Error while processing the recommend to a friend request!");
+
+      });
+  }
+
+
   function formatSubittleInfo() {
 
     let subtitleString: string = "";
@@ -525,7 +580,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
                 }}
               />
 
-              <div id='submitRatingBtn' onClick={submitRating} className={styles.submitButton}>Submit</div>
+              <div id='submitRatingBtn' onClick={submitRating} className={styles.submitButton}>Rate</div>
 
               {personalRating != null &&
                 <div onClick={removeRating} className={styles.removeButton}>Remove rating</div>
@@ -605,7 +660,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
               </label>
 
 
-              <div id='submitMyListBtn' onClick={addToMyList} className={styles.submitButton}>Submit</div>
+              <div id='submitMyListBtn' onClick={addToMyList} className={styles.submitButton}>Add</div>
 
               {myListCategory != null &&
                 <div onClick={removeMovieFromMyList} className={styles.removeButton}>Remove from MyList</div>
@@ -619,6 +674,74 @@ const MovieInfo: FC<MovieInfoProps> = () => {
   }
 
 
+  const [recommendationMessageContents, setRecommendationMessageContents] = useState("");
+  const [recommendationMessageLength, setRecommendationMessageLength] = useState(0);
+
+  function RefreshTextLenght() {
+    var textBox = document.getElementById('recommendationMessage') as HTMLTextAreaElement;
+    setRecommendationMessageLength(textBox.value.length);
+    if (textBox.value.length > 300) {
+      textBox.value = textBox.value.substring(0, 300);
+      setRecommendationMessageLength(300);
+    };
+    setRecommendationMessageContents(textBox.value);
+  }
+
+  const RestrictEnter = (e) => {
+    if (e.keyCode == 13) {
+      e.preventDefault();
+    }
+  }
+
+
+
+  function displayRecommendModal() {
+
+
+
+    return (
+      <>
+        <Modal open={openRecommendModal} onClose={handleCloseRecommendModal}>
+          <Fade in={openRecommendModal}>
+            <Box className={styles.recommend__modal}>
+
+
+              <CloseRoundedIcon fontSize="medium" onClick={handleCloseRecommendModal} className={styles.recommend__modal__closeBtn} />
+
+              <MailRoundedIcon className={styles.recommend__modal__headerIcon} />
+
+              <h3 className={styles.recommend__modal__label}>Recommend to friends</h3>
+              <h2 className={styles.recommend__modal__titleLabel}>{data.movie.title}</h2>
+
+              <AutoCompleteInput onAutocompleteChange={onAutocompleteChange} />
+
+
+              <label className={styles.recommend__modal__messageLabel}>Message (optional):</label>
+              <textarea className={styles.recommend__modal__message} id="recommendationMessage"
+                onChange={() => RefreshTextLenght()}
+                onKeyDown={(e) => RestrictEnter(e)}
+                defaultValue={recommendationMessageContents}
+
+              />
+
+              <div className={styles.recommend__modal__message__wordCounter}>
+                {recommendationMessageLength}/300
+              </div>
+
+
+              {friendSelectValue == null || friendSelectValue.length == 0 ?
+
+                <div id='submitRecommendationBtn' className={styles.submitButton}>Send</div>
+                :
+                <div id='submitRecommendationBtn' onClick={SendRecommendation} className={`${styles.submitButton} ${styles.submitButton__submitButtonActive}`}>Send</div>
+              }
+
+            </Box>
+          </Fade>
+        </Modal>
+      </>
+    );
+  }
 
   function displayTrailerModal() {
 
@@ -651,7 +774,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <p className={styles.underDescriptionMenu__subsectionLabel}>Recommend:</p>
 
           <Tooltip title="Recommend to a friend" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
-            <div className={styles.underDescriptionMenu__subsectionIcon}><RecommendationIcon sx={{ fontSize: '2.3em' }} /> </div>
+            <div onClick={handleOpenRecommendModal} className={styles.underDescriptionMenu__subsectionIcon}><RecommendationIcon sx={{ fontSize: '2.3em' }} /> </div>
           </Tooltip>
         </div>
       </>
@@ -693,6 +816,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <>
             {displayRatingModal()}
             {displayMyListModal()}
+            {displayRecommendModal()}
             {displayTrailerModal()}
             {displaySnackbarFeedback()}
 

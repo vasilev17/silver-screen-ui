@@ -12,6 +12,8 @@ const AddFriend: FC<AddFriendProps> = () => {
   const [response, setResponse] = useState(' ');
   var token = localStorage.getItem('token');
 
+  document.title = `Silver Screen - Add Friend`;
+  
   const submit = async (e: SyntheticEvent) => {
     e.preventDefault();
     await fetch(`${process.env.REACT_APP_API}/User/SendFriendRequest`, {
@@ -67,7 +69,7 @@ const AddFriend: FC<AddFriendProps> = () => {
             label="Message"
             id="filled-size-normal"
             defaultValue=""
-            required onChange={e => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             variant="standard"
           />
         </div>

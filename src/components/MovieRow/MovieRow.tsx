@@ -114,15 +114,43 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
   }, [MovieRowInfo.genre]);
 
 
+  const saveScrollData = () => {
+
+
+
+    switch (window.location.pathname) {
+      case "/":
+        sessionStorage.setItem('mainPageScrollPosition', String(window.pageYOffset));
+        break;
+      case "/series":
+        sessionStorage.setItem('seriesPageScrollPosition', String(window.pageYOffset));
+        break;
+      case "/movies":
+        sessionStorage.setItem('moviesPageScrollPosition', String(window.pageYOffset));
+        break;
+    }
+
+    if (window.location.pathname.includes("/genre/")) {
+      var genre = window.location.pathname.split("/")[2];
+      sessionStorage.setItem(`genrePageScrollPosition - ${genre}`, String(window.pageYOffset));
+    } else if (window.location.pathname.includes("/search/")) {
+      var searchString = window.location.pathname.split("/")[2];
+      sessionStorage.setItem(`searchPageScrollPosition - ${searchString}`, String(window.pageYOffset));
+
+    }
+
+  }
+
+  const removeGenreScrollInfo = (genre) => {
+
+    sessionStorage.removeItem(`genrePageScrollPosition - ${genre}`);
+
+  }
+
 
   const handleClick = (id) => {
     window.location.href = "/title/" + id;
-
-    //Save scroll data
-    if (window.location.pathname == "/") {
-      sessionStorage.setItem('mainPageScrollPosition', String(window.pageYOffset));
-    }
-
+    saveScrollData();
   };
 
   function DisplayMoviesInSeparateRows() {
@@ -153,7 +181,7 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
 
         return (
           <>
-            {MovieRowInfo.showGenreTittle && <a className={styles.genreTitle} href={`/genre/` + MovieRowInfo.genre.toLowerCase()}><h2 className={styles.title}>{MovieRowInfo.genre}</h2></a>}
+            {MovieRowInfo.showGenreTittle && <a className={styles.genreTitle} onClick={() => { saveScrollData(); removeGenreScrollInfo(MovieRowInfo.genre.toLowerCase()); }} href={`/genre/` + MovieRowInfo.genre.toLowerCase()}><h2 className={styles.title}>{MovieRowInfo.genre}</h2></a>}
 
             <div className={styles.rowThumbnails}>
               <div className={styles.ContentWrapper} ref={contentWrapper}>

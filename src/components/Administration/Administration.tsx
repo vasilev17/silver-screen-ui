@@ -16,6 +16,8 @@ const Administration: FC<AdministrationProps> = () => {
   const navigate = useNavigate();
   var token = localStorage.getItem('token');
 
+  document.title = `Silver Screen - Administration`;
+
   function CheckAdmin(){
     const requestOptions = {
       method: 'GET',
