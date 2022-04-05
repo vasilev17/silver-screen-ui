@@ -26,6 +26,7 @@ const ReportModalStyle = {
 
 const CommentElement: FC<CommentElementProps> = (props) => {
   const [openReportWindow, setOpenReportWindow] = React.useState(false);
+  const [reportedFromUI, setReportedFromUI] = React.useState(false);
   const handleOpenReportWindow = () => setOpenReportWindow(true);
   const handleCloseReportWindow = () => setOpenReportWindow(false);
 
@@ -45,7 +46,7 @@ const CommentElement: FC<CommentElementProps> = (props) => {
             color: '#808080'
           }}/>
         </Tooltip> : null}
-        {props.isAuthorized && props.alreadyReported.find(x => x === props.comment.id) === undefined ?
+        {props.isAuthorized && !reportedFromUI && props.alreadyReported.find(x => x === props.comment.id) === undefined ?
         <Tooltip title="Report comment">
           <IconButton aria-label="report" 
           onClick={handleOpenReportWindow}
@@ -91,7 +92,11 @@ const CommentElement: FC<CommentElementProps> = (props) => {
               margin: '1rem 0 1rem 0'
             }}>
               <Button variant="outlined" style={{width: '30%'}} color="error" onClick={handleCloseReportWindow}>No</Button>
-              <Button variant="outlined" style={{width: '30%'}} color="success">Yes</Button>
+              <Button variant="outlined" style={{width: '30%'}} color="success" onClick={() => {
+                props.ReportComment(props.comment.id);
+                handleCloseReportWindow();
+                setReportedFromUI(true);
+              }}>Yes</Button>
             </div>
             <Typography id="transition-modal-description">
               <i style={{color: '#f15b5b'}}>Warning: Reporting without any reason may get your account banned.</i>
