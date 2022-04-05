@@ -39,7 +39,15 @@ const CommentLoader: FC<CommentLoaderProps> = (props) => {
   }
 
   function ReportComment(commentId){
-
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/Comments/ReportComment?commentId=${commentId}`, requestOptions);
   }
 
   function DisplayComments(isLoading){
