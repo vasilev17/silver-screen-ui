@@ -790,7 +790,7 @@ const MovieInfo: FC<MovieInfoProps> = () => {
           <div className={styles.underDescriptionMenu__releaseNotification}>
             <p className={styles.underDescriptionMenu__subsectionLabel}>Notify Me:</p>
             <Tooltip title="Set a release date notification" enterDelay={600} enterNextDelay={600} leaveDelay={200} arrow>
-              <div className={styles.underDescriptionMenu__subsectionIcon}><NotificationMovieButton movieId={data.movie.id} /> </div>
+              <div className={styles.underDescriptionMenu__subsectionIcon}><NotificationMovieButton movieId={data.movie.id} snackbarAlert = {showSnackbarFeedback}/> </div>
             </Tooltip>
           </div>
         </>

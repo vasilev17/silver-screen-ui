@@ -161,7 +161,6 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
             <img onClick={() => handleClick(movie.id)} key={i}
               className={styles.rowThumbnail}
               src={movie.thumbnail}
-              alt={movie.title}
             />
           ))}
         </div>
@@ -189,7 +188,6 @@ const MovieRow: FC<MovieRowProps> = (MovieRowInfo) => {
                   <img onClick={() => handleClick(movie.id)} key={i}
                     className={styles.rowThumbnail}
                     src={movie.thumbnail}
-                    alt={movie.title}
                   />
                 ))}
               </div>
