@@ -48,6 +48,27 @@ const CommentManagement: FC<CommentManagementProps> = () => {
       });
   }
 
+  function MarkAsFalsePositive(){
+    setIsPageLoading(true);
+    const requestOptions = {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/AdministrationManagment/ReportAsFalsePositive?reportId=${reportId}`, requestOptions)
+      .then(response => {
+        if(response.ok) {
+          return response.json();
+        }
+      })
+      .catch(error => {
+        GetComment();
+      });
+  }
+
   function RenderPage() {
     if(isPageLoading){
       return(
@@ -74,7 +95,7 @@ const CommentManagement: FC<CommentManagementProps> = () => {
           </div>
           <div className={styles.AddPriv}>
             <div className={styles.AddPriv_title}>Available actions:</div>
-            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}}>Report as false positive</Button>
+            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => MarkAsFalsePositive()}>Report as false positive</Button>
             <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}}>Issue a warning to the user</Button>
             <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem'}}>Issue a ban to the user</Button>
           </div>
