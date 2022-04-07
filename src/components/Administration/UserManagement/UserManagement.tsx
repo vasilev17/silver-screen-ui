@@ -9,7 +9,7 @@ interface UserManagementProps {}
 
 const UserManagement: FC<UserManagementProps> = () => (
   <div className={styles.UserManagement}>
-    <AdminWindowComponent title={"Misbehaving users:"} iconSet={2} height={'21.5rem'} padding={'1rem'}> 
+    <AdminWindowComponent title={"User statistics:"} iconSet={5} height={'21.5rem'} padding={'1rem'}> 
       <MisbehavingUsersW/>
     </AdminWindowComponent>
     <br/>

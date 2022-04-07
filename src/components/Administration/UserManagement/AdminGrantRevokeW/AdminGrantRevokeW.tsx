@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import styles from './AdminGrantRevokeW.module.scss';
 import { DataGrid } from '@mui/x-data-grid';
 import { Alert, Button, Snackbar } from '@mui/material';
+import AdminActionModal from '../../AdminActionModal/AdminActionModal';
 
 
 interface AdminGrantRevokeWProps {}
@@ -12,6 +13,9 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("Test message.");
   const [alertErr, setAlertErr] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [userId, setUserId] = useState(-1);
+  const [username, setUsername] = useState("#USERNAME#");
   const token = localStorage.getItem('token');
 
   function FetchAdministrators() {
@@ -75,11 +79,10 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
       });
   }
 
-  function BanUser(targetUsername:string){
-    // alert(`Ban user ${targetUsername}`);    
-    setAlertMsg("Ban functionality is disabled!");
-    setAlertErr(true);
-    setOpenAlert(true);
+  function BanUser(targetId:number, targetUsername:string){
+    setUserId(targetId);
+    setUsername(targetUsername);
+    setOpenModal(true);
   }
 
   function GrantAdmin(){
@@ -133,7 +136,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => BanUser(params.row.username)}
+            onClick={() => BanUser(params.row.id, params.row.username)}
             style={{ marginLeft: 14, background: "#833a3a", color: "#d9d9d9", fontSize: '0.7rem' }}
           >
             Ban user
@@ -172,6 +175,7 @@ const AdminGrantRevokeW: FC<AdminGrantRevokeWProps> = () => {
           {alertMsg}
         </Alert>
       </Snackbar>
+      <AdminActionModal RefreshMethod={FetchAdministrators} windowType={1} openModal={openModal} setOpenModal={setOpenModal} reportId={-1} userId={userId} username={username}/>
     </div>
   );
 }

@@ -3,6 +3,7 @@ import React, { FC, useEffect, useState } from 'react';
 import AdminWindowComponent from '../AdminWindowComponent/AdminWindowComponent';
 import styles from './CommentManagement.module.scss';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
+import AdminActionModal from '../AdminActionModal/AdminActionModal';
 
 interface CommentManagementProps {}
 
@@ -10,12 +11,17 @@ const CommentManagement: FC<CommentManagementProps> = () => {
 
   const [isPageLoading, setIsPageLoading] = useState(true);
   const [isThereAComment, setIsThereAComment] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [typeModal, setTypeModal] = useState(0)
 
   const [timesReported, setTimesReported] = useState(0);
   const [commentContents, setCommentContents] = useState("");
   const [reportId, setReportId] = useState(0);
+  const [userId, setUserId] = useState(-1);
+  const [username, setUsername] = useState("#USERNAME#");
 
   function GetComment() {
+    setIsPageLoading(true);
     const requestOptions = {
       method: 'GET',
       headers: { 
@@ -41,6 +47,8 @@ const CommentManagement: FC<CommentManagementProps> = () => {
           setTimesReported(data.commentForReview.timesReported);
           setCommentContents(data.commentForReview.contents);
           setReportId(data.commentForReview.reviewId);
+          setUserId(data.commentForReview.userId);
+          setUsername(data.commentForReview.username);
         }
       })
       .catch(error => {
@@ -95,9 +103,9 @@ const CommentManagement: FC<CommentManagementProps> = () => {
           </div>
           <div className={styles.AddPriv}>
             <div className={styles.AddPriv_title}>Available actions:</div>
-            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => MarkAsFalsePositive()}>Report as false positive</Button>
-            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}}>Issue a warning to the user</Button>
-            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem'}}>Issue a ban to the user</Button>
+            <Button disabled variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => MarkAsFalsePositive()}>Report as false positive</Button>
+            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => {setOpenModal(true); setTypeModal(0);}}>Issue a warning to the user</Button>
+            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem' }} onClick={() => {setOpenModal(true); setTypeModal(1);}}>Issue a ban to the user</Button>
           </div>
         </div>
       );
@@ -121,6 +129,7 @@ const CommentManagement: FC<CommentManagementProps> = () => {
     <div>
       <AdminWindowComponent title={"Comment moderation"} iconSet={2} height={'17.8rem'} padding={'0.9rem'}> 
         {RenderPage()}
+        <AdminActionModal RefreshMethod={GetComment} windowType={typeModal} openModal={openModal} setOpenModal={setOpenModal} reportId={reportId} userId={userId} username={username}/>
       </AdminWindowComponent>
     </div>
   );

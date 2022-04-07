@@ -4,6 +4,7 @@ import QueuePlayNextIcon from '@mui/icons-material/QueuePlayNext';
 import GavelIcon from '@mui/icons-material/Gavel';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import AdminPanelSettingsOutlinedIcon from '@mui/icons-material/AdminPanelSettingsOutlined';
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 
 interface AdminWindowComponentProps {
   title:string,
@@ -31,6 +32,10 @@ const AdminWindowComponent: FC<AdminWindowComponentProps> = (winInfo) => {
       case 4: 
         return(
           <AdminPanelSettingsOutlinedIcon style={{width: '2rem', height: '2rem'}}/>
+        );
+      case 5:
+        return(
+          <InsertChartIcon style={{width: '2rem', height: '2rem'}}/>
         );
     }
   }
