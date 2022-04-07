@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import NotificationButton from '../Notifications/Notifications/NotificationButton/NotificationButton';
 import "./Navbar.scss";
 import Profile from '../Profile/Profile';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import AdminDashboardButton from '../Administration/AdminDashboardButton/AdminDashboardButton';
 
 const Navbar = () => {
@@ -19,6 +19,7 @@ const Navbar = () => {
     const handleClick = () => setClick(!click)
     const [searchString, setSearchString] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const [color, setColor] = useState(false)
     const changeColor = () => {
@@ -91,6 +92,18 @@ const Navbar = () => {
         getUserInfo();
     
       }, []);
+
+      useEffect(() => {
+        var navbar = document.getElementById('mainNavbar');
+        if(location.pathname === '/administration'){
+          document.body.style.backgroundColor = "#303030";      
+          navbar.hidden = true;
+        }
+        else{
+          document.body.style.backgroundColor = "#181919";   
+          navbar.hidden = false;
+        }
+      }, [location])
 
 
     return (

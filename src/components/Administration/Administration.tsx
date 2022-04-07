@@ -1,5 +1,6 @@
 import { CircularProgress } from '@mui/material';
 import React, { FC, useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import { useNavigate } from 'react-router';
 import styles from './Administration.module.scss';
 import CommentManagement from './CommentManagement/CommentManagement';
@@ -17,6 +18,8 @@ const Administration: FC<AdministrationProps> = () => {
   var token = localStorage.getItem('token');
 
   document.title = `Silver Screen - Administration`;
+
+  
 
   function CheckAdmin(){
     const requestOptions = {
@@ -109,6 +112,7 @@ const Administration: FC<AdministrationProps> = () => {
     var navbar = document.getElementById('mainNavbar');
     navbar.hidden = true;
   },[])
+  
 
   return(
     <>
