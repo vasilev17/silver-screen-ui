@@ -6,26 +6,6 @@ function Series() {
 
   document.title = `Silver Screen - Series`;
 
-  useEffect(() => {
-
-    //Load scroll data
-    let stateCheck = setInterval(() => {
-      if (document.readyState === 'complete') {
-        clearInterval(stateCheck);
-      const scrollPosition = sessionStorage.getItem("seriesPageScrollPosition");
-      if (scrollPosition) {
-        window.scroll(0, parseInt(scrollPosition));
-        sessionStorage.removeItem("seriesPageScrollPosition");
-      }else{
-        window.scrollTo(0, 0);
-      }
-    }
-  }, 100);
-
-    
-
-  }, []);
-
   return (
   <div className={styles.MovieRow}>
     <MovieRow genre="Action" content="TVSeries" showGenreTittle={true}/>

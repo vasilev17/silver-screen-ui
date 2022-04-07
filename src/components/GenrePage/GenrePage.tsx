@@ -9,24 +9,6 @@ const GenrePage: FC<GenrePageProps> = () => {
   const { genre } = useParams();
   document.title = `Silver Screen - ${genre.charAt(0).toUpperCase() + genre.slice(1)}`;
   const genreString = genre.split(" ");
-
-  useEffect(() => {
-
-    //Load scroll data
-    let stateCheck = setInterval(() => {
-      if (document.readyState === 'complete') {
-        clearInterval(stateCheck);
-      const scrollPosition = sessionStorage.getItem(`genrePageScrollPosition - ${genre}`);
-      if (scrollPosition) {
-        window.scroll(0, parseInt(scrollPosition));
-        sessionStorage.removeItem(`genrePageScrollPosition - ${genre}`);
-      }else{
-        window.scrollTo(0, 0);
-      }
-    }
-  }, 100);
-
-  }, []);
   
   for (let i = 0 ; i < genreString.length ; i++){
     genreString[i] = genreString[i][0].toUpperCase() + genreString[i].substr(1) + " ";

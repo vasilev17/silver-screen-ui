@@ -6,28 +6,6 @@ function MainPage() {
 
   document.title = `Silver Screen`;
 
-  useEffect(() => {
-
-    //Load scroll data
-    let stateCheck = setInterval(() => {
-      if (document.readyState === 'complete') {
-        setTimeout(() => {
-          const scrollPosition = sessionStorage.getItem("mainPageScrollPosition");
-          if (scrollPosition) {
-            window.scroll(0, parseInt(scrollPosition));
-            sessionStorage.removeItem("mainPageScrollPosition");
-          }else{
-            window.scrollTo(0, 0);
-          }
-        }, 150);
-        clearInterval(stateCheck);
-        
-      }
-    }, 100);
-
-
-  }, []);
-
   return (
   <div className={styles.MovieRow}>
 
