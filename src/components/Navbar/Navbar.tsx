@@ -6,6 +6,7 @@ import NotificationButton from '../Notifications/Notifications/NotificationButto
 import "./Navbar.scss";
 import Profile from '../Profile/Profile';
 import { useNavigate } from 'react-router';
+import AdminDashboardButton from '../Administration/AdminDashboardButton/AdminDashboardButton';
 
 const Navbar = () => {
 
@@ -109,7 +110,7 @@ const Navbar = () => {
                         </IconButton>
                     </div>
                     <div style={{ marginTop: '7px' }}>
-                        <NotificationButton />
+                        {logged ? <NotificationButton /> : null}
                     </div>
                     <li className='nav-item'>
                         <a href='/' onClick={() => {closeMenu(); sessionStorage.removeItem("mainPageScrollPosition");}}>Home</a>
@@ -123,6 +124,9 @@ const Navbar = () => {
                     <li className={`nav-item ${loggedUsersOnly}`}>
                         <a href='/mylist' onClick={() => {closeMenu(); sessionStorage.removeItem("mylistPageScrollPosition");}}>My List</a>
                     </li>
+                    <div style={{ marginTop: '7px' }}>
+                        {logged ? <AdminDashboardButton /> : null}
+                    </div>
                     <div style={{ marginTop: '7px' }}>
 
                         <IconButton aria-label="delete" onClick={() => ToggleButton()}>
