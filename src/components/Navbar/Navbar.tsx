@@ -91,11 +91,7 @@ const Navbar = () => {
 
       useEffect(() => {
         var navbar = document.getElementById('mainNavbar');
-        if(location.pathname === '/administration'){
-          document.body.style.backgroundColor = "#303030";      
-          navbar.hidden = true;
-        }
-        else{
+        if(location.pathname !== '/administration' && location.pathname !== '/unauthorized'){
           document.body.style.backgroundColor = "#181919";   
           navbar.hidden = false;
         }
