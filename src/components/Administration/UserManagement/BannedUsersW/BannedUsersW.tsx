@@ -1,6 +1,7 @@
 import { Alert, Button, Checkbox, FormControlLabel, Slider, Snackbar, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { FC, useEffect, useState } from 'react';
+import AdminActionModal from '../../AdminActionModal/AdminActionModal';
 import styles from './BannedUsersW.module.scss';
 
 interface BannedUsersWProps {}
@@ -15,6 +16,10 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
   const [openAlert, setOpenAlert] = useState(false);
   const [alertMsg, setAlertMsg] = useState("Test message.");
   const [alertErr, setAlertErr] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+  const [userId, setUserId] = useState(-1);
+  const [username, setUsername] = useState("#USERNAME#");
+  const [rows, setRows] = useState([]);
 
 
   function ValueLabelComponent(props) {
@@ -25,6 +30,35 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
         {children}
       </Tooltip>
     );
+  }
+
+  function FetchBannedUsers(){
+    const requestOptions = {
+      method: 'GET',
+      headers: { 
+        'Content-Type': 'application/json', 
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    };
+    fetch(`${process.env.REACT_APP_API}/AdministrationManagment/LoadAllBannedUsers`, requestOptions)
+      .then(response => {
+        if(response.ok) {
+          return response.json();
+        } else {
+          console.warn("Error while processing the request!");
+        }
+      })
+      .then(data => {
+        var bannedUsersList = [];
+        data.bannedUsers.$values.map(user => {
+          bannedUsersList.push({ id: user.userId, username: user.username, fakeReports: user.fakeReports, reports: user.reports, warnings: user.warnings });;;;
+        });
+        setRows(bannedUsersList);
+      })
+      .catch(error => {
+        console.warn("Error while processing the request!"); 
+      });
   }
 
   function FetchConfig() {
@@ -57,8 +91,10 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
       });
   }
   
-  function UnbanUser(userID){
-    alert('Unban user: ' + userID);
+  function UnbanUser(userID:number, username:string) {
+    setUserId(userID);
+    setUsername(username);
+    setOpenModal(true);
   }
 
   function ApplyChanges(){
@@ -104,7 +140,7 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
             variant="contained"
             color="primary"
             size="small"
-            onClick={() => UnbanUser(params.row.id)}
+            onClick={() => UnbanUser(params.row.id, params.row.username)}
             style={{ marginLeft: 0, background: "#915f2d", color: "#d9d9d9", fontSize: '0.7rem' }}
           >
             Unban
@@ -114,14 +150,15 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
     }
   ];
   
-  const rows = [
-    { id: 0, username: 'user1', fakeReports: 412, reports: 0, warnings: 4 },
-    { id: 1, username: 'user2', fakeReports: 100, reports: 3, warnings: 4 },
-    { id: 2, username: 'user3', fakeReports: 52, reports: 1, warnings: 4 },
-  ];
+  // const rows = [
+  //   { id: 0, username: 'user1', fakeReports: 412, reports: 0, warnings: 4 },
+  //   { id: 1, username: 'user2', fakeReports: 100, reports: 3, warnings: 4 },
+  //   { id: 2, username: 'user3', fakeReports: 52, reports: 1, warnings: 4 },
+  // ];
 
   useEffect(() => {
     FetchConfig();
+    FetchBannedUsers();
   },[])
   
 
@@ -164,6 +201,7 @@ const BannedUsersW: FC<BannedUsersWProps> = () => {
           {alertMsg}
         </Alert>
       </Snackbar>
+      <AdminActionModal RefreshMethod={FetchBannedUsers} windowType={3} openModal={openModal} setOpenModal={setOpenModal} reportId={-1} userId={userId} username={username}/>
     </div>
   );
   }
