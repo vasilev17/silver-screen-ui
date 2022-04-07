@@ -25,7 +25,7 @@ const PageNotFound: FC<PageNotFoundProps> = () => {
       <div className={styles.border} />
 
       <div className={styles.textUnderBorder}>
-        This page does not seem to exist. Please return to the <a onClick={() => sessionStorage.removeItem("mainPageScrollPosition")} className={styles.mainPageLink} href={'/'}>main webpage</a>
+        This page does not seem to exist. Please return to the <a className={styles.mainPageLink} href={'/'}>main webpage</a>
       </div>
 
 
