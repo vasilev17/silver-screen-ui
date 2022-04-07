@@ -103,7 +103,7 @@ const CommentManagement: FC<CommentManagementProps> = () => {
           </div>
           <div className={styles.AddPriv}>
             <div className={styles.AddPriv_title}>Available actions:</div>
-            <Button disabled variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => MarkAsFalsePositive()}>Report as false positive</Button>
+            <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => MarkAsFalsePositive()}>Report as false positive</Button>
             <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem', marginBottom: '0.7rem'}} onClick={() => {setOpenModal(true); setTypeModal(0);}}>Issue a warning to the user</Button>
             <Button variant="contained" style={{background: '#333333', color: '#808080', width: '16rem' }} onClick={() => {setOpenModal(true); setTypeModal(1);}}>Issue a ban to the user</Button>
           </div>
