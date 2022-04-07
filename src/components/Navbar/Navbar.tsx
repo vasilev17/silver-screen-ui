@@ -32,10 +32,6 @@ const Navbar = () => {
 
     const handleSearch = () => {
         if (searchString != null && searchString != ""){
-
-          if(sessionStorage.getItem(`searchPageScrollPosition - ${searchString}`) != null){
-            sessionStorage.removeItem(`searchPageScrollPosition - ${searchString}`);
-          }
             navigate(`/search/${searchString}`);
             window.location.reload();
         }
@@ -109,7 +105,7 @@ const Navbar = () => {
     return (
         <div id="mainNavbar" className={color ? "header header_bg" : "header"}>
             <nav className='navbar'>
-                <a href='/' className='logo' onClick={() => sessionStorage.removeItem("mainPageScrollPosition")}>
+                <a href='/' className='logo'>
                     <img src="/logoS.png" alt='logo' />
                 </a>
                 <div className='hamburger' onClick={handleClick}>
@@ -126,16 +122,16 @@ const Navbar = () => {
                         {logged ? <NotificationButton /> : null}
                     </div>
                     <li className='nav-item'>
-                        <a href='/' onClick={() => {closeMenu(); sessionStorage.removeItem("mainPageScrollPosition");}}>Home</a>
+                        <a href='/' onClick={() => {closeMenu();}}>Home</a>
                     </li>
                     <li className='nav-item'>
-                        <a href='/series' onClick={() => {closeMenu(); sessionStorage.removeItem("seriesPageScrollPosition");}}>Series</a>
+                        <a href='/series' onClick={() => {closeMenu();}}>Series</a>
                     </li>
                     <li className='nav-item'>
-                        <a href='/movies' onClick={() => {closeMenu(); sessionStorage.removeItem("moviesPageScrollPosition");}}>Movies</a>
+                        <a href='/movies' onClick={() => {closeMenu();}}>Movies</a>
                     </li>
                     <li className={`nav-item ${loggedUsersOnly}`}>
-                        <a href='/mylist' onClick={() => {closeMenu(); sessionStorage.removeItem("mylistPageScrollPosition");}}>My List</a>
+                        <a href='/mylist' onClick={() => {closeMenu();}}>My List</a>
                     </li>
                     <div style={{ marginTop: '7px' }}>
                         {logged ? <AdminDashboardButton /> : null}
