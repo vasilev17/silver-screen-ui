@@ -132,6 +132,7 @@ const Navbar = () => {
                     <div style={{ marginTop: '7px' }}>
                         {logged ? <AdminDashboardButton /> : null}
                     </div>
+                    
                     <div style={{ marginTop: '7px' }}>
 
                         <IconButton aria-label="delete" onClick={() => ToggleButton()}>
@@ -139,6 +140,7 @@ const Navbar = () => {
                         </IconButton>
                         {buttonState1?
                         <div style={{position: "fixed"}}>
+                          <div className = 'profile'>
                         <Grow 
                             in={buttonState}
                             style={{ transformOrigin: '0 0 0' }}
@@ -146,14 +148,16 @@ const Navbar = () => {
                            
                         >
                           <div>
-
+                          
                            <Profile/>
-                           
-                          </div>
+                           </div>
+                          
                           
                         </Grow>
                         </div>
+                        </div>
                        :null}
+                    
                     </div>
                 </ul>
             </nav>

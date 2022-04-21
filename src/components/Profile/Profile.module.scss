@@ -35,6 +35,8 @@
   .frame2 {
     width: 290px;
     height: 450px;
+    right: 25%;
+    position: relative;
     border: 2px solid #ccc;
     background-color: black;
     margin: auto;
@@ -63,7 +65,7 @@
     height: 30px;
     border: 2px solid #ccc;
     background-color: #707070;
-    left: 0px;
+    left: -2px;
     top: 90px;
     position: absolute;
   }
@@ -82,7 +84,7 @@
     font-size: 15px;
   }
   .friendsList2 {
-    left: 2px;
+    left: 0px;
     top: 124px;
     width: 310px;
     position: absolute;
