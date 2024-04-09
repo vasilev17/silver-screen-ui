@@ -50,7 +50,7 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 **Home page:**
 
 <p align="center">
-  <img src="https://i.ibb.co/jrZBWV6/homePage.png">
+  <img src="https://i.postimg.cc/rwng2Hv1/homePage.png">
 </p>
 
 **Movie page:**
